@@ -1,0 +1,21 @@
+messages:
+  prefix: "&b&lFast&f&lTravel &8»"
+  no-permission: "&cYou don't have permission to do this!"
+  help:
+    - "&8&m―――――&8<&b&l Fast&f&lTravel &8>&8&m―――――"
+    - "&8➼ &7/ftp help &fSee the help menu."
+    - "&8➼ &7/ftp reload &fReload the plugin."
+
+  reloading: "&7Reloading..."
+  reloaded: "&aReloaded!"
+  region-exists: "&cThe name {region} already exists. Please use another name!"
+  region-created: "&aRegion {region} has successfully been created!"
+  unknown-region: "&c{region} is not a region!"
+  incorrect-world: "&cThis region is registered in the world \"{world}\"!"
+  auto-ready: "&aLooks like you have finished setting up region {region} This region is now active!"
+  invalid-location: "&cThat is not a valid location!"
+  no-checkpoints: "&cYou do not have any checkpoints saved!"
+  not-discovered: "&cYou still haven't been to this region!"
+  cooldown: "&cYou cant use that commands for another {time} seconds!"
+  countdown: "&7Teleporting in {time} seconds..."
+  teleport: "&aSuccessfully teleported to {region}!"

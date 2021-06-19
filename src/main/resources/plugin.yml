@@ -1,0 +1,17 @@
+name: FastTravelCP
+version: ${project.version}
+main: net.zerotoil.fasttravelcp.FastTravelCP
+api-version: 1.16
+authors: [ Kihsomray ]
+description: Teleport to places around the map
+website: zerotoil.net
+
+commands:
+  fastteleport:
+    aliases:
+      - ftcp
+      - ftp
+      - fasttp
+      - fteleport
+      - fastteleport
+      - ftcheckpoint

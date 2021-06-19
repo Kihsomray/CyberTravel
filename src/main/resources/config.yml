@@ -1,0 +1,8 @@
+config:
+  countdown:
+    enabled: true
+    seconds: 5
+
+  cooldown:
+    enabled: true
+    seconds: 60
