@@ -19,3 +19,6 @@ messages:
   cooldown: "&cYou cant use that commands for another {time} seconds!"
   countdown: "&7Teleporting in {time} seconds..."
   teleport: "&aSuccessfully teleported to {region}!"
+  enter-region: "&aYou have entered the region {region}! Use &6/ftp tp {region} &ato teleport back to this region!"
+  delete-region: "&aYou have successfully deleted {region}!"
+  delete-failed: "&cThe region cannot be deleted!"
