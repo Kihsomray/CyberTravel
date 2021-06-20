@@ -23,7 +23,7 @@ public final class FastTravelCP extends JavaPlugin {
 
         new FTPCommand(this);
 
-        PlayerCache.initializeRegionData();
+        PlayerCache.refreshRegionData(false);
         PlayerCache.initializePlayerData();
 
         Bukkit.getPluginManager().registerEvents(new MovementListener(), instance);

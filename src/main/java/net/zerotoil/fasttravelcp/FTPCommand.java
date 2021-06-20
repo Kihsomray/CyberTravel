@@ -13,10 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.currentTimeMillis;
@@ -57,7 +54,7 @@ public class FTPCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("reload")) {
                 MessageUtils.sendMessage("lang", "messages.reloading", "&7Reloading...", sender);
                 FileCache.initializeFiles();
-                PlayerCache.initializeRegionData();
+                PlayerCache.refreshRegionData(false);
                 PlayerCache.initializePlayerData();
                 MessageUtils.sendMessage("lang", "messages.reloaded", "&aReloaded!", sender);
                 return true;
@@ -116,7 +113,7 @@ public class FTPCommand implements CommandExecutor {
                 }
 
                 // gets player location and saves it
-                String location = player.getLocation().getBlockX() + ".5, " + player.getLocation().getBlockY() + ", " + player.getLocation().getBlockZ() + ".5";
+                String location = (0.5 + player.getLocation().getBlockZ()) + ", " + player.getLocation().getBlockY() + ", " + (0.5 + player.getLocation().getBlockZ());
                 dataConfig.set(fl + args[1] + "." + args[0], location);
 
                 // save changes
@@ -129,7 +126,7 @@ public class FTPCommand implements CommandExecutor {
 
                 // adds it to memory
                 if (dataConfig.isSet(fl + args[1] + ".pos1") && dataConfig.isSet(fl + args[1] + ".pos2") && dataConfig.isSet(fl + args[1] + ".settp")) {
-                    PlayerCache.initializeRegionData();
+                    PlayerCache.refreshRegionData(true);
                     MessageUtils.sendMessage("lang", "messages.auto-ready", "&aLooks like you have finished setting up region " + args[1] +
                             ". This region is now active!", sender, "region", args[1]);
                 }
@@ -212,6 +209,38 @@ public class FTPCommand implements CommandExecutor {
                     }
                 }
             }
+
+            if (args[0].equalsIgnoreCase("delete")) {
+
+                // region does not exist
+                if (!dataConfig.isConfigurationSection(fl + args[1])) {
+                    MessageUtils.sendMessage("lang", "messages.unknown-region", "&c" + args[1] +
+                            " is not a region!", sender, "region", args[1]);
+                    return true;
+                }
+
+                //
+                try {
+                    dataConfig.set(fl + args[1], null);
+                    for (String i : dataConfig.getConfigurationSection("players").getKeys(false)) {
+                        List playerRegions = dataConfig.getList(pl + i);
+                        if (playerRegions.contains(args[1])) {
+                            playerRegions.remove(args[1]);
+                            dataConfig.set(pl + i, playerRegions);
+                            PlayerCache.initializePlayerData();
+                            FileCache.storedFiles.get("data").saveConfig();
+                        }
+                    }
+                    MessageUtils.sendMessage("lang", "messages.delete-region", "&aYou have successfully deleted " + args[1] +
+                            "!", sender, "region", args[1]);
+                } catch (Exception e) {
+                    MessageUtils.sendMessage("lang", "messages.delete-failed", "&cThe region " + args[1] +
+                            " cannot be deleted!", sender, "region", args[1]);
+                }
+                return true;
+
+            }
+
 
             sendHelpMessage(sender);
             return true;
