@@ -6,7 +6,7 @@
 
     <groupId>net.zerotoil</groupId>
     <artifactId>FastTravelCP</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>v0.1.67</version>
     <packaging>jar</packaging>
 
     <name>FastTravelCP</name>

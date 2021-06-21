@@ -6,6 +6,10 @@ config:
     seconds: 5
 
   # how many seconds until a player can run the command again?
-  cooldown:
-    enabled: true
+  region-cooldown:
+    enabled: false
     seconds: 60
+
+  global-cooldown:
+    enabled: true
+    seconds: 120

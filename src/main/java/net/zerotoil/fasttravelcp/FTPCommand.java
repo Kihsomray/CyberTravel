@@ -25,7 +25,8 @@ public class FTPCommand implements CommandExecutor {
         main.getCommand("fastteleport").setExecutor(this);
     }
 
-    public HashMap<String, HashMap<String, Long>> cmdCooldown = new HashMap<>();
+    public HashMap<String, HashMap<String, Long>> regionCooldown = new HashMap<>();
+    public HashMap<String, Long> globalCooldown = new HashMap<>();
     public static Map<Player, BukkitTask> cmdCountdown = new HashMap<>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -66,6 +67,36 @@ public class FTPCommand implements CommandExecutor {
                 PlayerCache.initializePlayerData();
                 MessageUtils.sendMessage("lang", "messages.reloaded", "&aReloaded!", sender);
                 return true;
+            }
+
+            if (args[0].equalsIgnoreCase("regions")) {
+
+                if (!sender.hasPermission("FastTravel.player")) {
+                    MessageUtils.sendMessage("lang", "messages.no-permission", "&cYou don't have permission to do this!", sender);
+                    return true;
+                }
+
+                if (!PlayerCache.regions.isEmpty()) {
+                    MessageUtils.sendMessage("lang", "messages.unlocked-regions-header",
+                            "&8&m―――――&8<&b&l Unlocked &f&lRegions: &8>&8&m―――――", player, "none", "none", false);
+                    for (String i : PlayerCache.regions.keySet()) {
+
+                        if (PlayerCache.playerRegions.containsKey(player.getUniqueId().toString())) {
+                            if (PlayerCache.playerRegions.get(player.getUniqueId().toString()).contains(i)) {
+                                MessageUtils.sendMessage("lang", "messages.unlocked-region", "&8➼ &7 Region &f\"" + i + "\" &a&o(unlocked)", player, "region", i, false);
+                            } else {
+                                MessageUtils.sendMessage("lang", "messages.locked-region", "&8➼ &7 Region &f\"" + i + "\" &c&o(locked)", player, "region", i, false);
+                            }
+                        } else {
+                            MessageUtils.sendMessage("lang", "messages.locked-region", "&8➼ &7 Region &f\"" + i + "\" &c&o(locked)", player, "region", i, false);
+                        }
+
+                    }
+                    MessageUtils.sendMessage("lang", "messages.unlocked-regions-footer",
+                            "&8&m――――――――――――――――――――――――――――――――――", player, "none", "none", false);
+
+                    return true;
+                }
             }
 
             // send help message
@@ -178,7 +209,27 @@ public class FTPCommand implements CommandExecutor {
                     }
                 }
 
-                boolean cooldownEnabled = FileCache.storedFiles.get("config").getConfig().getBoolean("config.cooldown.enabled");
+                boolean cooldownEnabled = FileCache.storedFiles.get("config").getConfig().getBoolean("config.region-cooldown.enabled");
+                boolean globalCooldownEnabled = FileCache.storedFiles.get("config").getConfig().getBoolean("config.global-cooldown.enabled");
+
+                if (globalCooldownEnabled) {
+                    if (globalCooldown.containsKey(player.getUniqueId().toString())) {
+
+                        int gcdTime = FileCache.storedFiles.get("config").getConfig().getInt("config.global-cooldown.seconds");
+
+                        if (globalCooldown.containsKey(player.getUniqueId().toString())) {
+                            long globalTimeRemaining = ((globalCooldown.get(player.getUniqueId().toString()) / 1000) + gcdTime) - (currentTimeMillis() / 1000);
+                            if (globalTimeRemaining > 0) {
+
+                                // player still on a cooldown
+                                MessageUtils.sendMessage("lang", "messages.global-cooldown", "&cYou cant teleport to that region for another " +
+                                        globalTimeRemaining + " seconds!", sender, "time", globalTimeRemaining + "");
+                                return true;
+                            }
+                        }
+                    }
+                }
+
 
                 for (String i : dataConfig.getStringList(pl + player.getUniqueId().toString())) {
                     if (i.equalsIgnoreCase(args[1])) {
@@ -188,25 +239,25 @@ public class FTPCommand implements CommandExecutor {
                         // cool-down module
                         if (cooldownEnabled) {
 
-                            int cdTime = FileCache.storedFiles.get("config").getConfig().getInt("config.cooldown.seconds");
+                            int cdTime = FileCache.storedFiles.get("config").getConfig().getInt("config.region-cooldown.seconds");
 
-                            if (cmdCooldown.containsKey(player.getUniqueId().toString())) {
-                                if (cmdCooldown.get(player.getUniqueId().toString()).containsKey(args[1])) {
-                                    long timeRemaining = ((cmdCooldown.get(player.getUniqueId().toString()).get(args[1]) / 1000) + cdTime) - (currentTimeMillis() / 1000);
+                            if (regionCooldown.containsKey(player.getUniqueId().toString())) {
+                                if (regionCooldown.get(player.getUniqueId().toString()).containsKey(args[1])) {
+                                    long timeRemaining = ((regionCooldown.get(player.getUniqueId().toString()).get(args[1]) / 1000) + cdTime) - (currentTimeMillis() / 1000);
                                     if (timeRemaining > 0) {
 
                                         // player still on a cooldown
-                                        MessageUtils.sendMessage("lang", "messages.cooldown", "&cYou cant use that command for another " +
+                                        MessageUtils.sendMessage("lang", "messages.region-cooldown", "&cYou cannot teleport to any region for another " +
                                                 timeRemaining + " seconds!", sender, "time", timeRemaining + "");
                                         return true;
                                     }
                                 }
                             }
                             // creates player hashmap if not present
-                            if (!cmdCooldown.containsKey(player.getUniqueId().toString())) cmdCooldown.put(player.getUniqueId().toString(), new HashMap<>());
+                            if (!regionCooldown.containsKey(player.getUniqueId().toString())) regionCooldown.put(player.getUniqueId().toString(), new HashMap<>());
 
                             // deletes prior time for this region
-                            if (cmdCooldown.get(player.getUniqueId().toString()).containsKey(args[1])) cmdCooldown.get(player.getUniqueId().toString()).remove(args[1]);
+                            if (regionCooldown.get(player.getUniqueId().toString()).containsKey(args[1])) regionCooldown.get(player.getUniqueId().toString()).remove(args[1]);
 
                         }
 
@@ -224,7 +275,8 @@ public class FTPCommand implements CommandExecutor {
                                     public void run() {
                                         teleportPlayer(player, args[1], teleportLocation);
                                         cmdCountdown.remove(player);
-                                        if (cooldownEnabled) cmdCooldown.get(player.getUniqueId().toString()).put(args[1], System.currentTimeMillis());
+                                        if (cooldownEnabled) regionCooldown.get(player.getUniqueId().toString()).put(args[1], System.currentTimeMillis());
+                                        if (globalCooldownEnabled) globalCooldown.put(player.getUniqueId().toString(), System.currentTimeMillis());
                                     }
 
                                 }).runTaskLater(FastTravelCP.getInstance(), 20L * cndTime));
@@ -235,7 +287,8 @@ public class FTPCommand implements CommandExecutor {
                         } else {
 
                             teleportPlayer(player, args[1], teleportLocation);
-                            if (cooldownEnabled) cmdCooldown.get(player.getUniqueId().toString()).put(args[1], System.currentTimeMillis());
+                            if (cooldownEnabled) regionCooldown.get(player.getUniqueId().toString()).put(args[1], System.currentTimeMillis());
+                            if (globalCooldownEnabled) globalCooldown.put(player.getUniqueId().toString(), System.currentTimeMillis());
                             // teleport to this location
                         }
                         return true;
@@ -295,6 +348,10 @@ public class FTPCommand implements CommandExecutor {
                 Double.parseDouble(arrayLocation[1]), Double.parseDouble(arrayLocation[2]), 0, 0));
         MessageUtils.sendMessage("lang", "messages.teleport", "&aSuccessfully teleported to " +
                 region + "!", player, "region", region);
+
+        if (FileUtils.configFile().getBoolean("config.global-cooldown")) {
+
+        }
     }
 
     public void sendHelpMessage(CommandSender sender) {
@@ -311,6 +368,7 @@ public class FTPCommand implements CommandExecutor {
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp (pos1|pos2) <region> &fSet cuboid boundaries of region.", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp settp <region> &fSet teleport location.", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp (tp|teleport) <region> &fTeleport to location.", false));
+            sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp (regions) <region> &fSee all locked/unlocked regions.", false));
             sender.sendMessage(MessageUtils.getColor("&8&m――――――――――――――――――――――――――――――", false));
             return;
 
@@ -329,6 +387,7 @@ public class FTPCommand implements CommandExecutor {
             sender.sendMessage(MessageUtils.getColor("&8&m―――――&8<&b&l Fast&f&lTeleport &8>&8&m―――――", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp help &fSee the help menu.", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp (tp|teleport) <region> &fTeleport to location.", false));
+            sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp regions &fSee all locked/unlocked regions.", false));
             sender.sendMessage(MessageUtils.getColor("&8&m――――――――――――――――――――――――――――――", false));
             return;
         } else if (sender.hasPermission("FastTravel.player")) {
