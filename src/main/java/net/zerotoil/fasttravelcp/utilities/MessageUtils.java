@@ -1,4 +1,4 @@
-package net.zerotoil.fasttravelcp;
+package net.zerotoil.fasttravelcp.utilities;
 
 import net.zerotoil.fasttravelcp.cache.FileCache;
 import org.bukkit.ChatColor;

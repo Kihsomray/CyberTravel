@@ -2,8 +2,9 @@ package net.zerotoil.fasttravelcp;
 
 import net.zerotoil.fasttravelcp.cache.FileCache;
 import net.zerotoil.fasttravelcp.cache.PlayerCache;
+import net.zerotoil.fasttravelcp.utilities.FileUtils;
+import net.zerotoil.fasttravelcp.utilities.MessageUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,10 +12,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -25,6 +26,7 @@ public class FTPCommand implements CommandExecutor {
     }
 
     public HashMap<String, HashMap<String, Long>> cmdCooldown = new HashMap<>();
+    public static Map<Player, BukkitTask> cmdCountdown = new HashMap<>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(!(sender instanceof Player)) return true;
@@ -52,6 +54,12 @@ public class FTPCommand implements CommandExecutor {
 
             // /ftp reload
             if (args[0].equalsIgnoreCase("reload")) {
+
+                if (!sender.hasPermission("FastTravel.admin")) {
+                    MessageUtils.sendMessage("lang", "messages.no-permission", "&cYou don't have permission to do this!", sender);
+                    return true;
+                }
+
                 MessageUtils.sendMessage("lang", "messages.reloading", "&7Reloading...", sender);
                 FileCache.initializeFiles();
                 PlayerCache.refreshRegionData(false);
@@ -70,6 +78,11 @@ public class FTPCommand implements CommandExecutor {
 
             // /ftp create <region>
             if (args[0].equalsIgnoreCase("create")) {
+
+                if (!sender.hasPermission("FastTravel.admin")) {
+                    MessageUtils.sendMessage("lang", "messages.no-permission", "&cYou don't have permission to do this!", sender);
+                    return true;
+                }
 
                 // if region exists
                 if (dataConfig.isConfigurationSection(fl + args[1])) {
@@ -90,9 +103,13 @@ public class FTPCommand implements CommandExecutor {
                 return true;
             }
 
-
             // /ftp [pos1|pos2|settp] <region>
             if (args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("settp")) {
+
+                if (!sender.hasPermission("FastTravel.admin")) {
+                    MessageUtils.sendMessage("lang", "messages.no-permission", "&cYou don't have permission to do this!", sender);
+                    return true;
+                }
 
                 // region does not exist
                 if (!dataConfig.isConfigurationSection(fl + args[1])) {
@@ -113,7 +130,7 @@ public class FTPCommand implements CommandExecutor {
                 }
 
                 // gets player location and saves it
-                String location = (0.5 + player.getLocation().getBlockZ()) + ", " + player.getLocation().getBlockY() + ", " + (0.5 + player.getLocation().getBlockZ());
+                String location = (0.5 + player.getLocation().getBlockX()) + ", " + player.getLocation().getBlockY() + ", " + (0.5 + player.getLocation().getBlockZ());
                 dataConfig.set(fl + args[1] + "." + args[0], location);
 
                 // save changes
@@ -136,6 +153,11 @@ public class FTPCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("teleport")) {
 
+                if (!sender.hasPermission("FastTravel.player")) {
+                    MessageUtils.sendMessage("lang", "messages.no-permission", "&cYou don't have permission to do this!", sender);
+                    return true;
+                }
+
                 // invalid location
                 if (!dataConfig.isConfigurationSection(fl + args[1])) {
                     MessageUtils.sendMessage("lang", "messages.invalid-location", "&cThat is not a valid location!", sender);
@@ -156,11 +178,15 @@ public class FTPCommand implements CommandExecutor {
                     }
                 }
 
+                boolean cooldownEnabled = FileCache.storedFiles.get("config").getConfig().getBoolean("config.cooldown.enabled");
+
                 for (String i : dataConfig.getStringList(pl + player.getUniqueId().toString())) {
                     if (i.equalsIgnoreCase(args[1])) {
 
+
+
                         // cool-down module
-                        if (FileCache.storedFiles.get("config").getConfig().getBoolean("config.cooldown.enabled")) {
+                        if (cooldownEnabled) {
 
                             int cdTime = FileCache.storedFiles.get("config").getConfig().getInt("config.cooldown.seconds");
 
@@ -170,7 +196,7 @@ public class FTPCommand implements CommandExecutor {
                                     if (timeRemaining > 0) {
 
                                         // player still on a cooldown
-                                        MessageUtils.sendMessage("lang", "messages.cooldown", "&cYou cant use that commands for another " +
+                                        MessageUtils.sendMessage("lang", "messages.cooldown", "&cYou cant use that command for another " +
                                                 timeRemaining + " seconds!", sender, "time", timeRemaining + "");
                                         return true;
                                     }
@@ -182,35 +208,47 @@ public class FTPCommand implements CommandExecutor {
                             // deletes prior time for this region
                             if (cmdCooldown.get(player.getUniqueId().toString()).containsKey(args[1])) cmdCooldown.get(player.getUniqueId().toString()).remove(args[1]);
 
-                            // adds new time for this region
-                            cmdCooldown.get(player.getUniqueId().toString()).put(args[1], System.currentTimeMillis());
                         }
 
                         //count-down module
+                        String[] teleportLocation = dataConfig.getString(fl + args[1] + ".settp").split(", ");;
+
                         if (FileCache.storedFiles.get("config").getConfig().getBoolean("config.countdown.enabled")) {
                             int cndTime = FileCache.storedFiles.get("config").getConfig().getInt("config.countdown.seconds");
-                            try {
+                            if (!this.cmdCountdown.containsKey(player)) {
                                 MessageUtils.sendMessage("lang", "messages.countdown", "&7Teleporting in " +
-                                        cndTime + " seconds... (doesn't work)", sender, "time", cndTime + "");
-                                TimeUnit.SECONDS.sleep(cndTime);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                                        cndTime + " seconds...", sender, "time", cndTime + "");
+                                this.cmdCountdown.put(player, (new BukkitRunnable() {
 
-                        // teleport to this location
-                        String stringLocation = dataConfig.getString(fl + args[1] + ".settp");
-                        String[] arrLocation = stringLocation.split(", ");
-                        player.teleport(new Location(Bukkit.getWorld(dataConfig.getString(fl + args[1] + ".world")), Double.parseDouble(arrLocation[0]),
-                                Double.parseDouble(arrLocation[1]), Double.parseDouble(arrLocation[2]), 0, 0));
-                        MessageUtils.sendMessage("lang", "messages.teleport", "&aSuccessfully teleported to " +
-                                args[1] + "!", sender, "region", args[1]);
+                                    @Override
+                                    public void run() {
+                                        teleportPlayer(player, args[1], teleportLocation);
+                                        cmdCountdown.remove(player);
+                                        if (cooldownEnabled) cmdCooldown.get(player.getUniqueId().toString()).put(args[1], System.currentTimeMillis());
+                                    }
+
+                                }).runTaskLater(FastTravelCP.getInstance(), 20L * cndTime));
+                            } else {
+                                MessageUtils.sendMessage("lang", "messages.already-teleporting", "&cYou are already being sent to " + args[1] +
+                                        "! Please wait before you can teleport elsewhere.", sender, "region", args[1]);
+                            }
+                        } else {
+
+                            teleportPlayer(player, args[1], teleportLocation);
+                            if (cooldownEnabled) cmdCooldown.get(player.getUniqueId().toString()).put(args[1], System.currentTimeMillis());
+                            // teleport to this location
+                        }
                         return true;
                     }
                 }
             }
 
             if (args[0].equalsIgnoreCase("delete")) {
+
+                if (!sender.hasPermission("FastTravel.admin")) {
+                    MessageUtils.sendMessage("lang", "messages.no-permission", "&cYou don't have permission to do this!", sender);
+                    return true;
+                }
 
                 // region does not exist
                 if (!dataConfig.isConfigurationSection(fl + args[1])) {
@@ -222,6 +260,7 @@ public class FTPCommand implements CommandExecutor {
                 //
                 try {
                     dataConfig.set(fl + args[1], null);
+                    PlayerCache.refreshRegionData(false);
                     for (String i : dataConfig.getConfigurationSection("players").getKeys(false)) {
                         List playerRegions = dataConfig.getList(pl + i);
                         if (playerRegions.contains(args[1])) {
@@ -246,37 +285,62 @@ public class FTPCommand implements CommandExecutor {
             return true;
         }
 
-
-        // 3 arguments
-        if (args.length == 3) {
-
-        }
-
-
-
         sendHelpMessage(sender);
         return true;
 
     }
 
+    public void teleportPlayer(Player player, String region, String[] arrayLocation) {
+        player.teleport(new Location(Bukkit.getWorld(FileUtils.dataFile().getString("regions." + region + ".world")), Double.parseDouble(arrayLocation[0]),
+                Double.parseDouble(arrayLocation[1]), Double.parseDouble(arrayLocation[2]), 0, 0));
+        MessageUtils.sendMessage("lang", "messages.teleport", "&aSuccessfully teleported to " +
+                region + "!", player, "region", region);
+    }
+
     public void sendHelpMessage(CommandSender sender) {
-        if(!FileCache.storedFiles.get("lang").getConfig().isSet("messages.help")){
+        if(sender.hasPermission("FastTravel.admin") && !FileCache.storedFiles.get("lang").getConfig().isSet("messages.help-admin")){
+            if(FileCache.storedFiles.get("lang").getConfig().getString("messages.help-admin").equalsIgnoreCase("")){
+                return;
+            }
+
             sender.sendMessage(MessageUtils.getColor("&8&m―――――&8<&b&l Fast&f&lTeleport &8>&8&m―――――", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp help &fSee the help menu.", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp reload &fReload the plugin.", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp create <region> &fCreate a region in your world.", false));
+            sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp delete <region> &fDelete an existing region.", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp (pos1|pos2) <region> &fSet cuboid boundaries of region.", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp settp <region> &fSet teleport location.", false));
             sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp (tp|teleport) <region> &fTeleport to location.", false));
             sender.sendMessage(MessageUtils.getColor("&8&m――――――――――――――――――――――――――――――", false));
             return;
-        }
-        if(FileCache.storedFiles.get("lang").getConfig().getString("messages.help").equalsIgnoreCase("")){
+
+        } else if (sender.hasPermission("FastTravel.admin")) {
+            for (String x : FileCache.storedFiles.get("lang").getConfig().getStringList("messages.help-admin")) {
+                sender.sendMessage(MessageUtils.getColor(x, false));
+
+            }
+
+        } else if(sender.hasPermission("FastTravel.player") && !FileCache.storedFiles.get("lang").getConfig().isSet("messages.help-player")){
+
+            if(FileCache.storedFiles.get("lang").getConfig().getString("messages.help-admin").equalsIgnoreCase("")){
+                return;
+            }
+
+            sender.sendMessage(MessageUtils.getColor("&8&m―――――&8<&b&l Fast&f&lTeleport &8>&8&m―――――", false));
+            sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp help &fSee the help menu.", false));
+            sender.sendMessage(MessageUtils.getColor("&8➼ &7/ftp (tp|teleport) <region> &fTeleport to location.", false));
+            sender.sendMessage(MessageUtils.getColor("&8&m――――――――――――――――――――――――――――――", false));
             return;
+        } else if (sender.hasPermission("FastTravel.player")) {
+            for (String x : FileCache.storedFiles.get("lang").getConfig().getStringList("messages.help-player")) {
+                sender.sendMessage(MessageUtils.getColor(x, false));
+
+            }
+
+        } else {
+            MessageUtils.sendMessage("lang", "messages.no-permission", "&cYou don't have permission to do this!", sender);
         }
-        for (String x : FileCache.storedFiles.get("lang").getConfig().getStringList("messages.help")) {
-            sender.sendMessage(MessageUtils.getColor(x, false));
-        }
+
         return;
     }
 

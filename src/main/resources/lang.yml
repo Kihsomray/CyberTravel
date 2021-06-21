@@ -1,11 +1,21 @@
 messages:
   prefix: "&b&lFast&f&lTravel &8»"
   no-permission: "&cYou don't have permission to do this!"
-  help:
+  help-player:
+    - "&8&m―――――&8<&b&l Fast&f&lTravel &8>&8&m―――――"
+    - "&8➼ &7/ftp help &fSee the help menu."
+    - "&8➼ &7/ftp (tp|teleport) <region> &fTeleport to location."
+    - "&8&m――――――――――――――――――――――――――――――"
+  help-admin:
     - "&8&m―――――&8<&b&l Fast&f&lTravel &8>&8&m―――――"
     - "&8➼ &7/ftp help &fSee the help menu."
     - "&8➼ &7/ftp reload &fReload the plugin."
-
+    - "&8➼ &7/ftp create <region> &fCreate a region in your world."
+    - "&8➼ &7/ftp delete <region> &fDelete an existing region."
+    - "&8➼ &7/ftp (pos1|pos2) <region> &fSet cuboid boundaries of region."
+    - "&8➼ &7/ftp settp <region> &fSet teleport location."
+    - "&8➼ &7/ftp (tp|teleport) <region> &fTeleport to location."
+    - "&8&m――――――――――――――――――――――――――――――"
   reloading: "&7Reloading..."
   reloaded: "&aReloaded!"
   region-exists: "&cThe name {region} already exists. Please use another name!"
@@ -16,9 +26,11 @@ messages:
   invalid-location: "&cThat is not a valid location!"
   no-checkpoints: "&cYou do not have any checkpoints saved!"
   not-discovered: "&cYou still haven't been to this region!"
-  cooldown: "&cYou cant use that commands for another {time} seconds!"
+  cooldown: "&cYou cant use that command for another {time} seconds!"
   countdown: "&7Teleporting in {time} seconds..."
   teleport: "&aSuccessfully teleported to {region}!"
   enter-region: "&aYou have entered the region {region}! Use &6/ftp tp {region} &ato teleport back to this region!"
   delete-region: "&aYou have successfully deleted {region}!"
   delete-failed: "&cThe region cannot be deleted!"
+  already-teleporting: "&cYou are already being sent to {region}! Please wait before you can teleport elsewhere."
+  teleport-cancelled: "&cYou moved! Teleportation canceled!"

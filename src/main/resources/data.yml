@@ -1,10 +1,2 @@
-regions:
-  region1:
-    world: world
-    pos1: 0, 0, 0
-    pos2: 5, 5, 5
-    tp: 3, 3, 3
-
-players:
-  uuid:
-    - region1
+regions: []
+players: []
