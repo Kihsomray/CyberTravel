@@ -1,11 +1,9 @@
 package net.zerotoil.fasttravelcp.cache;
 
-import net.zerotoil.fasttravelcp.FileUtils;
-import net.zerotoil.fasttravelcp.MessageUtils;
+import net.zerotoil.fasttravelcp.utilities.FileUtils;
 import net.zerotoil.fasttravelcp.objects.RegionObject;
 import org.bukkit.configuration.Configuration;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,17 +17,19 @@ public class PlayerCache {
         String rd = "regions.";
         String r = "regions";
 
-        if (!newRegionsOnly && !regions.isEmpty()) regions.clear();
+        if ((!newRegionsOnly) && (!regions.isEmpty())) regions.clear();
 
-        if (FileUtils.dataFile.isConfigurationSection(r)) {
-            for (String i : FileUtils.dataFile.getConfigurationSection(r).getKeys(false)) {
+        if (FileUtils.dataFile().isConfigurationSection(r)) {
+            for (String i : FileUtils.dataFile().getConfigurationSection(r).getKeys(false)) {
 
                 boolean checkKey = true;
-                if (newRegionsOnly) checkKey = !regions.containsKey(i);
+                if (newRegionsOnly) {
+                    checkKey = !regions.containsKey(i);
+                }
 
                 if (checkKey && isDataSet(rd + i + ".pos1") && isDataSet(rd + i + ".pos2") && isDataSet(rd + i + ".settp")) {
 
-                    regions.put(i, new RegionObject(i, FileUtils.dataFile.getString("regions." + i + ".world"),
+                    regions.put(i, new RegionObject(i, FileUtils.dataFile().getString("regions." + i + ".world"),
                             getCoords(i, "pos1"), getCoords(i, "pos2"), getCoords(i, "settp")));
 
                 } else if (!checkKey) {
@@ -44,11 +44,11 @@ public class PlayerCache {
     }
 
     public static boolean isDataSet(String location) {
-        return FileUtils.dataFile.isSet(location);
+        return FileUtils.dataFile().isSet(location);
     }
 
     public static double[] getCoords(String region, String type) {
-        String stringLocation = FileUtils.dataFile.getString("regions." + region + "." + type);
+        String stringLocation = FileUtils.dataFile().getString("regions." + region + "." + type);
         return Arrays.stream(stringLocation.split(", ")).mapToDouble(Double::parseDouble).toArray();
 
     }
@@ -57,13 +57,11 @@ public class PlayerCache {
 
         if (!playerRegions.isEmpty()) playerRegions.clear();
 
-        Configuration dataConfig = FileCache.storedFiles.get("data").getConfig();
-
-        if (!dataConfig.isConfigurationSection("players")) {
+        if (!FileUtils.dataFile().isConfigurationSection("players")) {
             return;
         }
-        for (String i : dataConfig.getConfigurationSection("players").getKeys(false)) {
-            playerRegions.put(i, dataConfig.getStringList("players." + i));
+        for (String i : FileUtils.dataFile().getConfigurationSection("players").getKeys(false)) {
+            playerRegions.put(i, FileUtils.dataFile().getStringList("players." + i));
         }
 
     }

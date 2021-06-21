@@ -1,8 +1,11 @@
 config:
+
+  # countdown before teleporting, cancels on player move or damage
   countdown:
     enabled: true
     seconds: 5
 
+  # how many seconds until a player can run the command again?
   cooldown:
     enabled: true
     seconds: 60
