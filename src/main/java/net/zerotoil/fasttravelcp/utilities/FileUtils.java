@@ -9,4 +9,8 @@ public class FileUtils {
         return FileCache.storedFiles.get("data").getConfig();
     }
 
+    public static Configuration configFile() {
+        return FileCache.storedFiles.get("config").getConfig();
+    }
+
 }

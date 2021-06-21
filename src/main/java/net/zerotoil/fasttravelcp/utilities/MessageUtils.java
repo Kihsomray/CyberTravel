@@ -52,5 +52,14 @@ public class MessageUtils {
         return;
     }
 
+    public static void sendMessage(String fileName, String path, String altMessage, CommandSender sender, String placeholder, String replacement, boolean addPrefix) {
+        if(!FileCache.storedFiles.get(fileName).getConfig().isSet(path)){
+            sender.sendMessage(MessageUtils.getColor(altMessage, addPrefix));
+            return;
+        }
+        sender.sendMessage(MessageUtils.getColor(FileCache.storedFiles.get(fileName).getConfig().getString(path).replace("{" + placeholder + "}", replacement), true));
+        return;
+    }
+
 
 }
