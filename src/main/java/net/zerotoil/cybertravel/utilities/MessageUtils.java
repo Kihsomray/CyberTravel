@@ -65,7 +65,7 @@ public class MessageUtils {
             sender.sendMessage(getColor(altMessage, addPrefix));
             return;
         }
-        sender.sendMessage(getColor(main.getFileCache().getStoredFiles().get(fileName).getConfig().getString(path).replace("{" + placeholder + "}", replacement), true));
+        sender.sendMessage(getColor(main.getFileCache().getStoredFiles().get(fileName).getConfig().getString(path).replace("{" + placeholder + "}", replacement), addPrefix));
         return;
     }
 
