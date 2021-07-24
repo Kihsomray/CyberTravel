@@ -67,7 +67,7 @@ public class CTPCommand implements CommandExecutor {
             // /ftp reload
             if (args[0].equalsIgnoreCase("reload")) {
 
-                if (!sender.hasPermission("FastTravel.admin")) {
+                if (!sender.hasPermission("CyberTravel.admin")) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -82,7 +82,7 @@ public class CTPCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("regions")) {
 
-                if (!sender.hasPermission("FastTravel.player")) {
+                if (!sender.hasPermission("CyberTravel.player")) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -121,7 +121,7 @@ public class CTPCommand implements CommandExecutor {
             // /ftp create <region>
             if (args[0].equalsIgnoreCase("create")) {
 
-                if (!sender.hasPermission("FastTravel.admin")) {
+                if (!sender.hasPermission("CyberTravel.admin")) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -148,7 +148,7 @@ public class CTPCommand implements CommandExecutor {
             // /ftp [pos1|pos2|settp] <region>
             if (args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("settp")) {
 
-                if (!sender.hasPermission("FastTravel.admin")) {
+                if (!sender.hasPermission("CyberTravel.admin")) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -195,7 +195,7 @@ public class CTPCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("teleport")) {
 
-                if (!sender.hasPermission("FastTravel.player")) {
+                if (!sender.hasPermission("CyberTravel.player")) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -309,7 +309,7 @@ public class CTPCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("delete")) {
 
-                if (!sender.hasPermission("FastTravel.admin")) {
+                if (!sender.hasPermission("CyberTravel.admin")) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -349,6 +349,127 @@ public class CTPCommand implements CommandExecutor {
             return true;
         }
 
+        // 3 arguments
+        if (args.length == 3) {
+
+
+            // /ftp addregion <player> <region>
+            if (args[0].equalsIgnoreCase("addregion")) {
+
+
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    if (onlinePlayer.getName().equalsIgnoreCase(args[1])) {
+
+                        // invalid location
+                        if (!dataConfig.isConfigurationSection(fl + args[2])) {
+                            main.getMessageUtils().sendMessage("lang", "messages.invalid-location", "&cThat is not a valid location!", sender);
+                            return true;
+                        }
+
+                        // has the player discovered this region yet?
+                        if (main.getPlayerCache().getPlayerRegions().containsKey(onlinePlayer.getUniqueId().toString())) {
+                            if (main.getPlayerCache().getPlayerRegions().get(onlinePlayer.getUniqueId().toString()).contains(args[2])) {
+                                main.getMessageUtils().sendMessage("lang", "messages.already-discovered", "&cThe player " +
+                                        onlinePlayer.getName() + " has already found this region!", sender, "player", onlinePlayer.getName());
+                                return true;
+
+                            } else {
+
+                                main.getPlayerCache().getPlayerRegions().get(onlinePlayer.getUniqueId().toString()).add(args[2]);
+                                List playerRegions = dataConfig.getList(pl + onlinePlayer.getUniqueId().toString());
+                                if (!playerRegions.contains(args[2])) {
+                                    playerRegions.add(args[2]);
+                                    dataConfig.set(pl + onlinePlayer.getUniqueId().toString(), playerRegions);
+                                    try {
+                                        main.getFileCache().getStoredFiles().get("data").saveConfig();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                main.getMessageUtils().sendMessage("lang", "messages.added-player-region", "&aSuccessfully added " +
+                                        args[2] + " to that player's discovered regions.", sender, "region", args[2]);
+                                return true;
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                main.getMessageUtils().sendMessage("lang", "messages.not-online", "&cThe player " +
+                        args[1] + "is not currently online!", player, "player", args[1]);
+                return true;
+
+
+            }
+
+
+
+            // /ftp delregion <player> <region>
+            if (args[0].equalsIgnoreCase("delregion")) {
+
+
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    if (onlinePlayer.getName().equalsIgnoreCase(args[1])) {
+
+                        // invalid location
+                        if (!dataConfig.isConfigurationSection(fl + args[2])) {
+                            main.getMessageUtils().sendMessage("lang", "messages.invalid-location", "&cThat is not a valid location!", sender);
+                            return true;
+                        }
+
+                        // no checkpoints saved
+                        if (!dataConfig.isSet(pl + onlinePlayer.getUniqueId().toString())) {
+                            main.getMessageUtils().sendMessage("lang", "messages.has-no-checkpoints", "&cThe player " +
+                                    onlinePlayer.getName() + " has no checkpoints saved!", sender, "player", onlinePlayer.getName());
+                            return true;
+                        }
+
+                        // has the player discovered this region yet?
+                        if (main.getPlayerCache().getPlayerRegions().containsKey(onlinePlayer.getUniqueId().toString())) {
+                            if (!main.getPlayerCache().getPlayerRegions().get(onlinePlayer.getUniqueId().toString()).contains(args[2])) {
+                                main.getMessageUtils().sendMessage("lang", "messages.has-not-discovered", "&cThe player " +
+                                        onlinePlayer.getName() + " has not yet discovered this region!", sender, "player", onlinePlayer.getName());
+                                return true;
+
+                            } else {
+
+                                main.getPlayerCache().getPlayerRegions().get(onlinePlayer.getUniqueId().toString()).remove(args[2]);
+                                List playerRegions = dataConfig.getList(pl + onlinePlayer.getUniqueId().toString());
+                                if (playerRegions.contains(args[2])) {
+                                    playerRegions.remove(args[2]);
+                                    dataConfig.set(pl + onlinePlayer.getUniqueId().toString(), playerRegions);
+                                    try {
+                                        main.getFileCache().getStoredFiles().get("data").saveConfig();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                main.getMessageUtils().sendMessage("lang", "messages.deleted-player-region", "&aSuccessfully deleted " +
+                                        args[2] + " from that player's discovered regions.", sender, "region", args[2]);
+                                return true;
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                main.getMessageUtils().sendMessage("lang", "messages.not-online", "&cThe player " +
+                        args[1] + "is not currently online!", player, "player", args[1]);
+                return true;
+
+
+            }
+
+        }
+
         sendHelpMessage(sender);
         return true;
 
@@ -365,7 +486,7 @@ public class CTPCommand implements CommandExecutor {
         }
     }
     private void sendHelpMessage(CommandSender sender) {
-        if(sender.hasPermission("FastTravel.admin") && !main.getFileCache().getStoredFiles().get("lang").getConfig().isSet("messages.help-admin")){
+        if(sender.hasPermission("CyberTravel.admin") && !main.getFileCache().getStoredFiles().get("lang").getConfig().isSet("messages.help-admin")){
             if(main.getFileCache().getStoredFiles().get("lang").getConfig().getString("messages.help-admin").equalsIgnoreCase("")){
                 return;
             }
@@ -378,17 +499,19 @@ public class CTPCommand implements CommandExecutor {
             sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp (pos1 | pos2) <region> &fSet cuboid boundaries of region.", false));
             sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp settp <region> &fSet teleport location.", false));
             sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp (tp | teleport) <region> &fTeleport to location.", false));
-            sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp (regions) <region> &fSee all locked/unlocked regions.", false));
+            sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp regions &fSee all locked/unlocked regions.", false));
+            sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp addregion <player> <region> &fAdd a region to a player's list.", false));
+            sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp delregion <player> <region> &fRemove a region from a player's list.", false));
             sender.sendMessage(main.getMessageUtils().getColor("&8&m――――――――――――――――――――――――――――――", false));
             return;
 
-        } else if (sender.hasPermission("FastTravel.admin")) {
+        } else if (sender.hasPermission("CyberTravel.admin")) {
             for (String x : main.getFileCache().getStoredFiles().get("lang").getConfig().getStringList("messages.help-admin")) {
                 sender.sendMessage(main.getMessageUtils().getColor(x, false));
 
             }
 
-        } else if(sender.hasPermission("FastTravel.player") && !main.getFileCache().getStoredFiles().get("lang").getConfig().isSet("messages.help-player")){
+        } else if(sender.hasPermission("CyberTravel.player") && !main.getFileCache().getStoredFiles().get("lang").getConfig().isSet("messages.help-player")){
 
             if(main.getFileCache().getStoredFiles().get("lang").getConfig().getString("messages.help-admin").equalsIgnoreCase("")){
                 return;
@@ -400,7 +523,7 @@ public class CTPCommand implements CommandExecutor {
             sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp regions &fSee all locked/unlocked regions.", false));
             sender.sendMessage(main.getMessageUtils().getColor("&8&m――――――――――――――――――――――――――――――", false));
             return;
-        } else if (sender.hasPermission("FastTravel.player")) {
+        } else if (sender.hasPermission("CyberTravel.player")) {
             for (String x : main.getFileCache().getStoredFiles().get("lang").getConfig().getStringList("messages.help-player")) {
                 sender.sendMessage(main.getMessageUtils().getColor(x, false));
 
