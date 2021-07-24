@@ -1,11 +1,11 @@
-package net.zerotoil.fasttravelcp.listeners;
+package net.zerotoil.cybertravel.listeners;
 
-import net.zerotoil.fasttravelcp.FTPCommand;
-import net.zerotoil.fasttravelcp.utilities.FileUtils;
-import net.zerotoil.fasttravelcp.utilities.MessageUtils;
-import net.zerotoil.fasttravelcp.cache.FileCache;
-import net.zerotoil.fasttravelcp.cache.PlayerCache;
-import net.zerotoil.fasttravelcp.objects.RegionObject;
+import net.zerotoil.cybertravel.CTPCommand;
+import net.zerotoil.cybertravel.CyberTravel;
+import net.zerotoil.cybertravel.utilities.FileUtils;
+import net.zerotoil.cybertravel.cache.FileCache;
+import net.zerotoil.cybertravel.cache.PlayerCache;
+import net.zerotoil.cybertravel.objects.RegionObject;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +19,11 @@ import java.util.List;
 
 public class MovementListener implements Listener {
 
+    public MovementListener(CyberTravel main) {
+        this.main = main;
+    }
+
+    private CyberTravel main;
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
@@ -26,12 +31,12 @@ public class MovementListener implements Listener {
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
-            BukkitTask task = FTPCommand.cmdCountdown.get(player);
+            BukkitTask task = main.getCtpCommand().getCmdCountdown().get(player);
 
             if (task != null) {
                 task.cancel();
-                FTPCommand.cmdCountdown.remove(player);
-                MessageUtils.sendMessage("lang", "messages.teleport-cancelled", "&cYou moved! Teleportation canceled!", player);
+                main.getCtpCommand().getCmdCountdown().remove(player);
+                main.getMessageUtils().sendMessage("lang", "messages.teleport-cancelled", "&cYou moved! Teleportation canceled!", player);
             }
         }
     }
@@ -44,28 +49,28 @@ public class MovementListener implements Listener {
 
         if((event.getTo().getX() != event.getFrom().getX()) || (event.getTo().getY() != event.getFrom().getY()) || (event.getTo().getZ() != event.getFrom().getZ())){
 
-            BukkitTask task = FTPCommand.cmdCountdown.get(player);
+            BukkitTask task = main.getCtpCommand().getCmdCountdown().get(player);
 
             if(task != null){
                 task.cancel();
-                FTPCommand.cmdCountdown.remove(player);
-                MessageUtils.sendMessage("lang", "messages.teleport-cancelled", "&cYou moved! Teleportation canceled!", player);
+                main.getCtpCommand().getCmdCountdown().remove(player);
+                main.getMessageUtils().sendMessage("lang", "messages.teleport-cancelled", "&cYou moved! Teleportation canceled!", player);
             }
 
         }
 
         if (player.hasPermission("FastTravel.player")) {
 
-            for (String i : PlayerCache.regions.keySet()) {
+            for (String i : main.getPlayerCache().getRegions().keySet()) {
 
-                RegionObject region = PlayerCache.regions.get(i);
+                RegionObject region = main.getPlayerCache().getRegions().get(i);
 
                 if (player.getWorld().getName().equalsIgnoreCase(region.getWorld())) {
 
                     String uuid = player.getUniqueId().toString();
 
-                    if (PlayerCache.playerRegions.containsKey(uuid) &&
-                            (PlayerCache.playerRegions.get(uuid).contains(region.getRegion()))) {
+                    if (main.getPlayerCache().getPlayerRegions().containsKey(uuid) &&
+                            (main.getPlayerCache().getPlayerRegions().get(uuid).contains(region.getRegion()))) {
                     } else {
 
                         double pX = event.getTo().getX();
@@ -106,8 +111,8 @@ public class MovementListener implements Listener {
 
                                     List<String> playerInfo;
 
-                                    if (FileUtils.dataFile().isList("players." + uuid)) {
-                                        playerInfo = FileUtils.dataFile().getStringList("players." + uuid);
+                                    if (main.getFileUtils().dataFile().isList("players." + uuid)) {
+                                        playerInfo = main.getFileUtils().dataFile().getStringList("players." + uuid);
 
                                     } else {
                                         playerInfo = new ArrayList<>();
@@ -115,15 +120,15 @@ public class MovementListener implements Listener {
                                     }
 
                                     playerInfo.add(region.getRegion());
-                                    FileCache.storedFiles.get("data").getConfig().set("players." + uuid, playerInfo);
-                                    FileCache.storedFiles.get("data").saveConfig();
+                                    main.getFileCache().getStoredFiles().get("data").getConfig().set("players." + uuid, playerInfo);
+                                    main.getFileCache().getStoredFiles().get("data").saveConfig();
 
-                                    if (!PlayerCache.playerRegions.containsKey(uuid))
-                                        PlayerCache.playerRegions.put(uuid, new ArrayList<>());
+                                    if (!main.getPlayerCache().getPlayerRegions().containsKey(uuid))
+                                        main.getPlayerCache().getPlayerRegions().put(uuid, new ArrayList<>());
 
-                                    PlayerCache.playerRegions.get(uuid).add(i);
+                                    main.getPlayerCache().getPlayerRegions().get(uuid).add(i);
 
-                                    MessageUtils.sendMessage("lang", "messages.enter-region", "&aYou have entered the region " + region.getRegion() +
+                                    main.getMessageUtils().sendMessage("lang", "messages.enter-region", "&aYou have entered the region " + region.getRegion() +
                                             "! Use &6/ftp tp " + region.getRegion() + "&a to teleport back to this region!", player, "region", region.getRegion());
 
                                 }

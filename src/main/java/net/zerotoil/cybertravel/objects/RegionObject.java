@@ -1,7 +1,4 @@
-package net.zerotoil.fasttravelcp.objects;
-
-import java.util.ArrayList;
-import java.util.List;
+package net.zerotoil.cybertravel.objects;
 
 public class RegionObject {
 

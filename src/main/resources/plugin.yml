@@ -1,17 +1,21 @@
-name: FastTravelCP
+name: CyberTravel
 version: ${project.version}
-main: net.zerotoil.fasttravelcp.FastTravelCP
+main: net.zerotoil.cybertravel.CyberTravel
 api-version: 1.16
 authors: [ Kihsomray ]
-description: Teleport to places around the map
+description: Quickly teleport to checkpoints you've unlocked.
 website: zerotoil.net
 
 commands:
   fastteleport:
     aliases:
+      - ctcp
+      - ctp
       - ftcp
       - ftp
       - fasttp
       - fteleport
-      - fastteleport
+      - fasttravel
+      - fastravel
       - ftcheckpoint
+      - cybertravel
