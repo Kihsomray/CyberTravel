@@ -49,3 +49,19 @@ messages:
   deleted-player-region: "&aSuccessfully deleted {region} from that player's discovered regions."
   already-discovered: "&cThe player {player} has already found this region!"
   added-player-region: "&aSuccessfully added {region} to that player's discovered regions."
+
+permissions:
+  player-help-list: "CyberTravel.player.help"
+  player-discover-region: "CyberTravel.player.discover"
+  player-discovered-list: "CyberTravel.player.list"
+  player-teleport: "CyberTravel.player.teleport"
+  admin-help-list: "CyberTravel.admin.help"
+  admin-reload: "CyberTravel.admin.reload"
+  admin-create-region: "CyberTravel.admin.edit.create"
+  admin-delete-region: "CyberTravel.admin.edit.delete"
+  admin-set-position1: "CyberTravel.admin.edit.pos1"
+  admin-set-position2: "CyberTravel.admin.edit.pos2"
+  admin-set-tp-location: "CyberTravel.admin.edit.settp"
+  admin-add-player-region: "CyberTravel.admin.manage.add"
+  admin-del-player-region: "CyberTravel.admin.manage.delete"
+

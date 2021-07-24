@@ -1,10 +1,6 @@
 package net.zerotoil.cybertravel.listeners;
 
-import net.zerotoil.cybertravel.CTPCommand;
 import net.zerotoil.cybertravel.CyberTravel;
-import net.zerotoil.cybertravel.utilities.FileUtils;
-import net.zerotoil.cybertravel.cache.FileCache;
-import net.zerotoil.cybertravel.cache.PlayerCache;
 import net.zerotoil.cybertravel.objects.RegionObject;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,7 +55,7 @@ public class MovementListener implements Listener {
 
         }
 
-        if (player.hasPermission("FastTravel.player")) {
+        if (player.hasPermission(main.getFileUtils().getPermission("player-discover-region", "CyberTravel.player.discover"))) {
 
             for (String i : main.getPlayerCache().getRegions().keySet()) {
 

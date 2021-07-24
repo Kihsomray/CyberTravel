@@ -1,8 +1,5 @@
 package net.zerotoil.cybertravel;
 
-import net.zerotoil.cybertravel.cache.FileCache;
-import net.zerotoil.cybertravel.cache.PlayerCache;
-import net.zerotoil.cybertravel.utilities.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -41,12 +38,21 @@ public class CTPCommand implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(!(sender instanceof Player)) return true;
+
+        Player player;
+
+        if (!(sender instanceof Player) && (!(args.length == 1) || !(args[0].equalsIgnoreCase("reload")))) {
+            System.out.println("Console can only use the reload command!");
+            return true;
+        } else if (!(sender instanceof Player)){
+            player = null;
+        } else {
+            player = (Player) sender;
+        }
 
         // basic info
         String fl = "regions.";
         String pl = "players.";
-        Player player = (Player) sender;
         Configuration dataConfig = main.getFileCache().getStoredFiles().get("data").getConfig();
 
         // 0 arguments
@@ -67,7 +73,7 @@ public class CTPCommand implements CommandExecutor {
             // /ftp reload
             if (args[0].equalsIgnoreCase("reload")) {
 
-                if (!sender.hasPermission("CyberTravel.admin")) {
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-reload", "CyberTravel.admin.reload"))) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -82,7 +88,7 @@ public class CTPCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("regions")) {
 
-                if (!sender.hasPermission("CyberTravel.player")) {
+                if (!sender.hasPermission(main.getFileUtils().getPermission("player-discovered-list", "CyberTravel.player.list"))) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -121,7 +127,7 @@ public class CTPCommand implements CommandExecutor {
             // /ftp create <region>
             if (args[0].equalsIgnoreCase("create")) {
 
-                if (!sender.hasPermission("CyberTravel.admin")) {
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-create-region", "CyberTravel.admin.edit.create"))) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -148,7 +154,19 @@ public class CTPCommand implements CommandExecutor {
             // /ftp [pos1|pos2|settp] <region>
             if (args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("settp")) {
 
-                if (!sender.hasPermission("CyberTravel.admin")) {
+                // permission nodes
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-set-position1", "CyberTravel.admin.edit.pos1")) &&
+                        args[0].equalsIgnoreCase("pos1")) {
+                    main.getMessageUtils().noPermission(player);
+                    return true;
+                }
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-set-position2", "CyberTravel.admin.edit.pos2")) &&
+                        args[0].equalsIgnoreCase("pos2")) {
+                    main.getMessageUtils().noPermission(player);
+                    return true;
+                }
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-set-tp-location", "CyberTravel.admin.edit.settp")) &&
+                        args[0].equalsIgnoreCase("settp")) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -195,7 +213,7 @@ public class CTPCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("teleport")) {
 
-                if (!sender.hasPermission("CyberTravel.player")) {
+                if (!sender.hasPermission(main.getFileUtils().getPermission("player-teleport", "CyberTravel.player.teleport"))) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -309,7 +327,7 @@ public class CTPCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("delete")) {
 
-                if (!sender.hasPermission("CyberTravel.admin")) {
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-delete-region", "CyberTravel.admin.edit.delete"))) {
                     main.getMessageUtils().noPermission(player);
                     return true;
                 }
@@ -355,6 +373,11 @@ public class CTPCommand implements CommandExecutor {
 
             // /ftp addregion <player> <region>
             if (args[0].equalsIgnoreCase("addregion")) {
+
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-add-player-region", "CyberTravel.admin.manage.add"))) {
+                    main.getMessageUtils().noPermission(player);
+                    return true;
+                }
 
 
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -411,6 +434,10 @@ public class CTPCommand implements CommandExecutor {
             // /ftp delregion <player> <region>
             if (args[0].equalsIgnoreCase("delregion")) {
 
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-del-player-region", "CyberTravel.admin.manage.delete"))) {
+                    main.getMessageUtils().noPermission(player);
+                    return true;
+                }
 
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                     if (onlinePlayer.getName().equalsIgnoreCase(args[1])) {
@@ -486,7 +513,7 @@ public class CTPCommand implements CommandExecutor {
         }
     }
     private void sendHelpMessage(CommandSender sender) {
-        if(sender.hasPermission("CyberTravel.admin") && !main.getFileCache().getStoredFiles().get("lang").getConfig().isSet("messages.help-admin")){
+        if(sender.hasPermission(main.getFileUtils().getPermission("admin-help-list", "CyberTravel.admin.help")) && !main.getFileCache().getStoredFiles().get("lang").getConfig().isSet("messages.help-admin")){
             if(main.getFileCache().getStoredFiles().get("lang").getConfig().getString("messages.help-admin").equalsIgnoreCase("")){
                 return;
             }
@@ -505,13 +532,14 @@ public class CTPCommand implements CommandExecutor {
             sender.sendMessage(main.getMessageUtils().getColor("&8&m――――――――――――――――――――――――――――――", false));
             return;
 
-        } else if (sender.hasPermission("CyberTravel.admin")) {
+        } else if (sender.hasPermission(main.getFileUtils().getPermission("admin-help-list", "CyberTravel.admin.help"))) {
             for (String x : main.getFileCache().getStoredFiles().get("lang").getConfig().getStringList("messages.help-admin")) {
                 sender.sendMessage(main.getMessageUtils().getColor(x, false));
 
             }
 
-        } else if(sender.hasPermission("CyberTravel.player") && !main.getFileCache().getStoredFiles().get("lang").getConfig().isSet("messages.help-player")){
+        } else if(sender.hasPermission(main.getFileUtils().getPermission("player-help-list", "CyberTravel.player.help")) &&
+                !main.getFileCache().getStoredFiles().get("lang").getConfig().isSet("messages.help-player")){
 
             if(main.getFileCache().getStoredFiles().get("lang").getConfig().getString("messages.help-admin").equalsIgnoreCase("")){
                 return;
@@ -523,7 +551,7 @@ public class CTPCommand implements CommandExecutor {
             sender.sendMessage(main.getMessageUtils().getColor("&8➼ &7/ctp regions &fSee all locked/unlocked regions.", false));
             sender.sendMessage(main.getMessageUtils().getColor("&8&m――――――――――――――――――――――――――――――", false));
             return;
-        } else if (sender.hasPermission("CyberTravel.player")) {
+        } else if (sender.hasPermission(main.getFileUtils().getPermission("player-help-list", "CyberTravel.player.help"))) {
             for (String x : main.getFileCache().getStoredFiles().get("lang").getConfig().getStringList("messages.help-player")) {
                 sender.sendMessage(main.getMessageUtils().getColor(x, false));
 
