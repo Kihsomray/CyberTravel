@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.zerotoil</groupId>
-    <artifactId>FastTravelCP</artifactId>
-    <version>v0.1.67</version>
+    <artifactId>CyberTravel</artifactId>
+    <version>0.2.0.18</version>
     <packaging>jar</packaging>
 
-    <name>FastTravelCP</name>
+    <name>CyberTravel</name>
 
     <description>Teleport to places around the map</description>
     <properties>

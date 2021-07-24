@@ -1,6 +1,6 @@
-package net.zerotoil.fasttravelcp.objects;
+package net.zerotoil.cybertravel.objects;
 
-import net.zerotoil.fasttravelcp.FastTravelCP;
+import net.zerotoil.cybertravel.CyberTravel;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -11,7 +11,7 @@ public class FileObject {
 
     // ---- fields ----
 
-    private FastTravelCP plugin;
+    private CyberTravel main;
     private File configFile;
     private FileConfiguration dataConfig;
     private String location;
@@ -21,16 +21,16 @@ public class FileObject {
     // ---- constructors ----
 
     // loads a new file
-    public FileObject(FastTravelCP plugin, String location) {
-        this.plugin = plugin;
+    public FileObject(CyberTravel main, String location) {
+        this.main = main;
         this.location = location;
         this.name = location.replace(".yml", "");
         saveDefaultConfig();
         dataConfig = YamlConfiguration.loadConfiguration(getFile());
 
     }
-    private File getFile(){
-        return new File(FastTravelCP.getInstance().getDataFolder(), location);
+    private File getFile() {
+        return new File(main.getDataFolder(), location);
     }
 
 
@@ -59,7 +59,7 @@ public class FileObject {
         if (configFile.exists()) {
             return;
         }
-        FastTravelCP.getInstance().saveResource(location, false);
+        main.saveResource(location, false);
     }
 
 }
