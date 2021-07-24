@@ -1,7 +1,6 @@
 package net.zerotoil.cybertravel.utilities;
 
 import net.zerotoil.cybertravel.CyberTravel;
-import net.zerotoil.cybertravel.cache.FileCache;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
