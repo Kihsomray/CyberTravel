@@ -6,7 +6,7 @@
 
     <groupId>net.zerotoil</groupId>
     <artifactId>CyberTravel</artifactId>
-    <version>0.2.1.13</version>
+    <version>0.3.0.44</version>
     <packaging>jar</packaging>
 
     <name>CyberTravel</name>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
