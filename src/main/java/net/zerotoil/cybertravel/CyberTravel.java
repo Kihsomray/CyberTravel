@@ -2,7 +2,10 @@ package net.zerotoil.cybertravel;
 
 import net.zerotoil.cybertravel.cache.FileCache;
 import net.zerotoil.cybertravel.cache.PlayerCache;
+import net.zerotoil.cybertravel.commands.CTPCommand;
+import net.zerotoil.cybertravel.commands.CTPTabComplete;
 import net.zerotoil.cybertravel.listeners.MovementListener;
+import net.zerotoil.cybertravel.utilities.BlockUtils;
 import net.zerotoil.cybertravel.utilities.FileUtils;
 import net.zerotoil.cybertravel.utilities.MessageUtils;
 import org.bukkit.Bukkit;
@@ -16,6 +19,7 @@ public final class CyberTravel extends JavaPlugin {
     private CTPTabComplete ctpTabComplete;
     private FileUtils fileUtils;
     private MessageUtils messageUtils;
+    private BlockUtils blockUtils;
 
     public FileCache getFileCache() {
         return this.fileCache;
@@ -34,6 +38,9 @@ public final class CyberTravel extends JavaPlugin {
     }
     public MessageUtils getMessageUtils() {
         return this.messageUtils;
+    }
+    public BlockUtils getBlockUtils() {
+        return this.blockUtils;
     }
 
     private static CyberTravel instance;
@@ -59,8 +66,12 @@ public final class CyberTravel extends JavaPlugin {
         this.playerCache.refreshRegionData(false);
         this.playerCache.initializePlayerData();
 
+        blockUtils = new BlockUtils(this);
+
         // listeners
         Bukkit.getPluginManager().registerEvents(new MovementListener(this), instance);
+
+        Metrics metrics = new Metrics(this, 12217);
 
     }
 

@@ -1,5 +1,6 @@
-package net.zerotoil.cybertravel;
+package net.zerotoil.cybertravel.commands;
 
+import net.zerotoil.cybertravel.CyberTravel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -222,9 +223,21 @@ public class CTPCommand implements CommandExecutor {
 
                 // adds it to memory
                 if (dataConfig.isSet(fl + args[1] + ".pos1") && dataConfig.isSet(fl + args[1] + ".pos2") && dataConfig.isSet(fl + args[1] + ".settp")) {
+                    if (!main.getPlayerCache().getRegions().containsKey(args[1])) {
+
+                        main.getMessageUtils().sendMessage("lang", "messages.auto-ready", "&aLooks like you have finished setting up region " + args[1] +
+                                ". This region is now active!", sender, "region", args[1]);
+
+                    }
                     main.getPlayerCache().refreshRegionData(true);
-                    main.getMessageUtils().sendMessage("lang", "messages.auto-ready", "&aLooks like you have finished setting up region " + args[1] +
-                            ". This region is now active!", sender, "region", args[1]);
+                    // region border
+                    if (main.getFileUtils().configFile().isConfigurationSection("config.display-border")) {
+                        if (main.getFileUtils().configFile().getBoolean("config.display-border.enabled")) {
+                            main.getBlockUtils().regionOutline(player, args[1]);
+                        }
+                    } else {
+                        main.getBlockUtils().regionOutline(player, args[1]);
+                    }
                 }
 
                 return true;
