@@ -19,10 +19,10 @@ public class BlockUtils {
         this.main = main;
     }
 
-    public void regionOutline(Player player, String region) {
+    public void regionOutline(Player player, String region, boolean settpOnly) {
 
-        if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") ||
-                Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.8")) return;
+        if (Bukkit.getVersion().contains("1.7") || Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") ||
+                Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.8")) return;
 
         if (main.getFileUtils().dataFile().isConfigurationSection("regions." + region)) {
 
@@ -32,15 +32,42 @@ public class BlockUtils {
 
                 RegionObject r = main.getPlayerCache().getRegions().get(region);
 
-                double[] corner1 = new double[]{r.getPosMax(0) + i, r.getPosMax(1), r.getPosMax(2) + i};
-                double[] corner2 = new double[]{r.getPosMin(0) + d, r.getPosMax(1), r.getPosMax(2) + i};
-                double[] corner3 = new double[]{r.getPosMax(0) + i, r.getPosMax(1), r.getPosMin(2) + d};
-                double[] corner4 = new double[]{r.getPosMin(0) + d, r.getPosMax(1), r.getPosMin(2) + d};
+                double[] corner1;
+                double[] corner2;
+                double[] corner3;
+                double[] corner4;
+                double[] corner5;
+                double[] corner6;
+                double[] corner7;
+                double[] corner8;
 
-                double[] corner5 = new double[]{r.getPosMax(0) + i, r.getPosMin(1), r.getPosMax(2) + i};
-                double[] corner6 = new double[]{r.getPosMin(0) + d, r.getPosMin(1), r.getPosMax(2) + i};
-                double[] corner7 = new double[]{r.getPosMax(0) + i, r.getPosMin(1), r.getPosMin(2) + d};
-                double[] corner8 = new double[]{r.getPosMin(0) + d, r.getPosMin(1), r.getPosMin(2) + d};
+                if (settpOnly) {
+
+                    double[] tp = r.getSetTP();
+
+                    corner1 = new double[]{tp[0] + i, tp[1] + 2, tp[2] + i};
+                    corner2 = new double[]{tp[0] + d, tp[1] + 2, tp[2] + i};
+                    corner3 = new double[]{tp[0] + i, tp[1] + 2, tp[2] + d};
+                    corner4 = new double[]{tp[0] + d, tp[1] + 2, tp[2] + d};
+
+                    corner5 = new double[]{tp[0] + i, tp[1], tp[2] + i};
+                    corner6 = new double[]{tp[0] + d, tp[1], tp[2] + i};
+                    corner7 = new double[]{tp[0] + i, tp[1], tp[2] + d};
+                    corner8 = new double[]{tp[0] + d, tp[1], tp[2] + d};
+
+                } else {
+
+                    corner1 = new double[]{r.getPosMax(0) + i, r.getPosMax(1), r.getPosMax(2) + i};
+                    corner2 = new double[]{r.getPosMin(0) + d, r.getPosMax(1), r.getPosMax(2) + i};
+                    corner3 = new double[]{r.getPosMax(0) + i, r.getPosMax(1), r.getPosMin(2) + d};
+                    corner4 = new double[]{r.getPosMin(0) + d, r.getPosMax(1), r.getPosMin(2) + d};
+
+                    corner5 = new double[]{r.getPosMax(0) + i, r.getPosMin(1), r.getPosMax(2) + i};
+                    corner6 = new double[]{r.getPosMin(0) + d, r.getPosMin(1), r.getPosMax(2) + i};
+                    corner7 = new double[]{r.getPosMax(0) + i, r.getPosMin(1), r.getPosMin(2) + d};
+                    corner8 = new double[]{r.getPosMin(0) + d, r.getPosMin(1), r.getPosMin(2) + d};
+
+                }
 
                 // top
                 makeLine(corner1, corner2, player);

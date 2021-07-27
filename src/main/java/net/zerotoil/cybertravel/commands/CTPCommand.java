@@ -222,22 +222,22 @@ public class CTPCommand implements CommandExecutor {
                 }
 
                 // adds it to memory
-                if (dataConfig.isSet(fl + args[1] + ".pos1") && dataConfig.isSet(fl + args[1] + ".pos2") && dataConfig.isSet(fl + args[1] + ".settp")) {
-                    if (!main.getPlayerCache().getRegions().containsKey(args[1])) {
+                if (dataConfig.isSet(fl + args[1] + ".pos1") && dataConfig.isSet(fl + args[1] + ".pos2")) {
+
+                    if (dataConfig.isSet(fl + args[1] + ".settp") && !main.getPlayerCache().getRegions().containsKey(args[1])) {
 
                         main.getMessageUtils().sendMessage("lang", "messages.auto-ready", "&aLooks like you have finished setting up region " + args[1] +
                                 ". This region is now active!", sender, "region", args[1]);
+                        main.getPlayerCache().refreshRegionData(true);
+                        regionBorder(args, player, true);
+
+                    } else {
+
+                        main.getPlayerCache().refreshRegionData(false);
+                        if (main.getPlayerCache().getRegions().containsKey(args[1])) regionBorder(args, player, false);
 
                     }
-                    main.getPlayerCache().refreshRegionData(true);
-                    // region border
-                    if (main.getFileUtils().configFile().isConfigurationSection("config.display-border")) {
-                        if (main.getFileUtils().configFile().getBoolean("config.display-border.enabled")) {
-                            main.getBlockUtils().regionOutline(player, args[1]);
-                        }
-                    } else {
-                        main.getBlockUtils().regionOutline(player, args[1]);
-                    }
+
                 }
 
                 return true;
@@ -299,7 +299,7 @@ public class CTPCommand implements CommandExecutor {
 
                                 // player still on a cooldown
                                 main.getMessageUtils().sendMessage("lang", "messages.global-cooldown", "&cYou cant teleport to that region for another " +
-                                        globalTimeRemaining + " seconds!", sender, "time", globalTimeRemaining + "");
+                                        main.getMessageUtils().formatTime(globalTimeRemaining) + "&c!", sender, "time", main.getMessageUtils().formatTime(globalTimeRemaining));
                                 return true;
                             }
                         }
@@ -321,7 +321,7 @@ public class CTPCommand implements CommandExecutor {
 
                                         // player still on a cooldown
                                         main.getMessageUtils().sendMessage("lang", "messages.region-cooldown", "&cYou cannot teleport to any region for another " +
-                                                timeRemaining + " seconds!", sender, "time", timeRemaining + "");
+                                                main.getMessageUtils().formatTime(timeRemaining) + "&c!", sender, "time", main.getMessageUtils().formatTime(timeRemaining));
                                         return true;
                                     }
                                 }
@@ -337,10 +337,10 @@ public class CTPCommand implements CommandExecutor {
                         //count-down module
 
                         if (main.getFileCache().getStoredFiles().get("config").getConfig().getBoolean("config.countdown.enabled")) {
-                            int cndTime = main.getFileCache().getStoredFiles().get("config").getConfig().getInt("config.countdown.seconds");
+                            long cndTime = main.getFileCache().getStoredFiles().get("config").getConfig().getLong("config.countdown.seconds");
                             if (!this.cmdCountdown.containsKey(player)) {
                                 main.getMessageUtils().sendMessage("lang", "messages.countdown", "&7Teleporting in " +
-                                        cndTime + " seconds...", sender, "time", cndTime + "");
+                                        main.getMessageUtils().formatTime(cndTime) + "&c.", sender, "time", main.getMessageUtils().formatTime(cndTime));
                                 this.cmdCountdown.put(player, (new BukkitRunnable() {
 
                                     @Override
@@ -405,6 +405,33 @@ public class CTPCommand implements CommandExecutor {
 
             }
 
+            if (args[0].equalsIgnoreCase("border") || args[0].equalsIgnoreCase("outline")) {
+
+                if (!sender.hasPermission(main.getFileUtils().getPermission("admin-view-border", "CyberTravel.admin.border"))) {
+                    main.getMessageUtils().noPermission(player);
+                    return true;
+                }
+
+                // region does not exist
+                if (!dataConfig.isConfigurationSection(fl + args[1])) {
+                    main.getMessageUtils().sendMessage("lang", "messages.unknown-region", "&c" + args[1] +
+                            " is not a region!", sender, "region", args[1]);
+                    return true;
+                }
+
+                if (main.getFileUtils().configFile().isConfigurationSection("config.display-border")) {
+                    if (main.getFileUtils().configFile().getBoolean("config.display-border.enabled")) {
+
+                        main.getBlockUtils().regionOutline(player, args[1], true);
+                        main.getBlockUtils().regionOutline(player, args[1], false);
+
+                        return true;
+
+                    }
+
+                }
+
+            }
 
             sendHelpMessage(sender);
             return true;
@@ -611,6 +638,37 @@ public class CTPCommand implements CommandExecutor {
         }
 
         return;
+    }
+
+    private void regionBorder(String[] args, Player player, boolean newRegionOnly) {
+
+        // region border
+        if (main.getFileUtils().configFile().isConfigurationSection("config.display-border")) {
+            if (main.getFileUtils().configFile().getBoolean("config.display-border.enabled")) {
+                if (newRegionOnly) {
+                    main.getBlockUtils().regionOutline(player, args[1], true);
+                    main.getBlockUtils().regionOutline(player, args[1], false);
+                } else {
+                    if (args[0].equalsIgnoreCase("settp")) {
+                        main.getBlockUtils().regionOutline(player, args[1], true);
+                    } else {
+                        main.getBlockUtils().regionOutline(player, args[1], false);
+                    }
+                }
+            }
+        } else {
+            if (newRegionOnly) {
+                main.getBlockUtils().regionOutline(player, args[1], true);
+                main.getBlockUtils().regionOutline(player, args[1], false);
+            } else {
+                if (args[0].equalsIgnoreCase("settp")) {
+                    main.getBlockUtils().regionOutline(player, args[1], true);
+                } else {
+                    main.getBlockUtils().regionOutline(player, args[1], false);
+                }
+            }
+        }
+
     }
 
 }

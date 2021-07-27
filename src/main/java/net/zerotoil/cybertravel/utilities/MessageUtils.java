@@ -68,5 +68,69 @@ public class MessageUtils {
         return;
     }
 
+    public String formatTime(long seconds) {
+
+        String formattedTime = "";
+
+        // standard formatting
+        String daysString = "&c{time} Day(s)";
+        String hoursString = "&c{time} Hour(s)";
+        String minutesString = "&c{time} Minute(s)";
+        String secondsString = "&c{time} Second(s)";
+        String splitter = "&c, ";
+
+        // custom lang formatting
+        if (main.getFileUtils().langFile().isConfigurationSection("time")) {
+
+            if (main.getFileUtils().langFile().isSet("time.days")) daysString = main.getFileUtils().langFile().getString("time.days");
+            if (main.getFileUtils().langFile().isSet("time.hours")) hoursString = main.getFileUtils().langFile().getString("time.hours");
+            if (main.getFileUtils().langFile().isSet("time.minutes")) minutesString = main.getFileUtils().langFile().getString("time.minutes");
+            if (main.getFileUtils().langFile().isSet("time.seconds")) secondsString = main.getFileUtils().langFile().getString("time.seconds");
+            if (main.getFileUtils().langFile().isSet("time.splitter")) splitter = main.getFileUtils().langFile().getString("time.splitter");
+
+        }
+
+        long daySeconds = seconds;
+        if (seconds != 0) daySeconds = seconds % 86400;
+        long days = (seconds - daySeconds) / 86400;
+
+        long hourSeconds = daySeconds;
+        if (daySeconds != 0) hourSeconds = daySeconds % 3600;
+        long hours = (daySeconds - hourSeconds) / 3600;
+
+        long minuteSeconds = hourSeconds;
+        if (hourSeconds != 0) minuteSeconds = hourSeconds % 60;
+        long minutes = (hourSeconds - minuteSeconds) / 60;
+
+        if (days != 0) {
+            if ((hours == 0) && (minutes == 0) && (minuteSeconds == 0)) {
+                formattedTime = daysString.replace("{time}", days + "");
+            } else {
+                formattedTime = daysString.replace("{time}", days + "") + splitter;
+            }
+        }
+
+        if (hours != 0) {
+            if ((minutes == 0) && (minuteSeconds == 0)) {
+                formattedTime = formattedTime + hoursString.replace("{time}", hours + "");
+            } else {
+                formattedTime = formattedTime + hoursString.replace("{time}", hours + "") + splitter;
+            }
+        }
+
+        if (minutes != 0) {
+            if (minuteSeconds == 0) {
+                formattedTime = formattedTime + minutesString.replace("{time}", minutes + "");
+            } else {
+                formattedTime = formattedTime + minutesString.replace("{time}", minutes + "") + splitter;
+            }
+        }
+
+        if (minuteSeconds != 0) formattedTime = formattedTime + secondsString.replace("{time}", minuteSeconds + "");
+
+        return formattedTime;
+
+    }
+
 
 }

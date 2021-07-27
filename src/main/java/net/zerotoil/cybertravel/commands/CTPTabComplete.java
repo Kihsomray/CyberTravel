@@ -33,6 +33,8 @@ public class CTPTabComplete implements TabCompleter {
         if (hasPermission(player,"player-teleport", "CyberTravel.player.teleport")) args1.add("teleport");
         if (hasPermission(player,"player-teleport", "CyberTravel.player.teleport")) args1.add("tp");
         if (hasPermission(player,"admin-reload", "CyberTravel.admin.reload")) args1.add("reload");
+        if (hasPermission(player, "admin-view-border", "CyberTravel.admin.border")) args1.add("border");
+        if (hasPermission(player, "admin-view-border", "CyberTravel.admin.border")) args1.add("outline");
         if (hasPermission(player,"admin-create-region", "CyberTravel.admin.edit.create")) args1.add("create");
         if (hasPermission(player,"admin-delete-region", "CyberTravel.admin.edit.delete")) args1.add("delete");
         if (hasPermission(player,"admin-set-position1", "CyberTravel.admin.edit.pos1")) args1.add("pos1");
@@ -95,7 +97,8 @@ public class CTPTabComplete implements TabCompleter {
             }
 
             if ((args[0].equalsIgnoreCase("pos1") && args1.contains("pos1")) || (args[0].equalsIgnoreCase("pos2") && args1.contains("pos2"))
-                    || (args[0].equalsIgnoreCase("settp") && args1.contains("settp")) || (args[0].equalsIgnoreCase("delete") && args1.contains("delete"))) {
+                    || (args[0].equalsIgnoreCase("settp") && args1.contains("settp")) || (args[0].equalsIgnoreCase("delete") && args1.contains("delete"))
+                    || (args[0].equalsIgnoreCase("border") && args1.contains("border")) || (args[0].equalsIgnoreCase("outline") && args1.contains("outline"))) {
                 if (main.getFileUtils().dataFile().getConfigurationSection("regions") != null) {
                     if (main.getFileUtils().dataFile().getConfigurationSection("regions").getKeys(false).size() != 0) {
                         args2 = new ArrayList<>(main.getFileUtils().dataFile().getConfigurationSection("regions").getKeys(false));
@@ -109,6 +112,7 @@ public class CTPTabComplete implements TabCompleter {
                 Collections.sort(args2Comp);
                 return args2Comp;
             }
+
 
         }
 

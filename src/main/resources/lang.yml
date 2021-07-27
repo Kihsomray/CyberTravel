@@ -32,9 +32,9 @@ messages:
   invalid-location: "&cThat is not a valid location!"
   no-checkpoints: "&cYou do not have any checkpoints saved!"
   not-discovered: "&cYou still haven't been to this region!"
-  region-cooldown: "&cYou cannot teleport to that region for another {time} seconds!"
-  global-cooldown: "&cYou cannot teleport to any region for another {time} seconds!"
-  countdown: "&7Teleporting in {time} seconds..."
+  region-cooldown: "&cYou cannot teleport to that region for another {time}&c!"
+  global-cooldown: "&cYou cannot teleport to any region for another {time}&c!"
+  countdown: "&7Teleporting in {time}&c..."
   teleport: "&aSuccessfully teleported to {region}!"
   enter-region: "&aYou have entered the region {region}! Use &6/ftp tp {region} &ato teleport back to this region!"
   delete-region: "&aYou have successfully deleted {region}!"
@@ -54,6 +54,13 @@ messages:
   added-player-region: "&aSuccessfully added {region} to that player's discovered regions."
   location-not-set-up: "&cThat location is not set up yet!"
 
+time:
+  days: "&c{time} Day(s)"
+  hours: "&c{time} Hour(s)"
+  minutes: "&c{time} Minute(s)"
+  seconds: "&c{time} Second(s)"
+  splitter: "&c, "
+
 permissions:
   player-about: "CyberTravel.player.about"
   player-help-list: "CyberTravel.player.help"
@@ -63,6 +70,7 @@ permissions:
   admin-help-list: "CyberTravel.admin.help"
   admin-reload: "CyberTravel.admin.reload"
   admin-teleport-bypass: "CyberTravel.admin.bypass"
+  admin-view-border: "CyberTravel.admin.border"
   admin-create-region: "CyberTravel.admin.edit.create"
   admin-delete-region: "CyberTravel.admin.edit.delete"
   admin-set-position1: "CyberTravel.admin.edit.pos1"

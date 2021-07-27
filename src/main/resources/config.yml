@@ -14,6 +14,9 @@ config:
     enabled: true
     seconds: 120
 
+  global-economy:
+    enabled: true
+
   # when creating a region, the border will display temporarily,
   # making it easier to find. Disabling it will make it not display
   # after a region is created or edited. only works on 1.13 - 1.17.

@@ -1,4 +1,4 @@
-package net.zerotoil.cybertravel;
+package net.zerotoil.cybertravel.addons;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
