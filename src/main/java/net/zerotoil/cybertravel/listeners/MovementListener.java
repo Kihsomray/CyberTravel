@@ -32,7 +32,7 @@ public class MovementListener implements Listener {
             if (task != null) {
                 task.cancel();
                 main.getCtpCommand().getCmdCountdown().remove(player);
-                main.getMessageUtils().sendMessage("lang", "messages.teleport-cancelled", "&cYou moved! Teleportation canceled!", player);
+                player.sendMessage(main.getLangCache().getMessages().get("teleport-cancelled").getMessage(true));
             }
         }
     }
@@ -50,96 +50,72 @@ public class MovementListener implements Listener {
             if(task != null){
                 task.cancel();
                 main.getCtpCommand().getCmdCountdown().remove(player);
-                main.getMessageUtils().sendMessage("lang", "messages.teleport-cancelled", "&cYou moved! Teleportation canceled!", player);
+                player.sendMessage(main.getLangCache().getMessages().get("teleport-cancelled").getMessage(true));
             }
 
         }
 
-        if (player.hasPermission(main.getFileUtils().getPermission("player-discover-region", "CyberTravel.player.discover"))) {
+        // checks if player has the permission to discover regions
+        if (!player.hasPermission(main.getLangUtils().getPermission("player-discover-region"))) return;
 
-            for (String i : main.getPlayerCache().getRegions().keySet()) {
+        RegionObject region;
+        String uuid = player.getUniqueId().toString();
 
-                RegionObject region = main.getPlayerCache().getRegions().get(i);
-
-                if (player.getWorld().getName().equalsIgnoreCase(region.getWorld())) {
-
-                    String uuid = player.getUniqueId().toString();
-
-                    if (main.getPlayerCache().getPlayerRegions().containsKey(uuid) &&
-                            (main.getPlayerCache().getPlayerRegions().get(uuid).contains(region.getRegion()))) {
-                    } else {
-
-                        double pX = event.getTo().getX();
-                        if ((region.getPosMin(0) <= pX) && (pX <= region.getPosMax(0))) {
-
-                            double pZ = event.getTo().getZ();
-                            if ((region.getPosMin(2) <= pZ) && (pZ <= region.getPosMax(2))) {
-
-                                double pY = event.getTo().getY();
-                                if ((region.getPosMin(1) <= pY) && (pY <= region.getPosMax(1))) {
+        // loops through region names
+        for (String i : main.getRegionCache().getRegions().keySet()) {
 
 
+            // throws the region into memory
+            region = main.getRegionCache().getRegions().get(i);
 
-                /* old, over-complicated code
-                } else {
-                    Double pMinX = event.getFrom().getX();
-                    Double pMaxX = event.getTo().getX();
-                    Double sMinX = Math.min(region.getPos1()[0], region.getPos2()[0]);
-                    Double sMaxX = Math.max(region.getPos1()[0], region.getPos2()[0]);
+            // checks if region enabled
+            if (!region.isEnabled()) continue;
+
+            // checks region discovery
+            if (main.getPlayerCache().getPlayerRegions().containsKey(uuid) && main.getPlayerCache().getPlayerRegions().get(uuid).contains(i)) continue;
+
+            // check world
+            if (!player.getWorld().getName().equalsIgnoreCase(region.getWorld())) continue;
+
+            // checks X coordinate
+            double pX = event.getTo().getX();
+            if (!((region.getPosMin(0) <= pX) && (pX <= region.getPosMax(0)))) continue;
+
+            // checks Z coordinate
+            double pZ = event.getTo().getZ();
+            if (!((region.getPosMin(2) <= pZ) && (pZ <= region.getPosMax(2)))) continue;
+
+            // checks Y coordinate
+            double pY = event.getTo().getY();
+            if (!((region.getPosMin(1) <= pY) && (pY <= region.getPosMax(1)))) continue;
 
 
-                    if (((sMinX <= pMinX) && (pMinX <= sMaxX)) || ((sMinX <= pMaxX) && (pMaxX <= sMaxX)) || ((pMinX <= sMinX) && (sMaxX <= pMaxX))) {
-                        Double pMinY = event.getFrom().getY();
-                        Double pMaxY = event.getTo().getY();
-                        Double sMinY = Math.min(region.getPos1()[1], region.getPos2()[1]);
-                        Double sMaxY = Math.max(region.getPos1()[1], region.getPos2()[1]);
+            // saves the player progress to the file
+            List<String> playerInfo;
+            if (main.getFileUtils().dataFile().isList("players." + uuid)) {
 
+                playerInfo = main.getFileUtils().dataFile().getStringList("players." + uuid);
 
-                        if (((sMinY <= pMinY) && (pMinY <= sMaxY)) || ((sMinY <= pMaxY) && (pMaxY <= sMaxY)) || ((pMinY <= sMinY) && (sMaxY <= pMaxY))) {
-                            Double pMinZ = event.getFrom().getZ();
-                            Double pMaxZ = event.getTo().getZ();
-                            Double sMinZ = Math.min(region.getPos1()[2], region.getPos2()[2]);
-                            Double sMaxZ = Math.max(region.getPos1()[2], region.getPos2()[2]);
+            } else {
 
-
-                            if (((sMinZ <= pMinZ) && (pMinZ <= sMaxZ)) || ((sMinZ <= pMaxZ) && (pMaxZ <= sMaxZ)) || ((pMinZ <= sMinZ) && (sMaxZ <= pMaxZ))) {*/
-
-
-                                    List<String> playerInfo;
-
-                                    if (main.getFileUtils().dataFile().isList("players." + uuid)) {
-                                        playerInfo = main.getFileUtils().dataFile().getStringList("players." + uuid);
-
-                                    } else {
-                                        playerInfo = new ArrayList<>();
-
-                                    }
-
-                                    playerInfo.add(region.getRegion());
-                                    main.getFileCache().getStoredFiles().get("data").getConfig().set("players." + uuid, playerInfo);
-                                    main.getFileCache().getStoredFiles().get("data").saveConfig();
-
-                                    if (!main.getPlayerCache().getPlayerRegions().containsKey(uuid))
-                                        main.getPlayerCache().getPlayerRegions().put(uuid, new ArrayList<>());
-
-                                    main.getPlayerCache().getPlayerRegions().get(uuid).add(i);
-
-                                    main.getMessageUtils().sendMessage("lang", "messages.enter-region", "&aYou have entered the region " + region.getRegion() +
-                                            "! Use &6/ftp tp " + region.getRegion() + "&a to teleport back to this region!", player, "region", region.getRegion());
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
+                playerInfo = new ArrayList<>();
 
             }
+            playerInfo.add(i);
+            main.getFileCache().getStoredFiles().get("data").getConfig().set("players." + uuid, playerInfo);
+            main.getFileCache().getStoredFiles().get("data").saveConfig();
+
+            // saves progress to cache
+            if (!main.getPlayerCache().getPlayerRegions().containsKey(uuid))
+                main.getPlayerCache().getPlayerRegions().put(uuid, new ArrayList<>());
+            main.getPlayerCache().getPlayerRegions().get(uuid).add(i);
+
+            // sends discover region message
+            player.sendMessage(main.getLangCache().getMessages().get("enter-region").getMessage(true, "region", i,
+                    "displayName", main.getCtpCommand().getDisplayName(i)));
 
         }
+
 
     }
 

@@ -7,15 +7,15 @@ import java.util.HashMap;
 
 public class FileCache {
 
-    public FileCache(CyberTravel main) {
-        this.main = main;
-    }
-
-    private HashMap<String, FileObject> storedFiles = new HashMap<>();
     private CyberTravel main;
+    private HashMap<String, FileObject> storedFiles = new HashMap<>();
 
-    public HashMap<String, FileObject> getStoredFiles() {
-        return this.storedFiles;
+    public FileCache(CyberTravel main) {
+
+        this.main = main;
+
+        initializeFiles();
+
     }
 
     public void initializeFiles() {
@@ -26,11 +26,15 @@ public class FileCache {
         // front-end
         storedFiles.put("config", new FileObject(main, "config.yml"));
         storedFiles.put("lang", new FileObject(main, "lang.yml"));
+        storedFiles.put("regions", new FileObject(main, "regions.yml"));
 
         // back-end
         storedFiles.put("data", new FileObject(main, "data.yml"));
 
     }
 
+    public HashMap<String, FileObject> getStoredFiles() {
+        return this.storedFiles;
+    }
 
 }

@@ -8,10 +8,10 @@ website: zerotoil.net
 softdepend: [Vault]
 
 commands:
-  fastteleport:
+  ctp:
     aliases:
+      - fastteleport
       - ctcp
-      - ctp
       - ftcp
       - ftp
       - fasttp

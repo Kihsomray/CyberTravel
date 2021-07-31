@@ -1,81 +1,118 @@
 messages:
-  prefix: "&c&lCyber&f&lTravel &8»"
-  no-permission: "&cYou don't have permission to do that!"
+  prefix: '&c&lCyber&f&lTravel &8»'
+  no-permission: '&cYou don''t have permission to do that!'
   help-player:
-    - "&8&m―――――&8<&c&l Cyber&f&lTravel &8>&8&m―――――"
-    - "&8➼ &c/ctp about &fAbout the plugin."
-    - "&8➼ &c/ctp help &fSee the help menu."
-    - "&8➼ &c/ctp (tp|teleport) <region> &fTeleport to location."
-    - "&8➼ &c/ctp (regions) <region> &fSee all locked/unlocked regions."
-    - "&8&m――――――――――――――――――――――――――――――"
+    - '&8&m―――――&8<&c&l Cyber&f&lTravel &8>&8&m―――――'
+    - '&8➼ &c/ctp about &fAbout the plugin.'
+    - '&8➼ &c/ctp help &fSee the help menu.'
+    - '&8➼ &c/ctp (tp|teleport) <region> &fTeleport to location.'
+    - '&8➼ &c/ctp (regions) <region> &fSee all locked/unlocked regions.'
+    - '&8&m――――――――――――――――――――――――――――――'
   help-admin:
-    - "&8&m―――――&8<&c&l Cyber&f&lTravel &8>&8&m―――――"
-    - "&8➼ &c/ctp about &fAbout the plugin."
-    - "&8➼ &c/ctp help &fSee the help menu."
-    - "&8➼ &c/ctp reload &fReload the plugin."
-    - "&8➼ &c/ctp create <region> &fCreate a region in your world."
-    - "&8➼ &c/ctp delete <region> &fDelete an existing region."
-    - "&8➼ &c/ctp (pos1 | pos2) <region> &fSet cuboid boundaries of region."
-    - "&8➼ &c/ctp settp <region> &fSet teleport location."
-    - "&8➼ &c/ctp (tp | teleport) <region> &fTeleport to location."
-    - "&8➼ &c/ctp regions &fSee all locked/unlocked regions."
-    - "&8➼ &c/ctp addregion <player> <region> &fAdd a region to a player's list."
-    - "&8➼ &c/ctp delregion <player> <region> &fRemove a region from a player's list."
-    - "&8&m――――――――――――――――――――――――――――――"
-  reloading: "&7Reloading..."
-  reloaded: "&aReloaded!"
-  region-exists: "&cThe name {region} already exists. Please use another name!"
-  region-created: "&aRegion {region} has successfully been created!"
-  unknown-region: "&c{region} is not a region!"
-  incorrect-world: "&cThis region is registered in the world \"{world}\"!"
-  auto-ready: "&aLooks like you have finished setting up region {region} This region is now active!"
-  invalid-location: "&cThat is not a valid location!"
-  no-checkpoints: "&cYou do not have any checkpoints saved!"
-  not-discovered: "&cYou still haven't been to this region!"
-  region-cooldown: "&cYou cannot teleport to that region for another {time}&c!"
-  global-cooldown: "&cYou cannot teleport to any region for another {time}&c!"
-  countdown: "&7Teleporting in {time}&c..."
-  teleport: "&aSuccessfully teleported to {region}!"
-  enter-region: "&aYou have entered the region {region}! Use &6/ftp tp {region} &ato teleport back to this region!"
-  delete-region: "&aYou have successfully deleted {region}!"
-  delete-failed: "&cThe region cannot be deleted!"
-  already-teleporting: "&cYou are already being sent to {region}! Please wait before you can teleport elsewhere."
-  teleport-cancelled: "&cYou moved! Teleportation canceled!"
-  unlocked-regions-header: "&8&m―――――&8<&b&l Unlocked &f&lRegions: &8>&8&m―――――"
-  unlocked-regions-footer: "&8&m――――――――――――――――――――――――――――――――――"
-  unlocked-region: "&8➼ &7Region &f\"{region}\" &a&o(unlocked)"
-  locked-region: "&8➼ &7Region &f\"{region}\" &c&o(locked)"
-  no-regions: "&cNo regions exist!"
-  not-online: "&cThe player {player} is not currently online!"
-  has-no-checkpoints: "&cThe player {player} has no checkpoints saved!"
-  has-not-discovered: "&cThe player {player} has not yet discovered this region!"
-  deleted-player-region: "&aSuccessfully deleted {region} from that player's discovered regions."
-  already-discovered: "&cThe player {player} has already found this region!"
-  added-player-region: "&aSuccessfully added {region} to that player's discovered regions."
-  location-not-set-up: "&cThat location is not set up yet!"
+    - '&8&m―――――&8<&c&l Cyber&f&lTravel &8>&8&m―――――'
+    - '&8➼ &c/ctp about &fAbout the plugin.'
+    - '&8➼ &c/ctp help &fSee the help menu.'
+    - '&8➼ &c/ctp reload &fReload the plugin.'
+    - '&8➼ &c/ctp create <region> &fCreate a region in your world.'
+    - '&8➼ &c/ctp rename <region> &fChange the ID/name of a region.'
+    - '&8➼ &c/ctp delete <region> &fDelete an existing region.'
+    - '&8➼ &c/ctp (pos1 | pos2) <region> &fSet cuboid boundaries of a region.'
+    - '&8➼ &c/ctp setTP <region> &fSet teleport location.'
+    - '&8➼ &c/ctp setDisplayName <region> <display name> &fChange the display name.'
+    - '&8➼ &c/ctp setPrice <region> <price> &fChange the price of teleportation.'
+    - '&8➼ &c/ctp setEnabled <region> &fEnable a region.'
+    - '&8➼ &c/ctp setDisabled <region> &fDisable a region.'
+    - '&8➼ &c/ctp reset playerData <region | all> &fDelete player data for a region.'
+    - '&8➼ &c/ctp (tp | teleport) <region> <player> [bypass] &fTeleport player to region.'
+    - '&8➼ &c/ctp regions &fSee all locked/unlocked regions.'
+    - '&8➼ &c/ctp addPlayerRegion <region> <player> &fAdd a region to a player''s list.'
+    - '&8➼ &c/ctp delPlayerRegion <region> <player> &fRemove a region from a player''s list.'
+    - '&8&m――――――――――――――――――――――――――――――'
+
+  # global
+  location-not-set-up: '&cThe region "{region}&c" is not set up yet!'
+  unknown-region: '&cThe region "{region}&c" does not exist!'
+  region-cooldown: '&cCannot teleport to the region "{displayName}&c" for another {time}&c!'
+  global-cooldown: '&cCannot teleport to any region for another {time}&c!'
+  countdown: '&7Teleporting to "{displayName}&7" in {time}&c...'
+  already-teleporting: '&cAlready being sent to "{displayName}&c"! Please wait before you can teleport elsewhere.'
+  no-regions: '&cNo regions exist!'
+
+  # player
+  no-checkpoints: '&cYou do not have any checkpoints saved!'
+  not-discovered: '&cYou still haven''t been to the region "{displayName}&c"!'
+  teleport: '&aSuccessfully teleported to "{displayName}&a"!'
+  enter-region: '&aYou have entered the region "{displayName}&a"! Use &6/ctp tp {region} &ato teleport back to this region!'
+  teleport-cancelled: '&cYou moved! Teleportation canceled!'
+  unlocked-regions-header: '&8&m―――――&8<&b&l Unlocked &f&lRegions &8>&8&m―――――'
+  unlocked-regions-footer: '&8&m―――――――――――――――――――――――――――――――――'
+  unlocked-region: '&8➼ &7{region} &f"{displayName}&f" &a&o(unlocked) &7- &a&n${price}'
+  locked-region: '&8➼ &7{region} &f"{displayName}&f" &c&o(locked)'
+  not-enough-money: '&cNot enough money (price: &a${price}&c) to teleport to "{displayName}&c"!'
+  money-charged: '&aCharged &a&n${price}&a for teleporting to "{displayName}&a"!'
+
+  # admin
+  reloading: '&7Reloading...'
+  reloaded: '&aReloaded!'
+  vault-not-enabled: '&cVault is not enabled!'
+  region-exists: '&cThe region "{region}&c" already exists. Please use another name!'
+  region-created: '&aRegion "{region}&a" has successfully been created!'
+  region-renamed: '&aRegion "{region}&a" has been successfully renamed to "{newName}"!'
+  region-set-display-name: '&aRegion "{region}&a" display name set to "{displayName}&a"!'
+  region-set-price: '&aSet the price of "{region}&a" to ${price} successfully!'
+  region-set-enabled: '&aThe region "{region}&a" has been enabled!'
+  region-set-disabled: '&aThe region "{region}&a" has been disabled!'
+  already-enabled: '&cThe region "{region}&c" is already enabled!'
+  already-disabled: '&cThe region "{region}&c" is already disabled!'
+  incorrect-world: '&cThe region "{region}&c" is registered in the world "{world}"!'
+  auto-ready: '&aLooks like you have finished setting up region "{region}&a"! This region is now active!'
+  delete-region: '&aYou have successfully deleted "{region}&a!"'
+  delete-failed: '&cThe region "{region}&c" cannot be deleted!'
+  not-online: '&cThe player "{player}&c" is not currently online!'
+  has-no-checkpoints: '&cThe player "{player}&c" has no checkpoints saved!'
+  has-not-discovered: '&cThe player "{player}&c" has not yet discovered the region "{region}"!'
+  deleted-player-region: '&aSuccessfully deleted "{region}&a" from "{player}''s&a" discovered regions.'
+  already-discovered: '&cThe player "{player}&c" has already found the region "{region}&c"!'
+  added-player-region: '&aSuccessfully added "{region}&a" to "{player}''s&a" discovered regions.'
+  displaying-region-border: '&aShowing the border/outline for "{region}&a".'
+  teleported-player: '&aSuccessfully teleported "{player}&a" to the region "{region}&a"!'
+  deleted-player-progress: '&aSuccessfully deleted all player progress for "{region}&a"!'
 
 time:
-  days: "&c{time} Day(s)"
-  hours: "&c{time} Hour(s)"
-  minutes: "&c{time} Minute(s)"
-  seconds: "&c{time} Second(s)"
-  splitter: "&c, "
+  days: '&c{time} Day(s)'
+  hours: '&c{time} Hour(s)'
+  minutes: '&c{time} Minute(s)'
+  seconds: '&c{time} Second(s)'
+  splitter: '&c, '
 
 permissions:
-  player-about: "CyberTravel.player.about"
-  player-help-list: "CyberTravel.player.help"
-  player-discover-region: "CyberTravel.player.discover"
-  player-discovered-list: "CyberTravel.player.list"
-  player-teleport: "CyberTravel.player.teleport"
-  admin-help-list: "CyberTravel.admin.help"
-  admin-reload: "CyberTravel.admin.reload"
-  admin-teleport-bypass: "CyberTravel.admin.bypass"
-  admin-view-border: "CyberTravel.admin.border"
-  admin-create-region: "CyberTravel.admin.edit.create"
-  admin-delete-region: "CyberTravel.admin.edit.delete"
-  admin-set-position1: "CyberTravel.admin.edit.pos1"
-  admin-set-position2: "CyberTravel.admin.edit.pos2"
-  admin-set-tp-location: "CyberTravel.admin.edit.settp"
-  admin-add-player-region: "CyberTravel.admin.manage.add"
-  admin-del-player-region: "CyberTravel.admin.manage.delete"
+  # player
+  player-about: CyberTravel.player.about
+  player-help-list: CyberTravel.player.help
+  player-discover-region: CyberTravel.player.discover
+  player-discovered-list: CyberTravel.player.list
+  player-teleport: CyberTravel.player.teleport
 
+  # admin
+  admin-help-list: CyberTravel.admin.help
+  admin-reload: CyberTravel.admin.reload
+  admin-teleport-bypass: CyberTravel.admin.bypass
+  admin-view-border: CyberTravel.admin.border
+
+  admin-create-region: CyberTravel.admin.edit.create
+  admin-rename-region: CyberTravel.admin.edit.rename
+  admin-set-display-name: CyberTravel.admin.edit.displayname
+  admin-set-price: CyberTravel.admin.edit.price
+  admin-set-enabled: CyberTravel.admin.edit.enable
+  admin-set-disabled: CyberTravel.admin.edit.disable
+  admin-add-command: CyberTravel.admin.edit.addcommand
+  admin-del-command: CyberTravel.admin.edit.deletecommand
+  admin-delete-region: CyberTravel.admin.edit.delete
+  admin-set-position1: CyberTravel.admin.edit.pos1
+  admin-set-position2: CyberTravel.admin.edit.pos2
+  admin-set-tp-location: CyberTravel.admin.edit.settp
+
+  admin-add-player-region: CyberTravel.admin.manage.add
+  admin-del-player-region: CyberTravel.admin.manage.delete
+  admin-tp-player-to-region: CyberTravel.admin.manage.teleport
+  admin-reset-player-region-progress: CyberTravel.admin.manage.reset

@@ -9,10 +9,12 @@ import static org.bukkit.Bukkit.getServer;
 public class Vault {
 
     private CyberTravel main;
-    private Economy econ;
+    private Economy economy;
+    private boolean enabled;
 
     public Vault(CyberTravel main) {
         this.main = main;
+        enabled = setupEconomy();
     }
 
     private boolean setupEconomy() {
@@ -23,8 +25,15 @@ public class Vault {
         if (rsp == null) {
             return false;
         }
-        econ = rsp.getProvider();
-        return econ != null;
+        economy = rsp.getProvider();
+        return economy != null;
+    }
+
+    public Economy getEconomy() {
+        return economy;
+    }
+    public boolean isEnabled() {
+        return enabled;
     }
 
 }

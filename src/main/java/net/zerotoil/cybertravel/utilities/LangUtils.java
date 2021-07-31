@@ -5,22 +5,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class MessageUtils {
+public class LangUtils {
 
-    public MessageUtils(CyberTravel main) {
+    public LangUtils(CyberTravel main) {
         this.main = main;
     }
 
     private CyberTravel main;
 
-    public String getPrefix() {
-        return ChatColor.translateAlternateColorCodes('&', main.getFileCache().getStoredFiles().get("lang").getConfig().getString( "messages.prefix") + " ");
-    }
-
     // gets color of chat message
     public String getColor(String msg, boolean addPrefix){
         if (addPrefix) {
-            return getPrefix() + ChatColor.translateAlternateColorCodes('&', msg);
+            return main.getLangCache().getPrefix() + ChatColor.translateAlternateColorCodes('&', msg);
         } else {
             return ChatColor.translateAlternateColorCodes('&', msg);
         }
@@ -37,35 +33,8 @@ public class MessageUtils {
 
     public void noPermission(Player sender) {
         // config: messages.no-permission
-        sendMessage("lang", "messages.no-permission", "&cYou don't have permission to do that!", sender);
+        sender.sendMessage(main.getLangCache().getMessages().get("no-permission").getMessage(true));
 
-    }
-
-    public void sendMessage(String fileName, String path, String altMessage, CommandSender sender) {
-        if(!main.getFileCache().getStoredFiles().get(fileName).getConfig().isSet(path)){
-            sender.sendMessage(getColor(altMessage, true));
-            return;
-        }
-        sender.sendMessage(getColor(main.getFileCache().getStoredFiles().get(fileName).getConfig().getString(path), true));
-        return;
-    }
-
-    public void sendMessage(String fileName, String path, String altMessage, CommandSender sender, String placeholder, String replacement) {
-        if(!main.getFileCache().getStoredFiles().get(fileName).getConfig().isSet(path)){
-            sender.sendMessage(getColor(altMessage, true));
-            return;
-        }
-        sender.sendMessage(getColor(main.getFileCache().getStoredFiles().get(fileName).getConfig().getString(path).replace("{" + placeholder + "}", replacement), true));
-        return;
-    }
-
-    public void sendMessage(String fileName, String path, String altMessage, CommandSender sender, String placeholder, String replacement, boolean addPrefix) {
-        if(!main.getFileCache().getStoredFiles().get(fileName).getConfig().isSet(path)){
-            sender.sendMessage(getColor(altMessage, addPrefix));
-            return;
-        }
-        sender.sendMessage(getColor(main.getFileCache().getStoredFiles().get(fileName).getConfig().getString(path).replace("{" + placeholder + "}", replacement), addPrefix));
-        return;
     }
 
     public String formatTime(long seconds) {
@@ -102,35 +71,71 @@ public class MessageUtils {
         if (hourSeconds != 0) minuteSeconds = hourSeconds % 60;
         long minutes = (hourSeconds - minuteSeconds) / 60;
 
+        // day formatting
+        daysString = daysString.replace("{time}", days + "");
+        if (days == 1) {
+            daysString = daysString.replaceAll("\\s*\\([^\\)]*\\)\\s*", "");
+        } else {
+            daysString = daysString.replace("(", "").replace(")", "");
+        }
         if (days != 0) {
             if ((hours == 0) && (minutes == 0) && (minuteSeconds == 0)) {
-                formattedTime = daysString.replace("{time}", days + "");
+                formattedTime = daysString;
             } else {
-                formattedTime = daysString.replace("{time}", days + "") + splitter;
+                formattedTime = daysString + splitter;
             }
         }
 
+
+        // hour formatting
+        hoursString = hoursString.replace("{time}", hours + "");
+        if (hours == 1) {
+            hoursString = hoursString.replaceAll("\\s*\\([^\\)]*\\)\\s*", "");
+        } else {
+            hoursString = hoursString.replace("(", "").replace(")", "");
+        }
         if (hours != 0) {
             if ((minutes == 0) && (minuteSeconds == 0)) {
-                formattedTime = formattedTime + hoursString.replace("{time}", hours + "");
+                formattedTime = formattedTime + hoursString;
             } else {
-                formattedTime = formattedTime + hoursString.replace("{time}", hours + "") + splitter;
+                formattedTime = formattedTime + hoursString + splitter;
             }
         }
 
+
+        // minute formatting
+        minutesString = minutesString.replace("{time}", minutes + "");
+        if (minutes == 1) {
+            minutesString = minutesString.replaceAll("\\s*\\([^\\)]*\\)\\s*", "");
+        } else {
+            minutesString = minutesString.replace("(", "").replace(")", "");
+        }
         if (minutes != 0) {
             if (minuteSeconds == 0) {
-                formattedTime = formattedTime + minutesString.replace("{time}", minutes + "");
+                formattedTime = formattedTime + minutesString;
             } else {
-                formattedTime = formattedTime + minutesString.replace("{time}", minutes + "") + splitter;
+                formattedTime = formattedTime + minutesString + splitter;
             }
         }
 
-        if (minuteSeconds != 0) formattedTime = formattedTime + secondsString.replace("{time}", minuteSeconds + "");
 
-        return formattedTime;
+        // second formatting
+        secondsString = secondsString.replace("{time}", minuteSeconds + "");
+        if (minuteSeconds == 1) {
+            secondsString = secondsString.replaceAll("\\s*\\([^\\)]*\\)\\s*", "");
+        } else {
+            secondsString = secondsString.replace("(", "").replace(")", "");
+        }
+        if (minuteSeconds != 0) formattedTime = formattedTime + secondsString;
+
+        return main.getLangUtils().getColor(formattedTime, false);
 
     }
-
+    public String getPermission(String permissionName) {
+        return main.getLangCache().getPermissions().get(permissionName).getPermission();
+    }
+    public String getMessage(String messageName, boolean addPrefix) {
+        return main.getLangCache().getMessages().get(messageName).getMessage(addPrefix);
+    }
 
 }

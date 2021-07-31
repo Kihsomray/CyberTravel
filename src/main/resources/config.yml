@@ -1,26 +1,42 @@
 config:
 
-  # countdown before teleporting, cancels on player move or damage
+  # countdown before teleporting, cancels on player move or damage.
   countdown:
     enabled: true
     seconds: 5
 
-  # how many seconds until a player can run the command again?
+  # region cooldown for how many second before the player can
+  # teleport to the region again. NOTE: Specific region cooldowns
+  # will override this cooldown (coming soon).
   region-cooldown:
     enabled: false
-    seconds: 60
+    seconds: 300
 
+  # global cooldown for how many second before the player can
+  # teleport to the region again.
   global-cooldown:
-    enabled: true
-    seconds: 120
+    enabled: false
+    seconds: 300
 
-  global-economy:
-    enabled: true
+  # Whichever cooldown is longer is the one that will prevail.
 
   # when creating a region, the border will display temporarily,
   # making it easier to find. Disabling it will make it not display
-  # after a region is created or edited. only works on 1.13 - 1.17.
+  # after a region is created or edited.
   display-border:
     enabled: true
     rgb: [0, 127, 255]
     seconds: 10
+
+  # RGB fully customizable to your liking on MC 1.9 - 1.17.X.
+  # RGB colors cannot be edited for MC 1.8.X, Disabled for MC 1.7.X.
+
+  # after entering all the necessary fields, should the region
+  # automatically become enabled for players?
+  auto-enable-regions: true
+
+  # updates the config every time you update. Prior strings will
+  # remain the same! NOTE: all comments will be removed!
+  auto-update-configs:
+    config: false
+    lang: true

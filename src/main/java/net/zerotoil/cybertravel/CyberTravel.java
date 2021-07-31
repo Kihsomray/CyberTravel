@@ -2,38 +2,47 @@ package net.zerotoil.cybertravel;
 
 import net.zerotoil.cybertravel.addons.Metrics;
 import net.zerotoil.cybertravel.addons.Vault;
-import net.zerotoil.cybertravel.cache.FileCache;
-import net.zerotoil.cybertravel.cache.PlayerCache;
+import net.zerotoil.cybertravel.cache.*;
 import net.zerotoil.cybertravel.commands.CTPCommand;
 import net.zerotoil.cybertravel.commands.CTPTabComplete;
 import net.zerotoil.cybertravel.listeners.MovementListener;
-import net.zerotoil.cybertravel.objects.ConfigObject;
 import net.zerotoil.cybertravel.utilities.BlockUtils;
 import net.zerotoil.cybertravel.utilities.FileUtils;
-import net.zerotoil.cybertravel.utilities.MessageUtils;
+import net.zerotoil.cybertravel.utilities.LangUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CyberTravel extends JavaPlugin {
 
     private FileCache fileCache;
-    private ConfigObject configCache;
+    private ConfigCache configCache;
+    private LangCache langCache;
     private PlayerCache playerCache;
+    private RegionCache regionCache;
+
     private CTPCommand ctpCommand;
     private CTPTabComplete ctpTabComplete;
+
     private FileUtils fileUtils;
-    private MessageUtils messageUtils;
+    private LangUtils langUtils;
     private BlockUtils blockUtils;
+
     private Vault vault;
 
     public FileCache getFileCache() {
         return this.fileCache;
     }
-    public ConfigObject getConfigCache() {
+    public ConfigCache getConfigCache() {
         return this.configCache;
     }
     public PlayerCache getPlayerCache() {
         return this.playerCache;
+    }
+    public LangCache getLangCache() {
+        return this.langCache;
+    }
+    public RegionCache getRegionCache() {
+        return this.regionCache;
     }
     public CTPCommand getCtpCommand() {
         return this.ctpCommand;
@@ -44,8 +53,8 @@ public final class CyberTravel extends JavaPlugin {
     public FileUtils getFileUtils() {
         return this.fileUtils;
     }
-    public MessageUtils getMessageUtils() {
-        return this.messageUtils;
+    public LangUtils getLangUtils() {
+        return this.langUtils;
     }
     public BlockUtils getBlockUtils() {
         return this.blockUtils;
@@ -62,7 +71,8 @@ public final class CyberTravel extends JavaPlugin {
 
         // store files to cache
         fileCache = new FileCache(this);
-        this.fileCache.initializeFiles();
+        configCache = new ConfigCache(this);
+        langCache = new LangCache(this);
 
         // init commands
         ctpCommand = new CTPCommand(this);
@@ -70,14 +80,11 @@ public final class CyberTravel extends JavaPlugin {
         this.getCommand("ctp").setTabCompleter(ctpTabComplete);
 
         fileUtils = new FileUtils(this);
-        messageUtils = new MessageUtils(this);
+        langUtils = new LangUtils(this);
 
-        configCache = new ConfigObject(this);
-
-        // player data to cache
+        // player/region data to cache
+        regionCache = new RegionCache(this);
         playerCache = new PlayerCache(this);
-        this.playerCache.refreshRegionData(false);
-        this.playerCache.initializePlayerData();
 
         blockUtils = new BlockUtils(this);
 

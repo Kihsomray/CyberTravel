@@ -23,115 +23,233 @@ public class CTPTabComplete implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
         Player player = (Player) sender;
+        String uuid = player.getUniqueId().toString();
 
-        List<String> args1 = new ArrayList<String>();
-        List<String> args1Comp = new ArrayList<String>();
+        List<String> args0 = new ArrayList<String>();
+        List<String> args0Comp = new ArrayList<String>();
 
-        if (hasPermission(player,"player-about", "CyberTravel.player.about")) args1.add("about");
-        if (hasPermission(player,"player-help-list", "CyberTravel.player.help") || hasPermission(player,"admin-help-list", "CyberTravel.admin.help")) args1.add("help");
-        if (hasPermission(player,"player-discovered-list", "CyberTravel.player.list")) args1.add("regions");
-        if (hasPermission(player,"player-teleport", "CyberTravel.player.teleport")) args1.add("teleport");
-        if (hasPermission(player,"player-teleport", "CyberTravel.player.teleport")) args1.add("tp");
-        if (hasPermission(player,"admin-reload", "CyberTravel.admin.reload")) args1.add("reload");
-        if (hasPermission(player, "admin-view-border", "CyberTravel.admin.border")) args1.add("border");
-        if (hasPermission(player, "admin-view-border", "CyberTravel.admin.border")) args1.add("outline");
-        if (hasPermission(player,"admin-create-region", "CyberTravel.admin.edit.create")) args1.add("create");
-        if (hasPermission(player,"admin-delete-region", "CyberTravel.admin.edit.delete")) args1.add("delete");
-        if (hasPermission(player,"admin-set-position1", "CyberTravel.admin.edit.pos1")) args1.add("pos1");
-        if (hasPermission(player,"admin-set-position2", "CyberTravel.admin.edit.pos2")) args1.add("pos2");
-        if (hasPermission(player,"admin-set-tp-location", "CyberTravel.admin.edit.settp")) args1.add("settp");
-        if (hasPermission(player,"admin-add-player-region", "CyberTravel.admin.manage.add")) args1.add("addregion");
-        if (hasPermission(player,"admin-del-player-region", "CyberTravel.admin.manage.delete")) args1.add("delregion");
+        if (player.hasPermission(main.getLangUtils().getPermission("player-about"))) args0.add("about");
+        if (player.hasPermission(main.getLangUtils().getPermission("player-help-list")) ||
+                player.hasPermission(main.getLangUtils().getPermission("admin-help-list"))) args0.add("help");
+        if (player.hasPermission(main.getLangUtils().getPermission("player-discovered-list"))) args0.add("regions");
+        if (player.hasPermission(main.getLangUtils().getPermission("player-teleport"))) {
+            args0.add("teleport");
+            args0.add("tp");
+        }
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-reload"))) args0.add("reload");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-view-border"))) {
+            args0.add("border");
+            args0.add("outline");
+        }
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-create-region"))) args0.add("create");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-delete-region"))) args0.add("delete");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-set-position1"))) args0.add("pos1");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-set-position2"))) args0.add("pos2");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-set-tp-location"))) args0.add("setTP");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-add-player-region"))) args0.add("addPlayerRegion");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-del-player-region"))) args0.add("delPlayerRegion");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-set-enabled"))) args0.add("setEnabled");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-set-disabled"))) args0.add("setDisabled");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-rename-region"))) args0.add("rename");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-set-price"))) args0.add("setPrice");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-reset-player-region-progress"))) args0.add("reset");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-set-display-name"))) args0.add("setDisplayName");
 
         if (args.length == 1) {
-            StringUtil.copyPartialMatches(args[0], args1, args1Comp);
-            Collections.sort(args1Comp);
-            return args1Comp;
+
+            StringUtil.copyPartialMatches(args[0], args0, args0Comp);
+            Collections.sort(args0Comp);
+            return args0Comp;
 
         }
 
         if (args.length == 2) {
 
-            List<String> args2 = new ArrayList<>();
-            List<String> args2Comp = new ArrayList<>();
+            List<String> args1 = new ArrayList<>();
+            List<String> args1Comp = new ArrayList<>();
 
-            if (args[0].equalsIgnoreCase("create") && args1.contains("create")) {
-                args2.add("<region>");
-                StringUtil.copyPartialMatches(args[1], args2, args2Comp);
-                Collections.sort(args2Comp);
-                return args2Comp;
+            if (cmdReq0(args[0], args0, "create")) {
+
+                args1.add("<region>");
+                StringUtil.copyPartialMatches(args[1], args1, args1Comp);
+                Collections.sort(args1Comp);
+                return args1Comp;
+
             }
 
-            if (args[0].equalsIgnoreCase("teleport") && args1.contains("teleport") || args[0].equalsIgnoreCase("tp") && args1.contains("tp")) {
+            // teleport module
+            if (cmdReq0(args[0], args0, "teleport") || cmdReq0(args[0], args0, "tp")) {
 
                 // bypass permission
-                if (sender.hasPermission(main.getFileUtils().getPermission("admin-teleport-bypass", "CyberTravel.admin.bypass"))) {
-                    if (main.getFileUtils().dataFile().getConfigurationSection("regions") != null) {
-                        if (main.getFileUtils().dataFile().getConfigurationSection("regions").getKeys(false).size() != 0) {
-                            args2 = new ArrayList<>(main.getFileUtils().dataFile().getConfigurationSection("regions").getKeys(false));
-                        } else {
-                            args2.add("<region>");
-                        }
+                if (sender.hasPermission(main.getLangUtils().getPermission("admin-teleport-bypass"))) {
+
+                    if (main.getRegionCache().getRegions().size() != 0) {
+
+                        args1 = new ArrayList<>(main.getRegionCache().getRegions().keySet());
+
                     } else {
-                        args2.add("<region>");
+
+                        args1.add("<region>");
+
                     }
 
                 } else {
 
-                    if (main.getPlayerCache().getPlayerRegions().containsKey(player.getUniqueId().toString())) {
-                        if (main.getPlayerCache().getPlayerRegions().get(player.getUniqueId().toString()).size() != 0) {
-                            args2 = main.getPlayerCache().getPlayerRegions().get(player.getUniqueId().toString());
+                    if (main.getPlayerCache().getPlayerRegions().containsKey(uuid)) {
+
+                        if (main.getPlayerCache().getPlayerRegions().get(uuid).size() != 0) {
+
+                            args1 = main.getPlayerCache().getPlayerRegions().get(uuid);
+
                         } else {
-                            args2.add("<region>");
+
+                            args1.add("<region>");
+
                         }
                     } else {
-                        args2.add("<region>");
+
+                        args1.add("<region>");
+
                     }
 
                 }
 
-                StringUtil.copyPartialMatches(args[1], args2, args2Comp);
-                Collections.sort(args2Comp);
-                return args2Comp;
+                StringUtil.copyPartialMatches(args[1], args1, args1Comp);
+                Collections.sort(args1Comp);
+                return args1Comp;
 
             }
 
-            if ((args[0].equalsIgnoreCase("pos1") && args1.contains("pos1")) || (args[0].equalsIgnoreCase("pos2") && args1.contains("pos2"))
-                    || (args[0].equalsIgnoreCase("settp") && args1.contains("settp")) || (args[0].equalsIgnoreCase("delete") && args1.contains("delete"))
-                    || (args[0].equalsIgnoreCase("border") && args1.contains("border")) || (args[0].equalsIgnoreCase("outline") && args1.contains("outline"))) {
-                if (main.getFileUtils().dataFile().getConfigurationSection("regions") != null) {
-                    if (main.getFileUtils().dataFile().getConfigurationSection("regions").getKeys(false).size() != 0) {
-                        args2 = new ArrayList<>(main.getFileUtils().dataFile().getConfigurationSection("regions").getKeys(false));
-                    } else {
-                        args2.add("<region>");
-                    }
+            // region identification module
+            if ((cmdReq0(args[0], args0, "pos1") || cmdReq0(args[0], args0, "pos2") || cmdReq0(args[0], args0, "setTP") ||
+                    cmdReq0(args[0], args0, "delete") || cmdReq0(args[0], args0, "border") || cmdReq0(args[0], args0, "outline"))) {
+
+                if (main.getRegionCache().getRegions().size() != 0) {
+
+                    args1 = new ArrayList<>(main.getRegionCache().getRegions().keySet());
+
                 } else {
-                    args2.add("<region>");
+
+                    args1.add("<region>");
+
                 }
-                StringUtil.copyPartialMatches(args[1], args2, args2Comp);
-                Collections.sort(args2Comp);
-                return args2Comp;
+
+                StringUtil.copyPartialMatches(args[1], args1, args1Comp);
+                Collections.sort(args1Comp);
+                return args1Comp;
+
             }
 
+            // add/delete region module
+            if ((cmdReq0(args[0], args0, "addPlayerRegion")) || (cmdReq0(args[0], args0, "delPlayerRegion")) || (cmdReq0(args[0], args0, "setEnabled")) ||
+                    (cmdReq0(args[0], args0, "setDisabled")) || (cmdReq0(args[0], args0, "setDisplayName")) || (cmdReq0(args[0], args0, "rename")) ||
+                    (cmdReq0(args[0], args0, "setPrice"))) {
+
+                if (!main.getRegionCache().getRegions().isEmpty()) {
+
+                    args1 = new ArrayList<>(main.getRegionCache().getRegions().keySet());
+
+                } else {
+
+                    args1.add("<region>");
+
+                }
+
+                StringUtil.copyPartialMatches(args[1], args1, args1Comp);
+                Collections.sort(args1Comp);
+                return args1Comp;
+
+            }
+
+            // reset playerData
+            if (cmdReq0(args[0], args0, "reset")) {
+
+                args1.add("playerData");
+                StringUtil.copyPartialMatches(args[1], args1, args1Comp);
+                Collections.sort(args1Comp);
+                return args1Comp;
+
+            }
+
+        }
+
+        if ((args.length >= 3) && (cmdReq0(args[0], args0, "setDisplayName"))) {
+            List<String> argsName = new ArrayList<>();
+            List<String> argsNameComp = new ArrayList<>();
+
+            argsName.add("<display name>");
+
+            StringUtil.copyPartialMatches(args[args.length - 1], argsName, argsNameComp);
+            Collections.sort(argsNameComp);
+            return argsNameComp;
 
         }
 
         if (args.length == 3) {
+
+            List<String> args2 = new ArrayList<>();
+            List<String> args2Comp = new ArrayList<>();
+
+            if (cmdReq0(args[0], args0, "rename")) {
+
+                args2.add("<new name>");
+
+                StringUtil.copyPartialMatches(args[2], args2, args2Comp);
+                Collections.sort(args2Comp);
+                return args2Comp;
+
+            }
+
+            if (cmdReq0(args[0], args0, "setPrice")) {
+
+                args2.add("<price>");
+
+                StringUtil.copyPartialMatches(args[2], args2, args2Comp);
+                Collections.sort(args2Comp);
+                return args2Comp;
+
+            }
+
+            if ((cmdReq0(args[0], args0, "reset")) && args[1].equalsIgnoreCase("playerData")) {
+
+                if (!main.getRegionCache().getRegions().isEmpty()) {
+
+                    args2 = new ArrayList<>(main.getRegionCache().getRegions().keySet());
+
+                } else {
+
+                    args2.add("<region>");
+
+                }
+
+                args2.add("all");
+                StringUtil.copyPartialMatches(args[2], args2, args2Comp);
+                Collections.sort(args2Comp);
+                return args2Comp;
+
+            }
+
+        }
+
+        if (args.length == 4) {
+
             List<String> args3 = new ArrayList<>();
             List<String> args3Comp = new ArrayList<>();
 
-            if ((args[0].equalsIgnoreCase("addregion") && args1.contains("addregion")) || (args[0].equalsIgnoreCase("delregion") && args1.contains("delregion"))) {
+            if (cmdReq0(args[0], args0, "tp") || cmdReq0(args[0], args0, "teleport")) {
 
-                if (!main.getPlayerCache().getRegions().isEmpty()) {
-                    args3 = new ArrayList<>(main.getPlayerCache().getRegions().keySet());
-                } else {
-                    args3.add("<region>");
+                if (player.hasPermission(main.getLangUtils().getPermission("admin-tp-player-to-region"))) {
+
+                    args3.add("bypass");
+
+                    StringUtil.copyPartialMatches(args[3], args3, args3Comp);
+                    Collections.sort(args3Comp);
+                    return args3Comp;
+
                 }
-                StringUtil.copyPartialMatches(args[2], args3, args3Comp);
-                Collections.sort(args3Comp);
-                return args3Comp;
 
             }
+
 
         }
 
@@ -142,7 +260,8 @@ public class CTPTabComplete implements TabCompleter {
     private boolean hasPermission(Player player, String permissionName, String defaultPermission) {
         return player.hasPermission(main.getFileUtils().getPermission(permissionName, defaultPermission));
     }
-
-
+    private boolean cmdReq0(String arg0, List<String> args0, String command) {
+        return (arg0.equalsIgnoreCase(command) && args0.contains(command));
+    }
 
 }
