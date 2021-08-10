@@ -6,7 +6,7 @@
 
     <groupId>net.zerotoil</groupId>
     <artifactId>CyberTravel</artifactId>
-    <version>1.0.0.94</version>
+    <version>1.0.0.98</version>
     <packaging>jar</packaging>
 
     <name>CyberTravel</name>

@@ -15,11 +15,8 @@ public class LangUtils {
 
     // gets color of chat message
     public String getColor(String msg, boolean addPrefix){
-        if (addPrefix) {
-            return main.getLangCache().getPrefix() + ChatColor.translateAlternateColorCodes('&', msg);
-        } else {
-            return ChatColor.translateAlternateColorCodes('&', msg);
-        }
+        if (addPrefix) return main.getLangCache().getPrefix() + ChatColor.translateAlternateColorCodes('&', msg);
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
     // gets full length string from array

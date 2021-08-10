@@ -18,12 +18,13 @@ messages:
     - '&8➼ &c/ctp delete <region> &fDelete an existing region.'
     - '&8➼ &c/ctp (pos1 | pos2) <region> &fSet cuboid boundaries of a region.'
     - '&8➼ &c/ctp setTP <region> &fSet teleport location.'
+    - '&8➼ &c/ctp (border | outline) <region> &fSee boundaries and TP location of a region.'
     - '&8➼ &c/ctp setDisplayName <region> <display name> &fChange the display name.'
     - '&8➼ &c/ctp setPrice <region> <price> &fChange the price of teleportation.'
     - '&8➼ &c/ctp setEnabled <region> &fEnable a region.'
     - '&8➼ &c/ctp setDisabled <region> &fDisable a region.'
     - '&8➼ &c/ctp reset playerData <region | all> &fDelete player data for a region.'
-    - '&8➼ &c/ctp (tp | teleport) <region> <player> [bypass] &fTeleport player to region.'
+    - '&8➼ &c/ctp (tp | teleport) <region> [player] [bypass] &fTeleport player to region.'
     - '&8➼ &c/ctp regions &fSee all locked/unlocked regions.'
     - '&8➼ &c/ctp addPlayerRegion <region> <player> &fAdd a region to a player''s list.'
     - '&8➼ &c/ctp delPlayerRegion <region> <player> &fRemove a region from a player''s list.'
@@ -101,16 +102,16 @@ permissions:
 
   admin-create-region: CyberTravel.admin.edit.create
   admin-rename-region: CyberTravel.admin.edit.rename
+  admin-delete-region: CyberTravel.admin.edit.delete
+  admin-set-position1: CyberTravel.admin.edit.pos1
+  admin-set-position2: CyberTravel.admin.edit.pos2
+  admin-set-tp-location: CyberTravel.admin.edit.settp
   admin-set-display-name: CyberTravel.admin.edit.displayname
   admin-set-price: CyberTravel.admin.edit.price
   admin-set-enabled: CyberTravel.admin.edit.enable
   admin-set-disabled: CyberTravel.admin.edit.disable
   admin-add-command: CyberTravel.admin.edit.addcommand
   admin-del-command: CyberTravel.admin.edit.deletecommand
-  admin-delete-region: CyberTravel.admin.edit.delete
-  admin-set-position1: CyberTravel.admin.edit.pos1
-  admin-set-position2: CyberTravel.admin.edit.pos2
-  admin-set-tp-location: CyberTravel.admin.edit.settp
 
   admin-add-player-region: CyberTravel.admin.manage.add
   admin-del-player-region: CyberTravel.admin.manage.delete

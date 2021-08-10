@@ -19,8 +19,8 @@ public class LangCache {
 
     private String prefix;
 
-    private List<String> adminHelp = new ArrayList<>();
     private List<String> playerHelp = new ArrayList<>();
+    private List<String> adminHelp = new ArrayList<>();
 
     private HashMap<String, MessageObject> messages = new HashMap<>();
     private HashMap<String, PermissionObject> permissions = new HashMap<>();
@@ -62,7 +62,7 @@ public class LangCache {
             }
         } else {
             if (updateConfig) setMessage("messages.prefix", "&c&lCyber&f&lTravel &8»");
-            prefix = getColor("&c&lCyber&f&lTravel &8»");
+            prefix = getColor("&c&lCyber&f&lTravel &8» ");
         }
 
         // help messages
@@ -214,11 +214,11 @@ public class LangCache {
                 setMessage("time.splitter", "&c, ");
             }
 
-            timeDaysFormat = ChatColor.translateAlternateColorCodes('&', "&c{time} Day(s)");
-            timeHoursFormat = ChatColor.translateAlternateColorCodes('&', "&c{time} Hour(s)");
-            timeMinutesFormat = ChatColor.translateAlternateColorCodes('&', "&c{time} Minute(s)");
-            timeSecondsFormat = ChatColor.translateAlternateColorCodes('&', "&c{time} Second(s)");
-            timeSplitterFormat = ChatColor.translateAlternateColorCodes('&', "&c, ");
+            timeDaysFormat = getColor("&c{time} Day(s)");
+            timeHoursFormat = getColor("&c{time} Hour(s)");
+            timeMinutesFormat = getColor("&c{time} Minute(s)");
+            timeSecondsFormat = getColor("&c{time} Second(s)");
+            timeSplitterFormat = getColor("&c, ");
 
         }
 
@@ -279,7 +279,7 @@ public class LangCache {
     }
 
     public String getPrefix() {
-        return this.prefix;
+        return prefix;
     }
     public List<String> getAdminHelp() {
         return adminHelp;

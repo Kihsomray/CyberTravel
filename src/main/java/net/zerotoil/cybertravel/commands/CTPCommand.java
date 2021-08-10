@@ -58,22 +58,16 @@ public class CTPCommand implements CommandExecutor {
         }
 
         // basic info
-        String fl = "regions.";
+        String rg = "regions.";
         String pl = "players.";
         Configuration dataConfig = main.getFileCache().getStoredFiles().get("data").getConfig();
         Configuration regionsConfig = main.getFileCache().getStoredFiles().get("regions").getConfig();
-
-        // 0 arguments
-        if (args.length ==  0) {
-            sendHelpMessage(sender);
-            return true;
-        }
 
         // 1 argument
         if (args.length == 1) {
 
             // done
-            if (args[0].equalsIgnoreCase("about") || args[0].equalsIgnoreCase("version")) {
+            if (args[0].matches("(?i)about|version")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("player-about"))) {
                     main.getLangUtils().noPermission(player);
@@ -90,14 +84,14 @@ public class CTPCommand implements CommandExecutor {
 
             // done
             // /ftp help
-            if (args[0].equalsIgnoreCase("help")) {
+            if (args[0].matches("(?i)help")) {
                 sendHelpMessage(sender);
                 return true;
             }
 
             // done
             // /ftp reload
-            if (args[0].equalsIgnoreCase("reload")) {
+            if (args[0].matches("(?i)reload")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-reload"))) {
                     main.getLangUtils().noPermission(player);
@@ -115,7 +109,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // done
-            if (args[0].equalsIgnoreCase("regions")) {
+            if (args[0].matches("(?i)regions")) {
 
                 if (!sender.hasPermission(main.getFileUtils().getPermission("player-discovered-list", "CyberTravel.player.list"))) {
                     main.getLangUtils().noPermission(player);
@@ -179,7 +173,7 @@ public class CTPCommand implements CommandExecutor {
         if (args.length == 2) {
 
             // /ftp create <region>
-            if (args[0].equalsIgnoreCase("create")) {
+            if (args[0].matches("(?i)create")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-create-region"))) {
                     main.getLangUtils().noPermission(player);
@@ -194,8 +188,8 @@ public class CTPCommand implements CommandExecutor {
 
                 try {
                     // creates region and stores name
-                    regionsConfig.set(fl + args[1] + ".location.world", player.getWorld().getName());
-                    regionsConfig.set(fl + args[1] + ".enabled", false);
+                    regionsConfig.set(rg + args[1] + ".location.world", player.getWorld().getName());
+                    regionsConfig.set(rg + args[1] + ".enabled", false);
                     main.getFileCache().getStoredFiles().get("regions").saveConfig();
                     main.getRegionCache().getRegions().put(args[1], new RegionObject(args[1], player.getWorld().getName()));
 
@@ -209,7 +203,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp <pos1|pos2|settp> <region>
-            if (args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2") || args[0].equalsIgnoreCase("settp")) {
+            if (args[0].matches("(?i)pos1|pos2|settp")) {
 
                 // permission nodes
                 if ((!sender.hasPermission(main.getLangUtils().getPermission("admin-set-position1")) && args[0].equalsIgnoreCase("pos1")) ||
@@ -234,7 +228,7 @@ public class CTPCommand implements CommandExecutor {
 
                 // gets player location and saves it
                 String location = (0.5 + player.getLocation().getBlockX()) + ", " + player.getLocation().getBlockY() + ", " + (0.5 + player.getLocation().getBlockZ());
-                regionsConfig.set(fl + args[1] + ".location." + args[0], location);
+                regionsConfig.set(rg + args[1] + ".location." + args[0], location);
                 double[] locationArray = new double[]{0.5 + player.getLocation().getBlockX(), player.getLocation().getBlockY(), 0.5 + player.getLocation().getBlockZ()};
 
                 if (args[0].equalsIgnoreCase("pos1")) {
@@ -264,7 +258,7 @@ public class CTPCommand implements CommandExecutor {
                     if ((main.getRegionCache().getRegions().get(args[1]).getPos1() != null) && (main.getRegionCache().getRegions().get(args[1]).getPos2() != null) &&
                             (main.getRegionCache().getRegions().get(args[1]).getSetTP() != null) && (!main.getRegionCache().getRegions().get(args[1]).isEnabled())) {
 
-                        regionsConfig.set(fl + args[1] + ".enabled", true);
+                        regionsConfig.set(rg + args[1] + ".enabled", true);
                         main.getRegionCache().getRegions().get(args[1]).setEnabled(true);
 
                         try {
@@ -280,7 +274,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp <teleport|tp> <region>
-            if (args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("teleport")) {
+            if (args[0].matches("(?i)tp|teleport")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("player-teleport"))) {
                     main.getLangUtils().noPermission(player);
@@ -434,7 +428,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp delete <region>
-            if (args[0].equalsIgnoreCase("delete")) {
+            if (args[0].matches("(?i)delete")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-delete-region"))) {
                     main.getLangUtils().noPermission(player);
@@ -449,7 +443,7 @@ public class CTPCommand implements CommandExecutor {
                 }
 
                 // remove region data
-                regionsConfig.set(fl + args[1], null);
+                regionsConfig.set(rg + args[1], null);
                 main.getRegionCache().getRegions().remove(args[1]);
 
                 // remove from player's data
@@ -481,7 +475,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp border <region>
-            if (args[0].equalsIgnoreCase("border") || args[0].equalsIgnoreCase("outline")) {
+            if (args[0].matches("(?i)border|outline")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-view-border"))) {
                     main.getLangUtils().noPermission(player);
@@ -499,7 +493,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp setenabled <region>
-            if (args[0].equalsIgnoreCase("setenabled")) {
+            if (args[0].matches("(?i)setenabled")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-set-enabled"))) {
                     main.getLangUtils().noPermission(player);
@@ -521,7 +515,7 @@ public class CTPCommand implements CommandExecutor {
                         (main.getRegionCache().getRegions().get(args[1]).getSetTP() != null)) {
 
                     main.getRegionCache().getRegions().get(args[1]).setEnabled(true);
-                    regionsConfig.set(fl + args[1] + ".enabled", true);
+                    regionsConfig.set(rg + args[1] + ".enabled", true);
 
                     try {
                         main.getFileCache().getStoredFiles().get("regions").saveConfig();
@@ -540,7 +534,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp setdisabled <region>
-            if (args[0].equalsIgnoreCase("setdisabled")) {
+            if (args[0].matches("(?i)setdisabled")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-set-disabled"))) {
                     main.getLangUtils().noPermission(player);
@@ -559,7 +553,7 @@ public class CTPCommand implements CommandExecutor {
                 }
 
                 main.getRegionCache().getRegions().get(args[1]).setEnabled(false);
-                regionsConfig.set(fl + args[1] + ".enabled", false);
+                regionsConfig.set(rg + args[1] + ".enabled", false);
 
                 try {
                     main.getFileCache().getStoredFiles().get("regions").saveConfig();
@@ -576,7 +570,7 @@ public class CTPCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("setdisplayname")) {
+        if (args[0].matches("(?i)setdisplayname")) {
 
             if (!player.hasPermission(main.getLangUtils().getPermission("admin-set-display-name"))) {
                 main.getLangUtils().noPermission(player);
@@ -602,7 +596,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             main.getRegionCache().getRegions().get(args[1]).setDisplayName(displayNameString);
-            regionsConfig.set(fl + args[1] + ".settings.display-name", displayNameString);
+            regionsConfig.set(rg + args[1] + ".settings.display-name", displayNameString);
             try {
                 main.getFileCache().getStoredFiles().get("regions").saveConfig();
             } catch (Exception e) {
@@ -617,7 +611,7 @@ public class CTPCommand implements CommandExecutor {
         if (args.length == 3) {
 
             // /ftp addregion <region> <player>
-            if (args[0].equalsIgnoreCase("addplayerregion")) {
+            if (args[0].matches("(?i)addplayerregion|addplayeregion")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-add-player-region"))) {
                     main.getLangUtils().noPermission(player);
@@ -679,7 +673,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp delregion <region> <player>
-            if (args[0].equalsIgnoreCase("delplayerregion")) {
+            if (args[0].matches("(?i)delplayerregion|delplayeregion")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-del-player-region"))) {
                     main.getLangUtils().noPermission(player);
@@ -743,7 +737,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp rename <region> <new name>
-            if (args[0].equalsIgnoreCase("rename")) {
+            if (args[0].matches("(?i)rename")) {
 
                 if (!player.hasPermission(main.getLangUtils().getPermission("admin-rename-region"))) {
                     main.getLangUtils().noPermission(player);
@@ -765,9 +759,9 @@ public class CTPCommand implements CommandExecutor {
                 }
 
                 // file
-                ConfigurationSection oldConfigSection = regionsConfig.getConfigurationSection(fl + args[1]);
-                regionsConfig.set(fl + args[1], null);
-                regionsConfig.set(fl + args[2], oldConfigSection);
+                ConfigurationSection oldConfigSection = regionsConfig.getConfigurationSection(rg + args[1]);
+                regionsConfig.set(rg + args[1], null);
+                regionsConfig.set(rg + args[2], oldConfigSection);
                 try {
                     main.getFileCache().getStoredFiles().get("regions").saveConfig();
                 } catch (Exception e) {}
@@ -813,7 +807,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp tp <region> <player>
-            if ((args[0].equalsIgnoreCase("tp")) || (args[0].equalsIgnoreCase("teleport"))) {
+            if (args[0].matches("(?i)tp|teleport")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-tp-player-to-region"))) {
                     main.getLangUtils().noPermission(player);
@@ -993,7 +987,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp reset playerProgress <region>
-            if (args[0].equalsIgnoreCase("reset") && args[1].equalsIgnoreCase("playerdata")) {
+            if ((args[0].matches("(?i)reset")) && (args[1].matches("(?)playerdata"))) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-reset-player-region-progress"))) {
                     main.getLangUtils().noPermission(player);
@@ -1051,7 +1045,7 @@ public class CTPCommand implements CommandExecutor {
             }
 
             // /ftp setPrice <region> <price>
-            if (args[0].equalsIgnoreCase("setprice")) {
+            if (args[0].matches("(?i)setprice")) {
 
                 if (!player.hasPermission(main.getLangUtils().getPermission("admin-set-price"))) {
                     main.getLangUtils().noPermission(player);
@@ -1072,7 +1066,7 @@ public class CTPCommand implements CommandExecutor {
 
                 if (Double.parseDouble(args[2]) <= 0) args[2] = "0";
 
-                regionsConfig.set(fl + args[1] + ".settings.price", Double.parseDouble(args[2]));
+                regionsConfig.set(rg + args[1] + ".settings.price", Double.parseDouble(args[2]));
                 main.getRegionCache().getRegions().get(args[1]).setPrice(Double.parseDouble(args[2]));
 
                 try {
@@ -1093,7 +1087,7 @@ public class CTPCommand implements CommandExecutor {
         if (args.length == 4) {
 
             // /ftp tp <region> <player> bypass
-            if ((args[0].equalsIgnoreCase("tp")) || (args[0].equalsIgnoreCase("teleport"))) {
+            if (args[0].matches("(?i)tp|teleport")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("admin-tp-player-to-region"))) {
                     main.getLangUtils().noPermission(player);
