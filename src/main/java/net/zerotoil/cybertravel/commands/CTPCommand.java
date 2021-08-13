@@ -66,7 +66,7 @@ public class CTPCommand implements CommandExecutor {
         // 1 argument
         if (args.length == 1) {
 
-            // done
+            // /ftp about
             if (args[0].matches("(?i)about|version")) {
 
                 if (!sender.hasPermission(main.getLangUtils().getPermission("player-about"))) {
@@ -82,14 +82,6 @@ public class CTPCommand implements CommandExecutor {
                 return true;
             }
 
-            // done
-            // /ftp help
-            if (args[0].matches("(?i)help")) {
-                sendHelpMessage(sender);
-                return true;
-            }
-
-            // done
             // /ftp reload
             if (args[0].matches("(?i)reload")) {
 
@@ -108,7 +100,7 @@ public class CTPCommand implements CommandExecutor {
                 return true;
             }
 
-            // done
+            // /ftp regions
             if (args[0].matches("(?i)regions")) {
 
                 if (!sender.hasPermission(main.getFileUtils().getPermission("player-discovered-list", "CyberTravel.player.list"))) {
@@ -164,9 +156,26 @@ public class CTPCommand implements CommandExecutor {
                 return true;
             }
 
-            // send help message
-            sendHelpMessage(sender);
-            return true;
+            // /ftp info
+            if (args[0].matches("(?i)info|list")) {
+
+                if (!sender.hasPermission(main.getLangUtils().getPermission("admin-info-list"))) {
+                    main.getLangUtils().noPermission(player);
+                    return true;
+                }
+
+                if (main.getRegionCache().getRegions().isEmpty()) {
+                    sender.sendMessage(main.getLangUtils().getMessage("no-regions", true));
+                    return true;
+                }
+
+                player.sendMessage(main.getLangUtils().getMessage("regions-info-header", false));
+                for (String i : main.getRegionCache().getRegions().keySet()) main.getRegionCache().getRegions().get(i).sendInfo(main, player);
+                player.sendMessage(main.getLangUtils().getMessage("regions-info-footer", false));
+                return true;
+
+            }
+
         }
 
         // 2 arguments
@@ -566,8 +575,6 @@ public class CTPCommand implements CommandExecutor {
 
             }
 
-            sendHelpMessage(sender);
-            return true;
         }
 
         if (args[0].matches("(?i)setdisplayname")) {
@@ -1079,9 +1086,6 @@ public class CTPCommand implements CommandExecutor {
 
             }
 
-            sendHelpMessage(sender);
-            return true;
-
         }
 
         if (args.length == 4) {
@@ -1115,9 +1119,6 @@ public class CTPCommand implements CommandExecutor {
                         args[1], "player", args[2]));
 
             }
-
-            sendHelpMessage(sender);
-            return true;
 
         }
 

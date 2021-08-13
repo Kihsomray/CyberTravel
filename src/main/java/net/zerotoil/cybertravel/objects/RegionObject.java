@@ -1,8 +1,11 @@
 package net.zerotoil.cybertravel.objects;
 
+import net.zerotoil.cybertravel.CyberTravel;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RegionObject {
@@ -89,6 +92,13 @@ public class RegionObject {
     public void addCommand(String command) {
         this.commands.add(command);
     }
+    public boolean removeCommand(int index) {
+        if (this.commands.size() > index) {
+            this.commands.remove(index);
+            return true;
+        }
+        return false;
+    }
     public void setName(String name) {
         this.name = name;
     }
@@ -107,6 +117,28 @@ public class RegionObject {
     }
     public void setCooldown(long cooldown) {
         this.cooldown = cooldown;
+    }
+
+    public void sendCommands(CyberTravel main, Player player) {
+        if (commands.isEmpty()) return;
+        player.sendMessage(main.getLangUtils().getMessage("region-info-cmd-header", false));
+        for (String i : commands) {
+            player.sendMessage(main.getLangCache().getMessages().get("region-info-cmd").getMessage(false, "command", i));
+        }
+    }
+    public void sendInfo(CyberTravel main, Player player) {
+        player.sendMessage(main.getLangCache().getMessages().get("region-info-name").getMessage(false,
+                "region", name, "displayName", getDisplayName(), "status", enabled + ""));
+        player.sendMessage(main.getLangCache().getMessages().get("region-info-location").getMessage(false,
+                "world", world, "pos1", removeBrackets(pos1), "pos2", removeBrackets(pos2), "setTP", removeBrackets(setTP)));
+        player.sendMessage(main.getLangCache().getMessages().get("region-info-price").getMessage(false, "price", String.format("%.2f", price)));
+        sendCommands(main, player);
+    }
+
+    private String removeBrackets(double[] input) {
+        String string = Arrays.toString(input).replace("[", "").replace("]", "");
+        if (string.equalsIgnoreCase("null")) return "not set";
+        return string;
     }
 
 }

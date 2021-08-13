@@ -54,6 +54,10 @@ public class CTPTabComplete implements TabCompleter {
         if (player.hasPermission(main.getLangUtils().getPermission("admin-set-price"))) args0.add("setPrice");
         if (player.hasPermission(main.getLangUtils().getPermission("admin-reset-player-region-progress"))) args0.add("reset");
         if (player.hasPermission(main.getLangUtils().getPermission("admin-set-display-name"))) args0.add("setDisplayName");
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-info-list"))) {
+            args0.add("info");
+            args0.add("list");
+        }
 
         if (args.length == 1) {
 

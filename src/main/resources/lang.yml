@@ -16,6 +16,7 @@ messages:
     - '&8➼ &c/ctp create <region> &fCreate a region in your world.'
     - '&8➼ &c/ctp rename <region> &fChange the ID/name of a region.'
     - '&8➼ &c/ctp delete <region> &fDelete an existing region.'
+    - '&8➼ &c/ctp (list | info) &fView all region information.'
     - '&8➼ &c/ctp (pos1 | pos2) <region> &fSet cuboid boundaries of a region.'
     - '&8➼ &c/ctp setTP <region> &fSet teleport location.'
     - '&8➼ &c/ctp (border | outline) <region> &fSee boundaries and TP location of a region.'
@@ -45,7 +46,7 @@ messages:
   teleport: '&aSuccessfully teleported to "{displayName}&a"!'
   enter-region: '&aYou have entered the region "{displayName}&a"! Use &6/ctp tp {region} &ato teleport back to this region!'
   teleport-cancelled: '&cYou moved! Teleportation canceled!'
-  unlocked-regions-header: '&8&m―――――&8<&b&l Unlocked &f&lRegions &8>&8&m―――――'
+  unlocked-regions-header: '&8&m―――――&8<&c&l Unlocked &f&lRegions &8>&8&m―――――'
   unlocked-regions-footer: '&8&m―――――――――――――――――――――――――――――――――'
   unlocked-region: '&8➼ &7{region} &f"{displayName}&f" &a&o(unlocked) &7- &a&n${price}'
   locked-region: '&8➼ &7{region} &f"{displayName}&f" &c&o(locked)'
@@ -78,6 +79,13 @@ messages:
   displaying-region-border: '&aShowing the border/outline for "{region}&a".'
   teleported-player: '&aSuccessfully teleported "{player}&a" to the region "{region}&a"!'
   deleted-player-progress: '&aSuccessfully deleted all player progress for "{region}&a"!'
+  regions-info-header: '&8&m――――――&8<&c&l Region &f&lInfo &8>&8&m――――――'
+  regions-info-footer: '&8&m――――――――――――――――――――――――――――――――'
+  region-info-name: '&c{region} &f"{displayName}" &7&o({status})'
+  region-info-location: '&8➼ &7Location - &f{world}, (&7{pos1}&f), (&7{pos2}&f), (&7{setTP}&f)'
+  region-info-price: '&8➼ &7Price - &a${price}'
+  region-info-cmd-header: '&8➼ &7Commands:' # coming soon
+  region-info-cmd: '  &8➼ &f"{command}"' # coming soon
 
 time:
   days: '&c{time} Day(s)'
@@ -99,6 +107,7 @@ permissions:
   admin-reload: CyberTravel.admin.reload
   admin-teleport-bypass: CyberTravel.admin.bypass
   admin-view-border: CyberTravel.admin.border
+  admin-info-list: CyberTravel.admin.info
 
   admin-create-region: CyberTravel.admin.edit.create
   admin-rename-region: CyberTravel.admin.edit.rename
@@ -110,8 +119,8 @@ permissions:
   admin-set-price: CyberTravel.admin.edit.price
   admin-set-enabled: CyberTravel.admin.edit.enable
   admin-set-disabled: CyberTravel.admin.edit.disable
-  admin-add-command: CyberTravel.admin.edit.addcommand
-  admin-del-command: CyberTravel.admin.edit.deletecommand
+  admin-add-command: CyberTravel.admin.edit.addcommand # coming soon
+  admin-del-command: CyberTravel.admin.edit.deletecommand # coming soon
 
   admin-add-player-region: CyberTravel.admin.manage.add
   admin-del-player-region: CyberTravel.admin.manage.delete

@@ -89,7 +89,7 @@ public final class CyberTravel extends JavaPlugin {
         blockUtils = new BlockUtils(this);
 
         // listeners
-        Bukkit.getPluginManager().registerEvents(new MovementListener(this), instance);
+        Bukkit.getPluginManager().registerEvents(new MovementListener(this), this);
 
         Metrics metrics = new Metrics(this, 12217);
         vault = new Vault(this);

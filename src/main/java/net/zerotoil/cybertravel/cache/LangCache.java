@@ -83,8 +83,10 @@ public class LangCache {
         defaultAdminHelp.add("&8➼ &c/ctp create <region> &fCreate a region in your world.");
         defaultAdminHelp.add("&8➼ &c/ctp rename <region> &fChange the ID/name of a region.");
         defaultAdminHelp.add("&8➼ &c/ctp delete <region> &fDelete an existing region.");
+        defaultAdminHelp.add("&8➼ &c/ctp (list | info) &fView all region information.");
         defaultAdminHelp.add("&8➼ &c/ctp (pos1 | pos2) <region> &fSet cuboid boundaries of a region.");
         defaultAdminHelp.add("&8➼ &c/ctp setTP <region> &fSet teleport location.");
+        defaultAdminHelp.add("&8➼ &c/ctp (border | outline) <region> &fSee boundaries and TP location of a region.");
         defaultAdminHelp.add("&8➼ &c/ctp setDisplayName <region> <display name> &fChange the display name.");
         defaultAdminHelp.add("&8➼ &c/ctp setPrice <region> <price> &fChange the price of teleportation.");
         defaultAdminHelp.add("&8➼ &c/ctp setEnabled <region> &fEnable a region.");
@@ -169,6 +171,15 @@ public class LangCache {
         messages.put("region-set-disabled", new MessageObject(main, updateConfig, prefix, "region-set-disabled", "&aThe region \"{region}&a\" has been disabled!"));
         messages.put("already-enabled", new MessageObject(main, updateConfig, prefix, "already-enabled", "&cThe region \"{region}&c\" is already enabled!"));
         messages.put("already-disabled", new MessageObject(main, updateConfig, prefix, "already-disabled", "&cThe region \"{region}&c\" is already disabled!"));
+        messages.put("regions-info-header", new MessageObject(main, updateConfig, prefix, "region-info-header", "&8&m――――――&8<&c&l Region &f&lInfo &8>&8&m――――――"));
+        messages.put("regions-info-footer", new MessageObject(main, updateConfig, prefix, "region-info-footer", "&8&m――――――――――――――――――――――――――――――――"));
+        messages.put("region-info-name", new MessageObject(main, updateConfig, prefix, "region-info-name", "&c{region} &f\"{displayName}\" &7&o({status})"));
+        messages.put("region-info-location", new MessageObject(main, updateConfig, prefix, "region-info-location", "&8➼ &7Location - &f{world}, (&7{pos1}&f), (&7{pos2}&f), (&7{setTP}&f)"));
+        messages.put("region-info-price", new MessageObject(main, updateConfig, prefix, "region-info-price", "&8➼ &7Price - &a${price}"));
+        messages.put("region-info-cmd-header", new MessageObject(main, updateConfig, prefix, "region-info-cmd-header", "&8➼ &7Commands:"));
+        messages.put("region-info-cmd", new MessageObject(main, updateConfig, prefix, "region-info-cmd", "  &8➼ &f\"{command}\""));
+
+        // messages.put("", new MessageObject(main, updateConfig, prefix, "", ""));
 
         // time formatting
         if (config.isConfigurationSection("time")) {
@@ -234,6 +245,7 @@ public class LangCache {
         permissions.put("admin-reload", new PermissionObject(main, updateConfig, "admin-reload", "CyberTravel.admin.reload"));
         permissions.put("admin-teleport-bypass", new PermissionObject(main, updateConfig, "admin-teleport-bypass", "CyberTravel.admin.bypass"));
         permissions.put("admin-view-border", new PermissionObject(main, updateConfig, "admin-view-border", "CyberTravel.admin.border"));
+        permissions.put("admin-info-list", new PermissionObject(main, updateConfig, "admin-info-list", "CyberTravel.admin.info"));
         permissions.put("admin-create-region", new PermissionObject(main, updateConfig, "admin-create-region", "CyberTravel.admin.edit.create"));
         permissions.put("admin-rename-region", new PermissionObject(main, updateConfig, "admin-rename-region", "CyberTravel.admin.edit.rename"));
         permissions.put("admin-set-display-name", new PermissionObject(main, updateConfig, "admin-set-display-name", "CyberTravel.admin.edit.displayname"));
