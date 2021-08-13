@@ -59,7 +59,7 @@ public class RegionCache {
 
         }
 
-
+        if (!config.isConfigurationSection("regions")) return;
         for (String i : config.getConfigurationSection("regions").getKeys(false)) {
 
             String subPath = "regions." + i + ".";

@@ -63,6 +63,13 @@ public class CTPCommand implements CommandExecutor {
         Configuration dataConfig = main.getFileCache().getStoredFiles().get("data").getConfig();
         Configuration regionsConfig = main.getFileCache().getStoredFiles().get("regions").getConfig();
 
+        if (args.length == 0) {
+
+            sendHelpMessage(sender);
+            return true;
+
+        }
+
         // 1 argument
         if (args.length == 1) {
 
@@ -175,6 +182,9 @@ public class CTPCommand implements CommandExecutor {
                 return true;
 
             }
+
+            sendHelpMessage(sender);
+            return true;
 
         }
 
@@ -574,6 +584,9 @@ public class CTPCommand implements CommandExecutor {
                 return true;
 
             }
+
+            sendHelpMessage(sender);
+            return true;
 
         }
 
@@ -1086,6 +1099,9 @@ public class CTPCommand implements CommandExecutor {
 
             }
 
+            sendHelpMessage(sender);
+            return true;
+
         }
 
         if (args.length == 4) {
@@ -1119,6 +1135,9 @@ public class CTPCommand implements CommandExecutor {
                         args[1], "player", args[2]));
 
             }
+
+            sendHelpMessage(sender);
+            return true;
 
         }
 
