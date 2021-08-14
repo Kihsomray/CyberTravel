@@ -122,8 +122,10 @@ public class RegionObject {
     public void sendCommands(CyberTravel main, Player player) {
         if (commands.isEmpty()) return;
         player.sendMessage(main.getLangUtils().getMessage("region-info-cmd-header", false));
+        int a = 0;
         for (String i : commands) {
-            player.sendMessage(main.getLangCache().getMessages().get("region-info-cmd").getMessage(false, "command", i));
+            player.sendMessage(main.getLangCache().getMessages().get("region-info-cmd").getMessage(false, "command", i, "id", a + ""));
+            a++;
         }
     }
     public void sendInfo(CyberTravel main, Player player) {

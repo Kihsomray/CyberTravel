@@ -2,6 +2,7 @@ package net.zerotoil.cybertravel.listeners;
 
 import net.zerotoil.cybertravel.CyberTravel;
 import net.zerotoil.cybertravel.objects.RegionObject;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -113,6 +114,14 @@ public class MovementListener implements Listener {
             // sends discover region message
             player.sendMessage(main.getLangCache().getMessages().get("enter-region").getMessage(true, "region", i,
                     "displayName", main.getCtpCommand().getDisplayName(i)));
+
+            // run commands
+            if (region.getCommands().size() > 0) {
+                for (String a : region.getCommands()) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), a.replace("/", "").replace("{player}", player.getPlayer().getName())
+                            .replace("{region}", region.getName()).replace("{displayName}", region.getDisplayName()).replace("{price}", region.getPrice() + ""));
+                }
+            }
 
         }
 

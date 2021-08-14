@@ -91,6 +91,8 @@ public class LangCache {
         defaultAdminHelp.add("&8➼ &c/ctp setPrice <region> <price> &fChange the price of teleportation.");
         defaultAdminHelp.add("&8➼ &c/ctp setEnabled <region> &fEnable a region.");
         defaultAdminHelp.add("&8➼ &c/ctp setDisabled <region> &fDisable a region.");
+        defaultAdminHelp.add("&8➼ &c/ctp (addCMD | addCommand) <region> <command> &fAdd a command to a region.");
+        defaultAdminHelp.add("&8➼ &c/ctp (delCMD | delCommand) <region> <id> &fDelete a command from a region.");
         defaultAdminHelp.add("&8➼ &c/ctp reset playerData <region | all> &fDelete player data for a region.");
         defaultAdminHelp.add("&8➼ &c/ctp (tp | teleport) <region> <player> [bypass] &fTeleport player to region.");
         defaultAdminHelp.add("&8➼ &c/ctp regions &fSee all locked/unlocked regions.");
@@ -171,13 +173,17 @@ public class LangCache {
         messages.put("region-set-disabled", new MessageObject(main, updateConfig, prefix, "region-set-disabled", "&aThe region \"{region}&a\" has been disabled!"));
         messages.put("already-enabled", new MessageObject(main, updateConfig, prefix, "already-enabled", "&cThe region \"{region}&c\" is already enabled!"));
         messages.put("already-disabled", new MessageObject(main, updateConfig, prefix, "already-disabled", "&cThe region \"{region}&c\" is already disabled!"));
-        messages.put("regions-info-header", new MessageObject(main, updateConfig, prefix, "region-info-header", "&8&m――――――&8<&c&l Region &f&lInfo &8>&8&m――――――"));
-        messages.put("regions-info-footer", new MessageObject(main, updateConfig, prefix, "region-info-footer", "&8&m――――――――――――――――――――――――――――――――"));
+        messages.put("regions-info-header", new MessageObject(main, updateConfig, prefix, "regions-info-header", "&8&m――――――&8<&c&l Region &f&lInfo &8>&8&m――――――"));
+        messages.put("regions-info-footer", new MessageObject(main, updateConfig, prefix, "regions-info-footer", "&8&m――――――――――――――――――――――――――――――――"));
         messages.put("region-info-name", new MessageObject(main, updateConfig, prefix, "region-info-name", "&c{region} &f\"{displayName}\" &7&o({status})"));
         messages.put("region-info-location", new MessageObject(main, updateConfig, prefix, "region-info-location", "&8➼ &7Location - &f{world}, (&7{pos1}&f), (&7{pos2}&f), (&7{setTP}&f)"));
         messages.put("region-info-price", new MessageObject(main, updateConfig, prefix, "region-info-price", "&8➼ &7Price - &a${price}"));
         messages.put("region-info-cmd-header", new MessageObject(main, updateConfig, prefix, "region-info-cmd-header", "&8➼ &7Commands:"));
         messages.put("region-info-cmd", new MessageObject(main, updateConfig, prefix, "region-info-cmd", "  &8➼ &f\"{command}\""));
+        messages.put("no-commands", new MessageObject(main, updateConfig, prefix, "no-commands", "&cNo commands exist for \"{region}\"!"));
+        messages.put("command-deleted", new MessageObject(main, updateConfig, prefix, "command-deleted", "&aThe command \"{command}\" has been deleted for the region \"{region}\"."));
+        messages.put("command-added", new MessageObject(main, updateConfig, prefix, "command-added", "&aThe command \"{command}\" has been added to the region \"{region}\"."));
+        messages.put("invalid-command", new MessageObject(main, updateConfig, prefix, "invalid-command", "&cThere is no command with the ID {id}!"));
 
         // messages.put("", new MessageObject(main, updateConfig, prefix, "", ""));
 

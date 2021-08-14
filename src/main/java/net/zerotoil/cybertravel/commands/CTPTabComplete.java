@@ -58,6 +58,14 @@ public class CTPTabComplete implements TabCompleter {
             args0.add("info");
             args0.add("list");
         }
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-del-command"))) {
+            args0.add("delCMD");
+            args0.add("delCommand");
+        }
+        if (player.hasPermission(main.getLangUtils().getPermission("admin-add-command"))) {
+            args0.add("addCMD");
+            args0.add("addCommand");
+        }
 
         if (args.length == 1) {
 
@@ -125,31 +133,14 @@ public class CTPTabComplete implements TabCompleter {
             }
 
             // region identification module
-            if ((cmdReq0(args[0], args0, "pos1") || cmdReq0(args[0], args0, "pos2") || cmdReq0(args[0], args0, "setTP") ||
-                    cmdReq0(args[0], args0, "delete") || cmdReq0(args[0], args0, "border") || cmdReq0(args[0], args0, "outline"))) {
+            if (cmdReq0(args[0], args0, "pos1") || cmdReq0(args[0], args0, "pos2") || cmdReq0(args[0], args0, "setTP") ||
+                    cmdReq0(args[0], args0, "delete") || cmdReq0(args[0], args0, "border") || cmdReq0(args[0], args0, "outline") ||
+                    cmdReq0(args[0], args0, "delCMD") || cmdReq0(args[0], args0, "delCommand") || (cmdReq0(args[0], args0, "addPlayerRegion")) ||
+                    (cmdReq0(args[0], args0, "delPlayerRegion")) || (cmdReq0(args[0], args0, "setEnabled")) || (cmdReq0(args[0], args0, "setDisabled")) ||
+                    (cmdReq0(args[0], args0, "setDisplayName")) || (cmdReq0(args[0], args0, "rename")) || (cmdReq0(args[0], args0, "setPrice")) ||
+                    cmdReq0(args[0], args0, "addCMD") || cmdReq0(args[0], args0, "addCommand")) {
 
                 if (main.getRegionCache().getRegions().size() != 0) {
-
-                    args1 = new ArrayList<>(main.getRegionCache().getRegions().keySet());
-
-                } else {
-
-                    args1.add("<region>");
-
-                }
-
-                StringUtil.copyPartialMatches(args[1], args1, args1Comp);
-                Collections.sort(args1Comp);
-                return args1Comp;
-
-            }
-
-            // add/delete region module
-            if ((cmdReq0(args[0], args0, "addPlayerRegion")) || (cmdReq0(args[0], args0, "delPlayerRegion")) || (cmdReq0(args[0], args0, "setEnabled")) ||
-                    (cmdReq0(args[0], args0, "setDisabled")) || (cmdReq0(args[0], args0, "setDisplayName")) || (cmdReq0(args[0], args0, "rename")) ||
-                    (cmdReq0(args[0], args0, "setPrice"))) {
-
-                if (!main.getRegionCache().getRegions().isEmpty()) {
 
                     args1 = new ArrayList<>(main.getRegionCache().getRegions().keySet());
 
@@ -207,6 +198,26 @@ public class CTPTabComplete implements TabCompleter {
             if (cmdReq0(args[0], args0, "setPrice")) {
 
                 args2.add("<price>");
+
+                StringUtil.copyPartialMatches(args[2], args2, args2Comp);
+                Collections.sort(args2Comp);
+                return args2Comp;
+
+            }
+
+            if (cmdReq0(args[0], args0, "delCMD") || cmdReq0(args[0], args0, "delCommand")) {
+
+                args2.add("<id>");
+
+                StringUtil.copyPartialMatches(args[2], args2, args2Comp);
+                Collections.sort(args2Comp);
+                return args2Comp;
+
+            }
+
+            if (cmdReq0(args[0], args0, "addCMD") || cmdReq0(args[0], args0, "addCommand")) {
+
+                args2.add("<command>");
 
                 StringUtil.copyPartialMatches(args[2], args2, args2Comp);
                 Collections.sort(args2Comp);

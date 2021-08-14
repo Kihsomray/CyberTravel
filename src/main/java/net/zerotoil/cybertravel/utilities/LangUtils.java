@@ -7,11 +7,11 @@ import org.bukkit.entity.Player;
 
 public class LangUtils {
 
+    private CyberTravel main;
+
     public LangUtils(CyberTravel main) {
         this.main = main;
     }
-
-    private CyberTravel main;
 
     // gets color of chat message
     public String getColor(String msg, boolean addPrefix){
@@ -38,23 +38,13 @@ public class LangUtils {
 
         String formattedTime = "";
 
-        // standard formatting
-        String daysString = "&c{time} Day(s)";
-        String hoursString = "&c{time} Hour(s)";
-        String minutesString = "&c{time} Minute(s)";
-        String secondsString = "&c{time} Second(s)";
-        String splitter = "&c, ";
+        String daysString = main.getLangCache().getTimeDaysFormat();
+        String hoursString = main.getLangCache().getTimeHoursFormat();
+        String minutesString = main.getLangCache().getTimeMinutesFormat();
+        String secondsString = main.getLangCache().getTimeSecondsFormat();
+        String splitter = main.getLangCache().getTimeSplitterFormat();
 
-        // custom lang formatting
-        if (main.getFileUtils().langFile().isConfigurationSection("time")) {
-
-            if (main.getFileUtils().langFile().isSet("time.days")) daysString = main.getFileUtils().langFile().getString("time.days");
-            if (main.getFileUtils().langFile().isSet("time.hours")) hoursString = main.getFileUtils().langFile().getString("time.hours");
-            if (main.getFileUtils().langFile().isSet("time.minutes")) minutesString = main.getFileUtils().langFile().getString("time.minutes");
-            if (main.getFileUtils().langFile().isSet("time.seconds")) secondsString = main.getFileUtils().langFile().getString("time.seconds");
-            if (main.getFileUtils().langFile().isSet("time.splitter")) splitter = main.getFileUtils().langFile().getString("time.splitter");
-
-        }
+        if (seconds == 0) return main.getLangUtils().getColor(secondsString.replace("(", "").replace(")", "").replace("{time}", "0"), false);
 
         long daySeconds = seconds;
         if (seconds != 0) daySeconds = seconds % 86400;

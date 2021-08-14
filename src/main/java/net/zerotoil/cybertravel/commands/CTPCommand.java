@@ -627,6 +627,38 @@ public class CTPCommand implements CommandExecutor {
 
         }
 
+        if (args[0].matches("(?i)addCMD") || args[0].matches("(?i)addCommand")) {
+
+            if (!player.hasPermission(main.getLangUtils().getPermission("admin-add-command"))) {
+                main.getLangUtils().noPermission(player);
+                return true;
+            }
+
+            // region does not exist
+            if (!main.getRegionCache().getRegions().containsKey(args[1])) {
+                sender.sendMessage(main.getLangCache().getMessages().get("unknown-region").getMessage(true, "region", args[1]));
+                return true;
+
+            }
+
+            String commandString = args[2];
+
+            for (int i = 3; i < args.length; i++) {
+                commandString = commandString + " " + args[i];
+            }
+
+            try {
+                sender.sendMessage(main.getLangCache().getMessages().get("command-added").getMessage(true, "region", args[1],
+                        "command", commandString, "id", args[2]));
+                main.getRegionCache().getRegions().get(args[1]).addCommand(commandString);
+
+                regionsConfig.set(rg + args[1] + ".settings.commands", main.getRegionCache().getRegions().get(args[1]).getCommands());
+                main.getFileCache().getStoredFiles().get("regions").saveConfig();
+                return true;
+            } catch (Exception e) {}
+
+        }
+
         // 3 arguments
         if (args.length == 3) {
 
@@ -913,7 +945,7 @@ public class CTPCommand implements CommandExecutor {
 
                                                 // player still on a cooldown
                                                 sender.sendMessage(main.getLangCache().getMessages().get("region-cooldown").getMessage(true, "time",
-                                                        args[1], "displayName", getDisplayName(args[1]), "region", main.getRegionCache().getRegions().get(args[1]).getDisplayName()));
+                                                        main.getLangUtils().formatTime(regionTimeRemaining), "displayName", getDisplayName(args[1]), "region", getDisplayName(args[1])));
                                                 return true;
                                             }
 
@@ -1096,6 +1128,38 @@ public class CTPCommand implements CommandExecutor {
                 sender.sendMessage(main.getLangCache().getMessages().get("region-set-price").getMessage(true, "region", args[1],
                         "price", String.format("%.2f", Double.parseDouble(args[2]))));
                 return true;
+
+            }
+
+            if (args[0].matches("(?i)delCMD|delCommand")) {
+
+                if (!player.hasPermission(main.getLangUtils().getPermission("admin-del-command"))) {
+                    main.getLangUtils().noPermission(player);
+                    return true;
+                }
+
+                // region does not exist
+                if (!main.getRegionCache().getRegions().containsKey(args[1])) {
+                    sender.sendMessage(main.getLangCache().getMessages().get("unknown-region").getMessage(true, "region", args[1]));
+                    return true;
+                }
+
+                if (main.getRegionCache().getRegions().get(args[1]).getCommands().size() == 0) {
+                    sender.sendMessage(main.getLangCache().getMessages().get("no-commands").getMessage(true, "region", args[1]));
+                    return true;
+                }
+
+                try {
+                    sender.sendMessage(main.getLangCache().getMessages().get("command-deleted").getMessage(true, "region", args[1],
+                            "command", main.getRegionCache().getRegions().get(args[1]).getCommands().get(Integer.parseInt(args[2])), "id", args[2]));
+                    main.getRegionCache().getRegions().get(args[1]).removeCommand(Integer.parseInt(args[2]));
+                    regionsConfig.set(rg + args[1] + ".settings.commands", main.getRegionCache().getRegions().get(args[1]).getCommands());
+                    main.getFileCache().getStoredFiles().get("regions").saveConfig();
+                    return true;
+                } catch (Exception e) {
+                    sender.sendMessage(main.getLangCache().getMessages().get("invalid-command").getMessage(true, "region", args[1], "id", args[2]));
+                    return true;
+                }
 
             }
 

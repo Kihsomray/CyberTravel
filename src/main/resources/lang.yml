@@ -24,6 +24,8 @@ messages:
     - '&8➼ &c/ctp setPrice <region> <price> &fChange the price of teleportation.'
     - '&8➼ &c/ctp setEnabled <region> &fEnable a region.'
     - '&8➼ &c/ctp setDisabled <region> &fDisable a region.'
+    - '&8➼ &c/ctp (addCMD | addCommand) <region> <command> &fAdd a command to a region.'
+    - '&8➼ &c/ctp (delCMD | delCommand) <region> <id> &fDelete a command from a region.'
     - '&8➼ &c/ctp reset playerData <region | all> &fDelete player data for a region.'
     - '&8➼ &c/ctp (tp | teleport) <region> [player] [bypass] &fTeleport player to region.'
     - '&8➼ &c/ctp regions &fSee all locked/unlocked regions.'
@@ -84,8 +86,12 @@ messages:
   region-info-name: '&c{region} &f"{displayName}" &7&o({status})'
   region-info-location: '&8➼ &7Location - &f{world}, (&7{pos1}&f), (&7{pos2}&f), (&7{setTP}&f)'
   region-info-price: '&8➼ &7Price - &a${price}'
-  region-info-cmd-header: '&8➼ &7Commands:' # coming soon
-  region-info-cmd: '  &8➼ &f"{command}"' # coming soon
+  region-info-cmd-header: '&8➼ &7Commands:'
+  region-info-cmd: '  &8➼ &7{id} - &f"{command}"'
+  no-commands: '&cNo commands exist for "{region}"!'
+  command-deleted: '&aThe command "{command}" has been deleted for the region "{region}".'
+  command-added: '&aThe command "{command}" has been added to the region "{region}".'
+  invalid-command: '&cThere is no command with the ID {id}!'
 
 time:
   days: '&c{time} Day(s)'

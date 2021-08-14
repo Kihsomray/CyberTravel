@@ -1,6 +1,7 @@
 package net.zerotoil.cybertravel;
 
 import net.zerotoil.cybertravel.addons.Metrics;
+import net.zerotoil.cybertravel.addons.PlaceholderAPI;
 import net.zerotoil.cybertravel.addons.Vault;
 import net.zerotoil.cybertravel.cache.*;
 import net.zerotoil.cybertravel.commands.CTPCommand;
@@ -93,6 +94,7 @@ public final class CyberTravel extends JavaPlugin {
 
         Metrics metrics = new Metrics(this, 12217);
         vault = new Vault(this);
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) new PlaceholderAPI(this).register();
 
     }
 
@@ -100,4 +102,5 @@ public final class CyberTravel extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
+
 }
