@@ -100,6 +100,7 @@ time:
   seconds: '&c{time} Second(s)'
   splitter: '&c, '
 
+# note: this section will be removed in 2.0+, please make a switch to default permissions.
 permissions:
   # player
   player-about: CyberTravel.player.about
@@ -125,8 +126,8 @@ permissions:
   admin-set-price: CyberTravel.admin.edit.price
   admin-set-enabled: CyberTravel.admin.edit.enable
   admin-set-disabled: CyberTravel.admin.edit.disable
-  admin-add-command: CyberTravel.admin.edit.addcommand # coming soon
-  admin-del-command: CyberTravel.admin.edit.deletecommand # coming soon
+  admin-add-command: CyberTravel.admin.edit.addcommand
+  admin-del-command: CyberTravel.admin.edit.deletecommand
 
   admin-add-player-region: CyberTravel.admin.manage.add
   admin-del-player-region: CyberTravel.admin.manage.delete

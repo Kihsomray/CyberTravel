@@ -272,9 +272,6 @@ public class CTPTabComplete implements TabCompleter {
 
     }
 
-    private boolean hasPermission(Player player, String permissionName, String defaultPermission) {
-        return player.hasPermission(main.getFileUtils().getPermission(permissionName, defaultPermission));
-    }
     private boolean cmdReq0(String arg0, List<String> args0, String command) {
         return (arg0.equalsIgnoreCase(command) && args0.contains(command));
     }

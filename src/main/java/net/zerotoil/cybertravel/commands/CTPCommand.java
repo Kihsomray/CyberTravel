@@ -224,6 +224,9 @@ public class CTPCommand implements CommandExecutor {
             // /ftp <pos1|pos2|settp> <region>
             if (args[0].matches("(?i)pos1|pos2|settp")) {
 
+                // send to lowercase
+                args[0] = args[0].toLowerCase();
+
                 // permission nodes
                 if ((!sender.hasPermission(main.getLangUtils().getPermission("admin-set-position1")) && args[0].equalsIgnoreCase("pos1")) ||
                         (!sender.hasPermission(main.getLangUtils().getPermission("admin-set-position2")) && args[0].equalsIgnoreCase("pos2")) ||

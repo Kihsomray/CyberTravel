@@ -70,6 +70,13 @@ public class RegionCache {
 
             if (config.isSet(location + "pos1")) regions.get(i).setPos1(getCoordinates(i, "pos1"));
             if (config.isSet(location + "pos2")) regions.get(i).setPos2(getCoordinates(i, "pos2"));
+
+            // fixes error in <1.0.3 where settp is case-sensitive
+            if (config.isSet(location + "setTP")) {
+                if (!config.isSet(location + "settp")) set(i + ".location.settp", config.get(location + "setTP"));
+                set(i + ".location.setTP", null);
+            }
+
             if (config.isSet(location + "settp")) regions.get(i).setSetTP(getCoordinates(i, "settp"));
             if (config.isSet(settings + "display-name")) regions.get(i).setDisplayName(config.getString(settings + "display-name"));
             if (config.isSet(settings + "price")) regions.get(i).setPrice(config.getDouble(settings + "price"));

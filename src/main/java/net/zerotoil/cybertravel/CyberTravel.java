@@ -64,11 +64,8 @@ public final class CyberTravel extends JavaPlugin {
         return this.vault;
     }
 
-    private CyberTravel instance;
-
     @Override
     public void onEnable() {
-        instance = this;
 
         // store files to cache
         fileCache = new FileCache(this);
