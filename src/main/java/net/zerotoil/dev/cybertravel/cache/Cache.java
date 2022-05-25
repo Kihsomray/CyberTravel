@@ -1,12 +1,13 @@
 package net.zerotoil.dev.cybertravel.cache;
 
+import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
 
 public class Cache {
 
     private final CyberTravel main;
 
-    // cache classes here
+    @Getter Config config;
 
     public Cache(CyberTravel main) {
         this.main = main;
@@ -21,7 +22,7 @@ public class Cache {
 
         if (loadCore) main.reloadCore();
 
-        // cache stuff here
+        config = new Config(main);
 
         if (loadCore) main.core().loadFinish();
 

@@ -1,6 +1,5 @@
 package net.zerotoil.dev.cybertravel.utilities;
 
-import net.zerotoil.dev.cybertravel.CyberTravel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -10,12 +9,6 @@ import java.util.Arrays;
 import java.util.Properties;
 
 public class WorldUtils {
-
-    private final CyberTravel main;
-
-    public WorldUtils(CyberTravel main) {
-        this.main = main;
-    }
 
     public static String defaultWorld() {
         try {

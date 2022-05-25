@@ -1,7 +1,34 @@
 config:
 
+  # Countdown before teleporting, cancels on player move or damage.
+  countdown:
+    enabled: true
+    seconds: 5
 
-  # Configurations that should auto-update
+  # region cooldown for how many second before the player can
+  # teleport to the region again. NOTE: Specific region cooldowns
+  # will override this cooldown (coming soon).
+  region-cooldown:
+    enabled: false
+    seconds: 300
+
+  # global cooldown for how many second before the player can
+  # teleport to the region again.
+  global-cooldown:
+    enabled: false
+    seconds: 100
+
+  # Whichever cooldown is longer is the one that will prevail.
+
+  # when creating a region, the border will display temporarily,
+  # making it easier to find. Disabling it will make it not display
+  # after a region is created or edited.
+  display-border:
+    enabled: true
+    rgb: [0, 127, 255]
+    seconds: 10
+
+  # Configurations that should auto-update.
   auto-update:
     config: true
     lang: true

@@ -2,8 +2,11 @@ package net.zerotoil.dev.cybertravel.objects.regions;
 
 import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
+import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionCommands;
+import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionMessage;
 import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionTeleport;
 import net.zerotoil.dev.cybertravel.utilities.WorldUtils;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Arrays;
@@ -19,6 +22,8 @@ public class Region {
     @Getter private double[] lowerCorner;
 
     @Getter private RegionTeleport teleport;
+    @Getter private RegionCommands commands;
+    @Getter private RegionMessage message;
 
     public Region(CyberTravel main, String id) {
         this.main = main;
@@ -47,10 +52,27 @@ public class Region {
         }
 
         teleport = new RegionTeleport(main, this);
-
+        commands = new RegionCommands(main, this);
+        message = new RegionMessage(main, this);
 
     }
 
+    // returns if a location is within the region
+    public boolean inRegion(Location location) {
+        if (!enabled) return false;
+        Location topCorner = getUpperLocation();
+        Location bottomCorner = getLowerLocation();
+        if (!location.getWorld().equals(topCorner.getWorld())) return false;
+        if (location.getX() > topCorner.getX() || location.getX() < bottomCorner.getX()) return false;
+        if (location.getY() > topCorner.getY() || location.getY() < bottomCorner.getY()) return false;
+        return !(location.getZ() > topCorner.getZ()) && !(location.getZ() < bottomCorner.getZ());
+    }
 
+    public Location getUpperLocation() {
+        return WorldUtils.doubleArrayToLocation(world, upperCorner);
+    }
+    public Location getLowerLocation() {
+        return WorldUtils.doubleArrayToLocation(world, lowerCorner);
+    }
 
 }
