@@ -1,0 +1,7 @@
+config:
+
+
+  # Configurations that should auto-update
+  auto-update:
+    config: true
+    lang: true

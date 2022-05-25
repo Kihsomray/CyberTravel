@@ -1,0 +1,26 @@
+regions:
+
+  region_name:
+
+    enabled: false
+    display-name: '&b&lExample Region'
+
+    location:
+      world: world
+      pos-1: 24, 24, 24
+      pos-2: -24, 72, -24
+
+    settings:
+      teleport:
+        enabled: true
+        world: world
+        location: 0, 64, 0, 0, 90
+
+      commands: []
+
+      message:
+        header: true
+        footer: true
+        content:
+          - '&7► <G:EE0099>No need to walk back here again!</G:EE00EE>'
+          - '&7► <G:EE0099>Teleport to this Region using &l/ctp tp {id}</G:EE00EE>'
