@@ -1,7 +1,7 @@
 name: CyberTravel
 version: ${project.version}
-main: net.zerotoil.cybertravel.CyberTravel
-api-version: 1.16
+main: net.zerotoil.dev.cybertravel.CyberTravel
+api-version: 1.18
 authors: [ Kihsomray ]
 description: Quickly teleport to checkpoints you've unlocked.
 website: zerotoil.net
@@ -10,13 +10,7 @@ softdepend: [ Vault, PlaceholderAPI ]
 commands:
   ctp:
     aliases:
-      - fastteleport
-      - ctcp
-      - ftcp
+      - ctp
       - ftp
-      - fasttp
-      - fteleport
-      - fasttravel
-      - fastravel
-      - ftcheckpoint
       - cybertravel
+      - cyberteleport
