@@ -20,7 +20,7 @@ public final class CyberTravel extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        if (CyberCore.restrictVersions(7, 18, "CTP", getDescription().getVersion())) return;
+        if (!CyberCore.restrictVersions(7, 18, "CTP", getDescription().getVersion())) return;
 
         reloadCore();
         loadPlugin();

@@ -1,11 +1,12 @@
 name: CyberTravel
-version: ${project.version}
+version: '${project.version}'
 main: net.zerotoil.dev.cybertravel.CyberTravel
-api-version: 1.18
+api-version: 1.16
+prefix: CTP
 authors: [ Kihsomray ]
-description: Quickly teleport to checkpoints you've unlocked.
-website: zerotoil.net
-softdepend: [ Vault, PlaceholderAPI ]
+description: Discover regions scattered across your world to be able to quickly travel back to that spot with a command.
+website: dev.zerotoil.net
+softdepend: [ Vault, PlaceholderAPI, CyberWorldReset ]
 
 commands:
   ctp:
