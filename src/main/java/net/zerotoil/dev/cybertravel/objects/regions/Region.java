@@ -3,10 +3,12 @@ package net.zerotoil.dev.cybertravel.objects.regions;
 import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
 import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionCommands;
+import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionLocation;
 import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionMessage;
 import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionTeleport;
 import net.zerotoil.dev.cybertravel.utilities.WorldUtils;
 import org.bukkit.Location;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Arrays;
@@ -17,62 +19,139 @@ public class Region {
     @Getter private final String id;
 
     @Getter private boolean enabled = false;
-    @Getter private String world;
-    @Getter private double[] upperCorner;
-    @Getter private double[] lowerCorner;
+
+    private RegionLocation location;
 
     @Getter private RegionTeleport teleport;
     @Getter private RegionCommands commands;
     @Getter private RegionMessage message;
 
+    /**
+     * Constructs a region object based on data
+     * saved to the regions.yml file.
+     *
+     * @param main Main instance
+     * @param id Config ID of region
+     */
     public Region(CyberTravel main, String id) {
         this.main = main;
         this.id = id;
+        reload();
 
+    }
+
+    /**
+     * Constructs a region object based on the
+     * region location. Generates necessary data
+     * in the regions.yml file.
+     *
+     * @param main Main instance
+     * @param id New ID (must not already exist)
+     * @param location Region location that is fully set up
+     * @throws IllegalArgumentException If region already exists
+     */
+    public Region(CyberTravel main, String id, RegionLocation location) {
+        this.main = main;
+        this.id = id;
+
+        if (main.cache().isRegion(id)) throw new IllegalArgumentException();
+
+        Configuration config = main.core().files().getConfig("regions");
+
+        String pre = "regions." + id + ".";
+
+        config.set(pre + "enabled", false);
+        config.set(pre + "display-name", id.replace("_", "").replace("-", ""));
+
+        String loc = pre + "location.";
+        setRegionLocation(location);
+        config.set(loc + "world", location.getWorldName());
+        config.set(loc + "pos-1", location.getUpperString());
+        config.set(loc + "pos-2", location.getLowerString());
+
+        String tp = pre + "settings.teleport.";
+        config.set(tp + "enabled", false);
+        config.set(tp + "world", location.getWorldName());
+        config.set(tp + "location", WorldUtils.coordinatesToString(location.getMidpoint()));
+
+        config.set(pre + "settings.commands", null);
+
+        String msg = pre + "settings.message.";
+        config.set(msg + "header", true);
+        config.set(msg + "footer", true);
+        config.set(msg + "content", Arrays.toString(new String[]{
+                "&7► <G:EE0099>No need to walk back here again!</G:EE00EE>",
+                "&7► <G:EE0099>Teleport to this Region using &l/ctp tp {id}</G:EE00EE>"
+        }));
+
+
+    }
+
+    /**
+     * Reloads the region based on data
+     * inside the region.yml file.
+     */
+    public void reload() {
         ConfigurationSection section = main.core().files().getConfig("regions").getConfigurationSection("regions." + this.id);
         if (section == null) return;
 
         enabled = section.getBoolean("enabled", enabled);
-        world = section.getString("location.world", WorldUtils.defaultWorld());
+
+        // location of the world
+        String world = section.getString("location.world", WorldUtils.defaultWorld());
 
         if (!WorldUtils.isWorld(world)) throw new IllegalArgumentException();
 
-        // temp positions
-        double[] tempPos1 = WorldUtils.coordinateStringToDouble(section.getString("location.pos-1"));
-        double[] tempPos2 = WorldUtils.coordinateStringToDouble(section.getString("location.pos-2"));
+        // get the positions
+        double[] pos1 = WorldUtils.coordinateStringToDouble(section.getString("location.pos-1"));
+        double[] pos2 = WorldUtils.coordinateStringToDouble(section.getString("location.pos-2"));
 
-        // duplicate positions
-        upperCorner = Arrays.copyOf(tempPos1, tempPos1.length);
-        lowerCorner = Arrays.copyOf(tempPos2, tempPos2.length);
+        // location coordinates from config
+        location = new RegionLocation(main, this, world, pos1, pos2);
 
-        // copy max/min
-        for (int i = 0; i <= 2; i++) {
-            upperCorner[i] = Math.max(tempPos1[i], tempPos2[i]);
-            lowerCorner[i] = Math.min(tempPos1[i], tempPos2[i]);
-        }
-
+        // initialize all other region data
         teleport = new RegionTeleport(main, this);
         commands = new RegionCommands(main, this);
         message = new RegionMessage(main, this);
-
     }
 
-    // returns if a location is within the region
+    /**
+     * Unloads data from the region.
+     */
+    public void unload() {
+        teleport.unloadCooldowns();
+    }
+
+    /**
+     * Check if the location is within the region.
+     *
+     * @param location Location to check
+     * @return If location is in the region
+     */
     public boolean inRegion(Location location) {
         if (!enabled) return false;
-        Location topCorner = getUpperLocation();
-        Location bottomCorner = getLowerLocation();
-        if (!location.getWorld().equals(topCorner.getWorld())) return false;
-        if (location.getX() > topCorner.getX() || location.getX() < bottomCorner.getX()) return false;
-        if (location.getY() > topCorner.getY() || location.getY() < bottomCorner.getY()) return false;
-        return !(location.getZ() > topCorner.getZ()) && !(location.getZ() < bottomCorner.getZ());
+        if (location.getWorld() == null) return false;
+        RegionLocation rl = this.location;
+        if (!location.getWorld().getName().equals(rl.getWorldName())) return false;
+        if (location.getX() > rl.getUpperX() || location.getX() < rl.getLowerX()) return false;
+        if (location.getY() > rl.getUpperY() || location.getY() < rl.getLowerY()) return false;
+        return !(location.getZ() > rl.getUpperZ()) && !(location.getZ() < rl.getLowerZ());
     }
 
-    public Location getUpperLocation() {
-        return WorldUtils.doubleArrayToLocation(world, upperCorner);
+    /**
+     * Set a new region location. Must not
+     * be binded to another region.
+     *
+     * @param location New region location that is fully set up
+     * @return False if passed location is already binded
+     */
+    public boolean setRegionLocation(RegionLocation location) {
+        if (!location.isReady()) return false;
+        this.location = location;
+        return location.bind(this);
+
     }
-    public Location getLowerLocation() {
-        return WorldUtils.doubleArrayToLocation(world, lowerCorner);
-    }
+
+
 
 }

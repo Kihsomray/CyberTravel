@@ -32,7 +32,7 @@ public final class CyberTravel extends JavaPlugin {
         core = new CyberCore(this);
         CoreSettings settings = core.getSettings();
         settings.setBootColor('c');
-        String author = "&7Authors: &f" + getAuthors();
+        String author = "&7Author: &f" + getAuthors();
         String version = "&7Version: &f" + this.getDescription().getVersion();
         settings.setBootLogo(
                 "&c╭━━━╮&7╱╱╱&c╭╮&7╱╱╱╱╱&c╭━━━━╮&7╱╱╱╱╱╱╱╱╱&c╭╮",

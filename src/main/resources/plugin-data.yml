@@ -1,0 +1,9 @@
+version:
+  current: ${project.version}
+  previous: ${project.version}
+
+region-cooldowns:
+  region_id:
+    player_uuid: 0000000000000
+  region_id_2:
+    player_uuid: 0000000000000

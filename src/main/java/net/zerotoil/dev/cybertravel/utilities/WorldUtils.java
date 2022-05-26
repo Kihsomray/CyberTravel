@@ -48,6 +48,10 @@ public class WorldUtils {
         return Arrays.stream(locationString.split(" ")).mapToDouble(Double::parseDouble).toArray();
     }
 
+    public static String coordinatesToString(double[] coordinates) {
+        return coordinates[0] + ", " + coordinates[1] + ", " + coordinates[2];
+    }
+
     public static boolean areCoordinates(String string) {
         try {
             double[] coords = coordinateStringToDouble(string);
