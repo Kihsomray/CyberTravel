@@ -26,6 +26,8 @@ public class Config {
     @Getter private List<Short> displayBorderRGB;
     @Getter private long displayBorderSeconds;
 
+    @Getter private boolean debugPlayerJoinLeave;
+
     public Config(CyberTravel main) {
         this.main = main;
 
@@ -47,6 +49,8 @@ public class Config {
         displayBorderEnabled = section.getBoolean("display-border.enabled", true);
         displayBorderRGB = section.getShortList("display-border.rgb");
         displayBorderSeconds = section.getLong("display-border.seconds");
+
+        debugPlayerJoinLeave = section.getBoolean("debug.player-join-leave");
 
     }
 

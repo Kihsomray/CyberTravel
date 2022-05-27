@@ -57,13 +57,14 @@ public final class CyberTravel extends JavaPlugin {
         if (!playerData.exists()) playerData.mkdirs();
     }
 
-    public void loadPlugin() {
+    private void loadPlugin() {
         reloadPlugin();
         events = new Events(this);
     }
 
     public void reloadPlugin() {
         cache = new Cache(this);
+        cache.load(false);
         addons = new Addons(this);
     }
 

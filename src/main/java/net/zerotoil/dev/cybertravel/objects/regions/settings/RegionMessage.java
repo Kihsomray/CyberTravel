@@ -5,6 +5,7 @@ import net.zerotoil.dev.cybertravel.CyberTravel;
 import net.zerotoil.dev.cybertravel.objects.regions.Region;
 import net.zerotoil.dev.cybertravel.utilities.LangUtils;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -29,6 +30,15 @@ public class RegionMessage {
         footer = section.getBoolean("footer", footer);
 
         content = LangUtils.convertList(section, "content");
+
+    }
+
+    public void sendMessage(Player player) {
+        if (header) main.core().sendMessage(player, "discovery-header");
+
+        // content goes here
+
+        if (footer) main.core().sendMessage(player, "discovery-footer");
 
     }
 

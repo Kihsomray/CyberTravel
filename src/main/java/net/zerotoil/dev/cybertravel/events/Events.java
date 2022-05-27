@@ -5,7 +5,7 @@ import net.zerotoil.dev.cybertravel.CyberTravel;
 public class Events {
 
     private final CyberTravel main;
-    private int counter = 0;
+    private final int counter = 4;
 
     // event classes here
 
@@ -19,7 +19,8 @@ public class Events {
         main.logger("&cLoading events...");
         long startTime = System.currentTimeMillis();
 
-        // event stuff here
+        new OnJoin(main);
+        new OnMovement(main);
 
         main.logger("&7Loaded " + counter + " events in &a" + (System.currentTimeMillis() - startTime) + "ms&7.", "");
 

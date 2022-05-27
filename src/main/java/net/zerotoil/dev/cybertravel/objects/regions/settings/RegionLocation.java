@@ -88,6 +88,10 @@ public class RegionLocation {
         // set the values
         this.upperCorner = upperCorner;
         this.lowerCorner = lowerCorner;
+
+        System.out.println(Arrays.toString(upperCorner));
+        System.out.println(Arrays.toString(lowerCorner));
+
     }
 
     public double getUpperX() {

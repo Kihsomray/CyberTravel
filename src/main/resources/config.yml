@@ -32,3 +32,6 @@ config:
   auto-update:
     config: true
     lang: true
+
+  debug:
+    player-join-leave: false
