@@ -2,9 +2,12 @@ package net.zerotoil.dev.cybertravel;
 
 import net.zerotoil.dev.cybercore.CoreSettings;
 import net.zerotoil.dev.cybercore.CyberCore;
+import net.zerotoil.dev.cybercore.utilities.GeneralUtils;
 import net.zerotoil.dev.cybertravel.addons.Addons;
 import net.zerotoil.dev.cybertravel.cache.Cache;
 import net.zerotoil.dev.cybertravel.events.Events;
+import net.zerotoil.dev.cybertravel.objects.PlayerObject;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -70,7 +73,7 @@ public final class CyberTravel extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        cache.unloadPlayers();
     }
 
     public CyberCore core() {
@@ -87,6 +90,17 @@ public final class CyberTravel extends JavaPlugin {
         return events;
     }
 
+    public void sendMessage(Player player, String messageKey) {
+        PlayerObject playerObject = cache.getPlayer(player);
+        core.sendMessage(player, messageKey, playerObject.getPlaceholders(), playerObject.getReplacements());
+    }
+
+    public void sendMessage(Player player, String messageKey, String[] placeholders, String[] replacements) {
+        PlayerObject playerObject = cache().getPlayer(player);
+        core.sendMessage(player, messageKey,
+                GeneralUtils.combineArrays(placeholders, playerObject.getPlaceholders()),
+                GeneralUtils.combineArrays(replacements, playerObject.getPlaceholders()));
+    }
 
     public String getAuthors() {
         return this.getDescription().getAuthors().toString().replace("[", "").replace("]", "");

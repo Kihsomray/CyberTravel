@@ -10,15 +10,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class PlayerObject {
 
     private final CyberTravel main;
     @Getter private final Player player;
+
+    private final String[] placeholders = new String[]{"player", "playerDisplayName", "playerUUID", "regions", "cooldown", "currentRegion"};
 
     private Map<String, Region> regions = new HashMap<>();
 
@@ -59,7 +58,6 @@ public class PlayerObject {
         regions.put(region, main.cache().getRegion(region));
 
         regions.get(region).getMessage().sendMessage(player);
-        //player.sendMessage("You have discovered " + region);
         return true;
     }
 
@@ -134,5 +132,60 @@ public class PlayerObject {
         return new File(main.getDataFolder() + File.separator + "player_data", player.getUniqueId() + ".ctr");
     }
 
+    /**
+     * Get the player's placeholders.
+     *
+     * @return Array of placeholders
+     */
+    public String[] getPlaceholders() {
+        return placeholders;
+    }
+
+    /**
+     * Get the player's placeholder replacements.
+     *
+     * @return Array of placeholder replacements
+     */
+    public String[] getReplacements() {
+        String[] replacements = new String[placeholders.length];
+
+        // player placeholders
+        replacements[0] = player.getName();
+        replacements[1] = player.getDisplayName();
+        replacements[2] = player.getUniqueId().toString();
+
+        // list of region placeholders
+        replacements[3] = Arrays.toString(regions.values().toArray())
+                .replace("[", "").replace( "]", "");
+
+        replacements[4] = ""; // TODO add this
+        replacements[5] = getCurrentRegionString();
+
+        return replacements;
+    }
+
+    /**
+     * Returns a region in which the player is
+     * located. Will return null if it is not
+     * within a region.
+     *
+     * @return Region the location is in
+     */
+    public Region getCurrentRegion() {
+        return main.cache().getRegionAt(player.getLocation());
+    }
+
+    /**
+     * Returns a region in which the player is
+     * located. Will return "None" if it is not
+     * within a region.
+     *
+     * @return Region the location is in
+     */
+    public String getCurrentRegionString() {
+        Region region = getCurrentRegion();
+        if (region == null) return main.core().getLangValue(player, "lang", "placeholders.null-region");
+        return region.getDisplayName();
+    }
 
 }

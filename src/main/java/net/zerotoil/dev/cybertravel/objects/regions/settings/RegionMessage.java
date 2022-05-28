@@ -2,6 +2,7 @@ package net.zerotoil.dev.cybertravel.objects.regions.settings;
 
 import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
+import net.zerotoil.dev.cybertravel.objects.PlayerObject;
 import net.zerotoil.dev.cybertravel.objects.regions.Region;
 import net.zerotoil.dev.cybertravel.utilities.LangUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -34,11 +35,12 @@ public class RegionMessage {
     }
 
     public void sendMessage(Player player) {
-        if (header) main.core().sendMessage(player, "discovery-header");
+        if (header) main.sendMessage(player, "discovery-header");
 
-        // content goes here
+        PlayerObject playerObject = main.cache().getPlayer(player);
+        main.core().getTextUtilities().sendMessageList(player, content, playerObject.getPlaceholders(), playerObject.getReplacements());
 
-        if (footer) main.core().sendMessage(player, "discovery-footer");
+        if (footer) main.sendMessage(player, "discovery-footer");
 
     }
 

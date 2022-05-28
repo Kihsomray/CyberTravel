@@ -138,6 +138,20 @@ public class Cache {
     }
 
     /**
+     * Returns a region in which the location is
+     * located. Will return null if it is not
+     * within a region.
+     *
+     * @param location Location in question
+     * @return Region the location is in
+     */
+    public Region getRegionAt(Location location) {
+        for (Region r : regions.values())
+            if (r.inRegion(location)) return r;
+        return null;
+    }
+
+    /**
      * Load all online players.
      */
     public void loadPlayers() {

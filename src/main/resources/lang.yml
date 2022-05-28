@@ -4,15 +4,16 @@ messages:
 
 
 
-
-
-
   discovery-header:
     - ''
-    - '[C] <G:633832>New Region Discovered!</G:633832>'
+    - '[C] &cNew Region Discovered!'
     - '[C] &7► <G:d69187>{regionDisplayName}</G:d69187> &7◄'
     - ''
   discovery-footer:
     - ''
     - '[C] <G:d69187>—————►</G:d69187> &cCTP <G:d69187>◄—————</G:d69187>'
     - ''
+
+
+placeholders:
+  null-region: "None"

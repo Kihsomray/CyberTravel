@@ -19,6 +19,7 @@ public class Region {
     @Getter private final String id;
 
     @Getter private boolean enabled = false;
+    @Getter private String displayName;
 
     private RegionLocation location;
 
@@ -96,6 +97,7 @@ public class Region {
         if (section == null) return;
 
         enabled = section.getBoolean("enabled", enabled);
+        displayName = section.getString("display-name", id);
 
         // location of the world
         String world = section.getString("location.world", WorldUtils.defaultWorld());
