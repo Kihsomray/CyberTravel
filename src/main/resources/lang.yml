@@ -2,6 +2,21 @@ messages:
   prefix: '&c&lCyber&f&lTravel &8»&r'
   no-permission: '{p} &cYou don''t have permission to do that!'
 
+  different-world:
+  - '{p} &cYour other position was set in another world!'
+  - '{p} &7That position is now removed and your current world will be used.'
+  - '{p} &7Dont forget to set the other position in your current world!'
+  added-position: '{p} &aSaved position &7{positionNumber} &aat &7{positionLocation} &asuccessfully!'
+  insufficient-positions:
+  - '{p} &cThere are not enough positions set in order to create a region!'
+  - '{p} &7Be sure to set them first using &a/ctp pos1 &7or &a/ctp pos2&7.'
+  region-created:
+  - '{p} &aThe region {regionID} has successfully been created!'
+  - '{p} &7Edit it using /ctp edit {regionID} <operation> <setting> <value>'
+  - '{p} &7Or edit its settings in &aregions.yml&7!'
+  region-exists:
+  - '{p} &cA region with the ID "&7{regionID}&c" already exists!'
+  - '{p} &7Please use another ID for the creation of this region.'
 
 
   discovery-header:

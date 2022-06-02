@@ -91,15 +91,18 @@ public final class CyberTravel extends JavaPlugin {
     }
 
     public void sendMessage(Player player, String messageKey) {
-        PlayerObject playerObject = cache.getPlayer(player);
-        core.sendMessage(player, messageKey, playerObject.getPlaceholders(), playerObject.getReplacements());
+        sendMessage(player, messageKey, null);
     }
 
-    public void sendMessage(Player player, String messageKey, String[] placeholders, String[] replacements) {
+    public void sendMessage(Player player, String messageKey, String[] placeholders, String... replacements) {
         PlayerObject playerObject = cache().getPlayer(player);
-        core.sendMessage(player, messageKey,
-                GeneralUtils.combineArrays(placeholders, playerObject.getPlaceholders()),
-                GeneralUtils.combineArrays(replacements, playerObject.getPlaceholders()));
+        core.sendMessage(
+                player,
+                messageKey,
+                playerObject != null ? GeneralUtils.combineArrays(placeholders, playerObject.getPlaceholders()) : placeholders,
+                playerObject != null ? GeneralUtils.combineArrays(replacements, playerObject.getPlaceholders()) : replacements
+        );
+
     }
 
     public String getAuthors() {

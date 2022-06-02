@@ -17,7 +17,14 @@ public class PlayerObject {
     private final CyberTravel main;
     @Getter private final Player player;
 
-    private final String[] placeholders = new String[]{"player", "playerDisplayName", "playerUUID", "regions", "cooldown", "currentRegion"};
+    private static final String[] placeholders = new String[]{
+            "player",
+            "playerDisplayName",
+            "playerUUID",
+            "regions",
+            "cooldown",
+            "currentRegion"
+    };
 
     private Map<String, Region> regions = new HashMap<>();
 

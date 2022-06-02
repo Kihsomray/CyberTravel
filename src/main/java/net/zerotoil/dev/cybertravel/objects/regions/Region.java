@@ -21,11 +21,20 @@ public class Region {
     @Getter private boolean enabled = false;
     @Getter private String displayName;
 
-    private RegionLocation location;
+    @Getter private RegionLocation location;
 
     @Getter private RegionTeleport teleport;
     @Getter private RegionCommands commands;
     @Getter private RegionMessage message;
+
+    private static final String[] placeholders = new String[]{
+            "regionID",
+            "regionDisplayName",
+            "regionUpperCoordinates",
+            "regionLowerCoordinates",
+            "regionWorld",
+            "regionEnabled"
+    };
 
     /**
      * Constructs a region object based on data
@@ -152,6 +161,33 @@ public class Region {
         this.location = location;
         return location.bind(this);
 
+    }
+
+    /**
+     * Get the region's placeholders.
+     *
+     * @return Array of placeholders
+     */
+    public String[] getPlaceholders() {
+        return placeholders;
+    }
+
+    /**
+     * Get the region's placeholder replacements.
+     *
+     * @return Array of placeholder replacements
+     */
+    public String[] getReplacements() {
+        String[] replacements = new String[placeholders.length];
+
+        replacements[0] = id;
+        replacements[1] = displayName;
+        replacements[2] = location.getUpperString();
+        replacements[3] = location.getLowerString();
+        replacements[4] = location.getWorldName();
+        replacements[5] = enabled + "";
+
+        return replacements;
     }
 
 

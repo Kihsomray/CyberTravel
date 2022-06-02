@@ -32,13 +32,27 @@ public class RegionLocation {
         setCorners(pos1, pos2);
     }
 
+    public boolean setPos(@NotNull Location location, boolean pos1) {
+
+        double[] pos = new double[]{location.getX(), location.getY(), location.getZ()};
+        World world = location.getWorld();
+        assert world != null;
+
+        return pos1 ? setPos1(pos, world) : setPos2(pos, world);
+    }
+
     public boolean setPos1(double[] coordinates, @NotNull World world) {
 
-        if (lowerCorner == null) {
+        if (lowerCorner == null || !this.world.equals(world.getName())) {
             this.world = world.getName();
             upperCorner = coordinates;
+
+            if (!this.world.equals(world.getName())) {
+                lowerCorner = null;
+                return false;
+            }
+
         } else {
-            if (!this.world.equals(world.getName())) return false;
             setCorners(coordinates, lowerCorner);
         }
 
@@ -48,11 +62,16 @@ public class RegionLocation {
 
     public boolean setPos2(double[] coordinates, @NotNull World world) {
 
-        if (upperCorner == null) {
+        if (upperCorner == null || !this.world.equals(world.getName())) {
             this.world = world.getName();
             lowerCorner = coordinates;
+
+            if (!this.world.equals(world.getName())) {
+                upperCorner = null;
+                return false;
+            }
+
         } else {
-            if (!this.world.equals(world.getName())) return false;
             setCorners(coordinates, upperCorner);
         }
 
