@@ -41,7 +41,7 @@ public class CTRCommand implements CommandExecutor {
             case "about":
             case "version":
                 main.core().getTextUtilities().sendMessageList(sender, Arrays.asList(
-                        "&c&lCyber&f&lLevels &fv" + main.getDescription().getVersion() + "&7.",
+                        "&c&lCyber&f&lTravel &fv" + main.getDescription().getVersion() + "&7.",
                         "&fDeveloped by &c" + main.getAuthors() + "&f.",
                         "&7Discover regions scattered across your world to",
                         "&7be able to quickly teleport back to that spot."
@@ -51,20 +51,22 @@ public class CTRCommand implements CommandExecutor {
             case "reload":
                 main.sendMessage(player, "reloading");
                 main.onDisable();
+                main.reloadCore();
                 main.reloadPlugin();
+                main.core().loadFinish();
                 return main.sendMessage(player, "reloaded");
 
             case "pos1":
-                main.cache().getRegionFactory().setPos1(player, player.getLocation());
+                main.cache().regionFactory().setPos1(player, player.getLocation());
                 return true;
 
             case "pos2":
-                main.cache().getRegionFactory().setPos2(player, player.getLocation());
+                main.cache().regionFactory().setPos2(player, player.getLocation());
                 return true;
 
             case "create":
                 if (len == 2) {
-                    main.cache().getRegionFactory().createRegion(player, args[1]);
+                    main.cache().regionFactory().createRegion(player, args[1]);
                     return true;
                 }
 

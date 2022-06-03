@@ -22,7 +22,7 @@ public class Cache {
     @Getter private Map<String, Region> regions;
     @Getter private Map<String, PlayerObject> players;
 
-    @Getter private final RegionFactory regionFactory;
+    private final RegionFactory regionFactory;
 
     public Cache(CyberTravel main) {
         this.main = main;
@@ -77,6 +77,10 @@ public class Cache {
      */
     public Config config() {
         return config;
+    }
+
+    public RegionFactory regionFactory() {
+        return regionFactory;
     }
 
     /**

@@ -49,7 +49,8 @@ public class RegionFactory {
 
     // sets position of player
     private void setPos(Player player, @NotNull Location location, boolean pos1) {
-        RegionLocation regionLocation = playerSetPositions.putIfAbsent(player, new RegionLocation(main));
+        playerSetPositions.putIfAbsent(player, new RegionLocation(main));
+        RegionLocation regionLocation = playerSetPositions.get(player);
         boolean bool = regionLocation.setPos(location, pos1);
 
         // added position message
@@ -62,7 +63,7 @@ public class RegionFactory {
         );
 
         // warns player if other position in another world
-        if (bool) main.sendMessage(player, "different-world");
+        if (!bool) main.sendMessage(player, "different-world");
 
     }
 
@@ -87,6 +88,7 @@ public class RegionFactory {
             return;
         }
 
+        main.sendMessage(player, "region-created", new String[]{"regionID"}, id);
         main.cache().createRegion(id, playerSetPositions.get(player));
 
     }

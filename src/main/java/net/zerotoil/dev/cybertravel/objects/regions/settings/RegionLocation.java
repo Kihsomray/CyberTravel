@@ -38,19 +38,21 @@ public class RegionLocation {
         World world = location.getWorld();
         assert world != null;
 
-        return pos1 ? setPos1(pos, world) : setPos2(pos, world);
+        return (pos1 ? setPos1(pos, world) : setPos2(pos, world));
     }
 
     public boolean setPos1(double[] coordinates, @NotNull World world) {
 
         if (lowerCorner == null || !this.world.equals(world.getName())) {
-            this.world = world.getName();
             upperCorner = coordinates;
 
-            if (!this.world.equals(world.getName())) {
+            if (this.world != null && !this.world.equals(world.getName())) {
                 lowerCorner = null;
+                this.world = world.getName();
                 return false;
             }
+
+            this.world = world.getName();
 
         } else {
             setCorners(coordinates, lowerCorner);
@@ -63,13 +65,15 @@ public class RegionLocation {
     public boolean setPos2(double[] coordinates, @NotNull World world) {
 
         if (upperCorner == null || !this.world.equals(world.getName())) {
-            this.world = world.getName();
             lowerCorner = coordinates;
 
-            if (!this.world.equals(world.getName())) {
+            if (this.world != null && !this.world.equals(world.getName())) {
                 upperCorner = null;
+                this.world = world.getName();
                 return false;
             }
+
+            this.world = world.getName();
 
         } else {
             setCorners(coordinates, upperCorner);
@@ -108,9 +112,6 @@ public class RegionLocation {
         this.upperCorner = upperCorner;
         this.lowerCorner = lowerCorner;
 
-        System.out.println(Arrays.toString(upperCorner));
-        System.out.println(Arrays.toString(lowerCorner));
-
     }
 
     public double getUpperX() {
@@ -141,10 +142,10 @@ public class RegionLocation {
     }
 
     public String getUpperString() {
-        return WorldUtils.coordinatesToString(upperCorner);
+        return WorldUtils.coordinatesToString(upperCorner, true);
     }
     public String getLowerString() {
-        return WorldUtils.coordinatesToString(lowerCorner);
+        return WorldUtils.coordinatesToString(lowerCorner, true);
     }
 
     public double[] getMidpoint() {

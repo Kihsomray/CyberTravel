@@ -97,7 +97,7 @@
         <dependency>
             <groupId>com.github.Kihsomray</groupId>
             <artifactId>CyberCore</artifactId>
-            <version>1.2.2</version>
+            <version>1.2.3</version>
         </dependency>
 
         <!-- JetBrains Annotations -->

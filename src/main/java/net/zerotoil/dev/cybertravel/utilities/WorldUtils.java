@@ -5,10 +5,13 @@ import org.bukkit.Location;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Properties;
 
 public class WorldUtils {
+
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public static String defaultWorld() {
         try {
@@ -48,7 +51,9 @@ public class WorldUtils {
         return Arrays.stream(locationString.split(" ")).mapToDouble(Double::parseDouble).toArray();
     }
 
-    public static String coordinatesToString(double[] coordinates) {
+    public static String coordinatesToString(double[] coordinates, boolean round) {
+        if (round) for (int i = 0; i < coordinates.length; i++) coordinates[i] = Double.parseDouble(decimalFormat.format(coordinates[i]));
+
         return coordinates[0] + ", " + coordinates[1] + ", " + coordinates[2];
     }
 

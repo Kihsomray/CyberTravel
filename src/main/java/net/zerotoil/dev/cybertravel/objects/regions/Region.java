@@ -82,7 +82,7 @@ public class Region {
         String tp = pre + "settings.teleport.";
         config.set(tp + "enabled", false);
         config.set(tp + "world", location.getWorldName());
-        config.set(tp + "location", WorldUtils.coordinatesToString(location.getMidpoint()));
+        config.set(tp + "location", WorldUtils.coordinatesToString(location.getMidpoint(), false));
 
         config.set(pre + "settings.commands", null);
 
@@ -94,6 +94,11 @@ public class Region {
                 "&7► <G:EE0099>Teleport to this Region using &l/ctp tp {id}</G:EE00EE>"
         }));
 
+        try {
+            main.core().files().get("regions").saveConfig();
+        } catch (Exception e) {
+            // nothing
+        }
 
     }
 

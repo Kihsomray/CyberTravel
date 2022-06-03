@@ -34,9 +34,16 @@ public class Config {
         ConfigurationSection section = main.core().files().getConfig("config").getConfigurationSection("config");
         if (section == null) return;
 
+        // set prefix of plugin
+        main.core().getTextUtilities().setPrefix(main.core().files().getConfig("lang").getString("messages.prefix"));
+
+        // auto update
         autoUpdateConfig = section.getBoolean("auto-update.config");
         autoUpdateLang = section.getBoolean("auto-update.lang");
+        if (autoUpdateConfig) main.core().files().get("config").updateConfig();
+        if (autoUpdateLang) main.core().files().get("lang").updateConfig();
 
+        // remaining settings
         countdownEnabled = section.getBoolean("countdown.enabled", true);
         countdownSeconds = section.getLong("countdown.seconds", 5L);
 
