@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
 import net.zerotoil.dev.cybertravel.objects.PlayerObject;
 import net.zerotoil.dev.cybertravel.objects.regions.Region;
+import net.zerotoil.dev.cybertravel.objects.regions.RegionFactory;
 import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,8 +22,11 @@ public class Cache {
     @Getter private Map<String, Region> regions;
     @Getter private Map<String, PlayerObject> players;
 
+    @Getter private final RegionFactory regionFactory;
+
     public Cache(CyberTravel main) {
         this.main = main;
+        regionFactory = new RegionFactory(main);
     }
 
     /**
@@ -98,9 +102,11 @@ public class Cache {
     }
 
     /**
-     * Constructs a region object based on the
-     * region location. Generates necessary data
-     * in the regions.yml file.
+     * Constructs a region object based on the region
+     * location. Generates necessary data in the
+     * regions.yml file. Do not use this method if
+     * the RegionLocation is not fully set up or is
+     * already binded to another region!
      *
      * @param id New ID (must not already exist)
      * @param location Region location that is full set up
@@ -108,7 +114,7 @@ public class Cache {
      */
     public boolean createRegion(String id, RegionLocation location) {
         try {
-            Region region = new Region(main, id, location);
+            regions.put(id, new Region(main, id, location));
             return true;
         } catch (IllegalArgumentException e) {
             return false;

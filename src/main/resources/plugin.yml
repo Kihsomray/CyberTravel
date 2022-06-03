@@ -2,14 +2,14 @@ name: CyberTravel
 version: '${project.version}'
 main: net.zerotoil.dev.cybertravel.CyberTravel
 api-version: 1.16
-prefix: CTP
+prefix: CTR
 authors: [ Kihsomray ]
 description: Discover regions scattered across your world to be able to quickly travel back to that spot with a command.
 website: dev.zerotoil.net
 softdepend: [ Vault, PlaceholderAPI, CyberWorldReset ]
 
 commands:
-  ctp:
+  ctr:
     aliases:
       - ctp
       - ftp
