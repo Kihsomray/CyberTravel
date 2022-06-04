@@ -70,6 +70,12 @@ public class CTRCommand implements CommandExecutor {
                     return true;
                 }
 
+            case "teleport":
+                if (len == 2) {
+                    main.cache().teleportToRegion(player, args[1]);
+                    return true;
+                }
+
             default:
                 return sendHelp(sender);
 

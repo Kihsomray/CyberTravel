@@ -127,6 +127,8 @@ public class Cache {
 
     public boolean checkRegionDiscovery(Player player) {
 
+        if (!player.hasPermission("cst.player.discover")) return false;
+
         PlayerData playerData = getPlayer(player);
         boolean discovered = false;
 
@@ -159,6 +161,20 @@ public class Cache {
         for (Region r : regions.values())
             if (r.inRegion(location)) return r;
         return null;
+    }
+
+    /**
+     * Teleports a player to a region.
+     *
+     * @param player Player in question
+     * @param region Region to teleport to
+     * @return True always
+     */
+    public boolean teleportToRegion(Player player, String region) {
+        if (!regions.containsKey(region)) return main.sendMessage(player, "invalid-region", new String[]{"regionID"}, region);
+        if (!getPlayer(player).isDiscovered(region)) return main.sendMessage(player, "not-discovered", new String[]{"regionID"}, region);
+        Region r = regions.get(region);
+        return r.getTeleport().teleportPlayer(player);
     }
 
     /**

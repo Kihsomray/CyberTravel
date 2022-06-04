@@ -31,13 +31,20 @@ messages:
   - '{p} &cThere are not enough positions set in order to create a region!'
   - '{p} &7Be sure to set them first using &a/ctp pos1 &7or &a/ctp pos2&7.'
   region-created:
-  - '{p} &aThe region {regionID} has successfully been created!'
+  - '{p} &aThe region "{regionID}" has successfully been created!'
   - '{p} &7Edit it using /ctp edit {regionID} <operation> <setting> <value>'
   - '{p} &7Or edit its settings in &aregions.yml&7!'
   region-exists:
   - '{p} &cA region with the ID "&7{regionID}&c" already exists!'
   - '{p} &7Please use another ID for the creation of this region.'
 
+  invalid-region: '{p} &cInvalid region "{regionID}"! &7Please choose a valid option.'
+  not-discovered: '{p} &cYou have not discovered this region yet!'
+
+  region-teleporting: ''
+  region-teleported: '{p} &aYou have been successfully been teleported to {regionDisplayName}'
+  global-cooldown: '{p} &cYou cannot teleport to any region for another {time} seconds!'
+  region-cooldown: '{p} &cYou cannot teleport to this region for another {time} seconds!'
 
   discovery-header:
     - ''
