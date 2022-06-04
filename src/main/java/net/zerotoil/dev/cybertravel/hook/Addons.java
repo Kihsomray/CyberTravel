@@ -1,4 +1,4 @@
-package net.zerotoil.dev.cybertravel.addons;
+package net.zerotoil.dev.cybertravel.hook;
 
 import net.zerotoil.dev.cybertravel.CyberTravel;
 import org.bukkit.Bukkit;
@@ -22,7 +22,7 @@ public class Addons {
 
         if (addAddon("PlaceholderAPI")) placeholderAPI = new PlaceholderAPI(main);
 
-        main.logger("&7Loaded " + counter + " addons in &a" + (System.currentTimeMillis() - startTime) + "ms&7.", "");
+        main.logger("&7Loaded &e" + counter + " &7addons in &a" + (System.currentTimeMillis() - startTime) + "ms&7.", "");
 
     }
 

@@ -1,4 +1,4 @@
-package net.zerotoil.dev.cybertravel.events;
+package net.zerotoil.dev.cybertravel.listener;
 
 import net.zerotoil.dev.cybertravel.CyberTravel;
 import org.bukkit.Bukkit;

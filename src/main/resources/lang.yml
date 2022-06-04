@@ -6,18 +6,19 @@ messages:
   reloaded: '{p} &aSuccessfully reloaded!'
 
   player-help:
-  - '[C] &8»&f——————————&8« {p} &f——————————&8«'
+  - '[C] &8»&f——————————&8« &c&lCyber&f&lTravel &8»&f——————————&8«'
   - '[C] &8➠ &c/cwr about &fAbout this plugin'
   - '[C] &8➠ &c/cwr reload &fReload this plugin'
+  - '[C] &8»&f———————————————————————————————&8«'
 
   admin-help:
-  - '[C] &8»&f——————————&8« {p} &f——————————&8«'
+  - '[C] &8»&f——————————&8« &c&lCyber&f&lTravel &8»&f——————————&8«'
   - '[C] &8➠ &c/cwr about &fAbout this plugin'
   - '[C] &8➠ &c/cwr reload &fReload this plugin'
   - '[C] &8➠ &c/cwr pos1 &fSet position 1'
   - '[C] &8➠ &c/cwr pos2 &fSet position 2'
   - '[C] &8➠ &c/cwr create <id> &fCreate a region based the two positions.'
-  - '[C] &8»&f——————————————————————————————&8«'
+  - '[C] &8»&f———————————————————————————————&8«'
 
   console-restricted: '{p} &cConsole cannot use this command or this command does not exist!'
 

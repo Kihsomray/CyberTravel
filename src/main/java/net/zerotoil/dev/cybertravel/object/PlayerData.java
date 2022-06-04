@@ -1,9 +1,9 @@
-package net.zerotoil.dev.cybertravel.objects;
+package net.zerotoil.dev.cybertravel.object;
 
 import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
-import net.zerotoil.dev.cybertravel.objects.regions.Region;
-import net.zerotoil.dev.cybertravel.utilities.PlayerUtils;
+import net.zerotoil.dev.cybertravel.object.region.Region;
+import net.zerotoil.dev.cybertravel.utility.PlayerUtils;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedWriter;
@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class PlayerObject {
+public class PlayerData {
 
     private final CyberTravel main;
     @Getter private final Player player;
@@ -35,7 +35,7 @@ public class PlayerObject {
      * @param main Main instance
      * @param player Player in question
      */
-    public PlayerObject(CyberTravel main, Player player) {
+    public PlayerData(CyberTravel main, Player player) {
         this.main = main;
         this.player = player;
         loadData();

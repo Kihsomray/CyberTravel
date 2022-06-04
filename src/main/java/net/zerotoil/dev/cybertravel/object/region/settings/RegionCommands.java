@@ -1,9 +1,9 @@
-package net.zerotoil.dev.cybertravel.objects.regions.settings;
+package net.zerotoil.dev.cybertravel.object.region.settings;
 
 import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
-import net.zerotoil.dev.cybertravel.objects.regions.Region;
-import net.zerotoil.dev.cybertravel.utilities.LangUtils;
+import net.zerotoil.dev.cybertravel.object.region.Region;
+import net.zerotoil.dev.cybertravel.utility.LangUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;

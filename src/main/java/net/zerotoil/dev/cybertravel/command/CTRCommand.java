@@ -1,4 +1,4 @@
-package net.zerotoil.dev.cybertravel.commands;
+package net.zerotoil.dev.cybertravel.command;
 
 import net.zerotoil.dev.cybertravel.CyberTravel;
 import org.bukkit.command.Command;

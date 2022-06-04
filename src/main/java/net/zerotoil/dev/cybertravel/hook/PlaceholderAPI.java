@@ -1,4 +1,4 @@
-package net.zerotoil.dev.cybertravel.addons;
+package net.zerotoil.dev.cybertravel.hook;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.zerotoil.dev.cybertravel.CyberTravel;

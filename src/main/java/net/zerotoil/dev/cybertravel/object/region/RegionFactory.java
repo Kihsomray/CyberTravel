@@ -1,7 +1,7 @@
-package net.zerotoil.dev.cybertravel.objects.regions;
+package net.zerotoil.dev.cybertravel.object.region;
 
 import net.zerotoil.dev.cybertravel.CyberTravel;
-import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionLocation;
+import net.zerotoil.dev.cybertravel.object.region.settings.RegionLocation;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

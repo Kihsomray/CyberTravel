@@ -2,10 +2,10 @@ package net.zerotoil.dev.cybertravel.cache;
 
 import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
-import net.zerotoil.dev.cybertravel.objects.PlayerObject;
-import net.zerotoil.dev.cybertravel.objects.regions.Region;
-import net.zerotoil.dev.cybertravel.objects.regions.RegionFactory;
-import net.zerotoil.dev.cybertravel.objects.regions.settings.RegionLocation;
+import net.zerotoil.dev.cybertravel.object.PlayerData;
+import net.zerotoil.dev.cybertravel.object.region.Region;
+import net.zerotoil.dev.cybertravel.object.region.RegionFactory;
+import net.zerotoil.dev.cybertravel.object.region.settings.RegionLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,7 +20,7 @@ public class Cache {
 
     private Config config;
     @Getter private Map<String, Region> regions;
-    @Getter private Map<String, PlayerObject> players;
+    @Getter private Map<String, PlayerData> players;
 
     private final RegionFactory regionFactory;
 
@@ -127,13 +127,13 @@ public class Cache {
 
     public boolean checkRegionDiscovery(Player player) {
 
-        PlayerObject playerObject = getPlayer(player);
+        PlayerData playerData = getPlayer(player);
         boolean discovered = false;
 
         for (Region region : regions.values()) {
             if (!region.inRegion(player.getLocation())) continue;
-            if (playerObject.isDiscovered(region)) continue;
-            playerObject.addRegion(region);
+            if (playerData.isDiscovered(region)) continue;
+            playerData.addRegion(region);
             discovered = true;
         }
 
@@ -190,7 +190,7 @@ public class Cache {
     public boolean loadPlayer(Player player) {
         String uuid = player.getUniqueId().toString();
         if (players.containsKey(uuid)) return false;
-        players.put(uuid, new PlayerObject(main, player));
+        players.put(uuid, new PlayerData(main, player));
         return true;
     }
 
@@ -227,7 +227,7 @@ public class Cache {
      * @param player Player in question
      * @return Player data saved to cache
      */
-    public PlayerObject getPlayer(Player player) {
+    public PlayerData getPlayer(Player player) {
         return getPlayer(player.getUniqueId().toString());
     }
 
@@ -238,7 +238,7 @@ public class Cache {
      * @param uuid UUID of player in question
      * @return Player data saved to cache
      */
-    public PlayerObject getPlayer(String uuid) {
+    public PlayerData getPlayer(String uuid) {
         return players.get(uuid);
     }
 

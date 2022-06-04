@@ -1,10 +1,10 @@
-package net.zerotoil.dev.cybertravel.objects.regions.settings;
+package net.zerotoil.dev.cybertravel.object.region.settings;
 
 import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
-import net.zerotoil.dev.cybertravel.objects.PlayerObject;
-import net.zerotoil.dev.cybertravel.objects.regions.Region;
-import net.zerotoil.dev.cybertravel.utilities.LangUtils;
+import net.zerotoil.dev.cybertravel.object.PlayerData;
+import net.zerotoil.dev.cybertravel.object.region.Region;
+import net.zerotoil.dev.cybertravel.utility.LangUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -37,8 +37,8 @@ public class RegionMessage {
     public void sendMessage(Player player) {
         if (header) main.sendMessage(player, "discovery-header");
 
-        PlayerObject playerObject = main.cache().getPlayer(player);
-        main.core().getTextUtilities().sendMessageList(player, content, playerObject.getPlaceholders(), playerObject.getReplacements());
+        PlayerData playerData = main.cache().getPlayer(player);
+        main.core().getTextUtilities().sendMessageList(player, content, playerData.getPlaceholders(), playerData.getReplacements());
 
         if (footer) main.sendMessage(player, "discovery-footer");
 

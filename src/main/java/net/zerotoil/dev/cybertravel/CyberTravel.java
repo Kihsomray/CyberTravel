@@ -3,11 +3,11 @@ package net.zerotoil.dev.cybertravel;
 import net.zerotoil.dev.cybercore.CoreSettings;
 import net.zerotoil.dev.cybercore.CyberCore;
 import net.zerotoil.dev.cybercore.utilities.GeneralUtils;
-import net.zerotoil.dev.cybertravel.addons.Addons;
+import net.zerotoil.dev.cybertravel.hook.Addons;
 import net.zerotoil.dev.cybertravel.cache.Cache;
-import net.zerotoil.dev.cybertravel.commands.CTRCommand;
-import net.zerotoil.dev.cybertravel.events.Events;
-import net.zerotoil.dev.cybertravel.objects.PlayerObject;
+import net.zerotoil.dev.cybertravel.command.CTRCommand;
+import net.zerotoil.dev.cybertravel.listener.Events;
+import net.zerotoil.dev.cybertravel.object.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -142,12 +142,12 @@ public final class CyberTravel extends JavaPlugin {
      * @return true always
      */
     public boolean sendMessage(Player player, String messageKey, String[] placeholders, String... replacements) {
-        PlayerObject playerObject = cache().getPlayer(player);
+        PlayerData playerData = cache().getPlayer(player);
         core.sendMessage(
                 player,
                 messageKey,
-                playerObject != null ? GeneralUtils.combineArrays(placeholders, playerObject.getPlaceholders()) : placeholders,
-                playerObject != null ? GeneralUtils.combineArrays(replacements, playerObject.getPlaceholders()) : replacements
+                playerData != null ? GeneralUtils.combineArrays(placeholders, playerData.getPlaceholders()) : placeholders,
+                playerData != null ? GeneralUtils.combineArrays(replacements, playerData.getPlaceholders()) : replacements
         );
         return true;
     }

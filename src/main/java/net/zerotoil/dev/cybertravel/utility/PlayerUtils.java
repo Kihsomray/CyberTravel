@@ -1,7 +1,7 @@
-package net.zerotoil.dev.cybertravel.utilities;
+package net.zerotoil.dev.cybertravel.utility;
 
 import net.zerotoil.dev.cybertravel.CyberTravel;
-import net.zerotoil.dev.cybertravel.objects.regions.Region;
+import net.zerotoil.dev.cybertravel.object.region.Region;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,10 +1,10 @@
-package net.zerotoil.dev.cybertravel.objects.regions.settings;
+package net.zerotoil.dev.cybertravel.object.region.settings;
 
 import lombok.Getter;
 import net.zerotoil.dev.cybertravel.CyberTravel;
 import net.zerotoil.dev.cybertravel.cache.Config;
-import net.zerotoil.dev.cybertravel.objects.regions.Region;
-import net.zerotoil.dev.cybertravel.utilities.WorldUtils;
+import net.zerotoil.dev.cybertravel.object.region.Region;
+import net.zerotoil.dev.cybertravel.utility.WorldUtils;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
