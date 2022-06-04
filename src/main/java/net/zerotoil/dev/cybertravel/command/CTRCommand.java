@@ -71,9 +71,9 @@ public class CTRCommand implements CommandExecutor {
                 }
 
             case "teleport":
+            case "tp":
                 if (len == 2) {
-                    main.cache().teleportToRegion(player, args[1]);
-                    return true;
+                    return main.cache().teleportToRegion(player, args[1]);
                 }
 
             default:

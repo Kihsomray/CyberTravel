@@ -2,7 +2,7 @@ messages:
   prefix: '&c&lCyber&f&lTravel &8»&r'
   no-permission: '{p} &cYou don''t have permission to do that!'
 
-  reloading: '{p} &7reloading the plugin...'
+  reloading: '{p} &7Reloading the plugin...'
   reloaded: '{p} &aSuccessfully reloaded!'
 
   player-help:
@@ -47,14 +47,14 @@ messages:
   region-cooldown: '{p} &cYou cannot teleport to this region for another {time} seconds!'
 
   discovery-header:
-    - ''
-    - '[C] &cNew Region Discovered!'
-    - '[C] &7► <G:d69187>{regionDisplayName}</G:d69187> &7◄'
-    - ''
+    - ' '
+    - '[C] <G:FD8F52>New Region Discovered!</G:FFDCA2>'
+    - '[C] &8► <G:FE676E> {regionDisplayName} </G:FE676E> &8◄'
+    - ' '
   discovery-footer:
-    - ''
-    - '[C] <G:d69187>—————►</G:d69187> &cCTP <G:d69187>◄—————</G:d69187>'
-    - ''
+    - ' '
+    - '[C] &8»<G:FD8F52>&m—————</G:FFBD71>&8« <G:FE676E>CyberTravel</G:FE676E> &8»<G:FFBD71>&m—————</G:FFDCA2>&8«'
+    - ' '
 
 
 placeholders:

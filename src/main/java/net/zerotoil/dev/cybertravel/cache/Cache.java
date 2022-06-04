@@ -171,8 +171,8 @@ public class Cache {
      * @return True always
      */
     public boolean teleportToRegion(Player player, String region) {
-        if (!regions.containsKey(region)) return main.sendMessage(player, "invalid-region", new String[]{"regionID"}, region);
-        if (!getPlayer(player).isDiscovered(region)) return main.sendMessage(player, "not-discovered", new String[]{"regionID"}, region);
+        if (!regions.containsKey(region)) return !main.sendMessage(player, "invalid-region", new String[]{"regionID"}, region);
+        if (!getPlayer(player).isDiscovered(region)) return !main.sendMessage(player, "not-discovered", new String[]{"regionID"}, region);
         Region r = regions.get(region);
         return r.getTeleport().teleportPlayer(player);
     }
@@ -244,7 +244,7 @@ public class Cache {
      * @return Player data saved to cache
      */
     public PlayerData getPlayer(Player player) {
-        return getPlayer(player.getUniqueId().toString());
+        return player != null ? getPlayer(player.getUniqueId().toString()) : null;
     }
 
     /**

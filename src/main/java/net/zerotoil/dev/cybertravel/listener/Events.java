@@ -22,7 +22,7 @@ public class Events {
         new OnJoin(main);
         new OnMovement(main);
 
-        main.logger("&7Loaded " + counter + " events in &a" + (System.currentTimeMillis() - startTime) + "ms&7.", "");
+        main.logger("&7Loaded &e" + counter + " &7events in &a" + (System.currentTimeMillis() - startTime) + "ms&7.", "");
 
     }
 

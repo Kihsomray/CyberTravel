@@ -3,7 +3,7 @@ package net.zerotoil.dev.cybertravel;
 import net.zerotoil.dev.cybercore.CoreSettings;
 import net.zerotoil.dev.cybercore.CyberCore;
 import net.zerotoil.dev.cybercore.utilities.GeneralUtils;
-import net.zerotoil.dev.cybertravel.hook.Addons;
+import net.zerotoil.dev.cybertravel.hook.Hooks;
 import net.zerotoil.dev.cybertravel.cache.Cache;
 import net.zerotoil.dev.cybertravel.command.CTRCommand;
 import net.zerotoil.dev.cybertravel.listener.Events;
@@ -14,13 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.Arrays;
 
 public final class CyberTravel extends JavaPlugin {
 
     private CyberCore core;
 
     private Cache cache;
-    private Addons addons;
+    private Hooks hooks;
     private Events events;
 
     @Override
@@ -72,7 +73,7 @@ public final class CyberTravel extends JavaPlugin {
     public void reloadPlugin() {
         cache = new Cache(this);
         cache.load(false);
-        addons = new Addons(this);
+        hooks = new Hooks(this);
     }
 
     @Override
@@ -99,8 +100,8 @@ public final class CyberTravel extends JavaPlugin {
      *
      * @return Addon manager
      */
-    public Addons addons() {
-        return addons;
+    public Hooks addons() {
+        return hooks;
     }
 
     /**
@@ -142,12 +143,14 @@ public final class CyberTravel extends JavaPlugin {
      * @return true always
      */
     public boolean sendMessage(Player player, String messageKey, String[] placeholders, String... replacements) {
+        if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
+        if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
         PlayerData playerData = cache().getPlayer(player);
         core.sendMessage(
                 player,
                 messageKey,
-                playerData != null ? GeneralUtils.combineArrays(placeholders, playerData.getPlaceholders()) : placeholders,
-                playerData != null ? GeneralUtils.combineArrays(replacements, playerData.getPlaceholders()) : replacements
+                player != null ? GeneralUtils.combineArrays(placeholders, playerData.getPlaceholders()) : placeholders,
+                player != null ? GeneralUtils.combineArrays(replacements, playerData.getPlaceholders()) : replacements
         );
         return true;
     }

@@ -22,5 +22,5 @@ regions:
         header: true
         footer: true
         content:
-          - '&7► <G:EE0099>No need to walk back here again!</G:EE00EE>'
-          - '&7► <G:EE0099>Teleport to this Region using &l/ctp tp {id}</G:EE00EE>'
+          - '&7► <G:FFBD71>No need to walk back here again!</G:FFBD71>'
+          - '&7► <G:FFBD71>Teleport to this Region using &n/ctp tp {regionID}</G:FFBD71>'
