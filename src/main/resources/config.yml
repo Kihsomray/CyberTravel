@@ -5,22 +5,27 @@ config:
     enabled: true
     seconds: 5
 
-  # region cooldown for how many second before the player can
+  # Gegion cooldown for how many second before the player can
   # teleport to the region again. NOTE: Specific region cooldowns
   # will override this cooldown (coming soon).
   region-cooldown:
     enabled: false
     seconds: 300
 
-  # global cooldown for how many second before the player can
+  # Global cooldown for how many second before the player can
   # teleport to the region again.
   global-cooldown:
     enabled: false
     seconds: 100
 
-  # Whichever cooldown is longer is the one that will prevail.
+  # Round coordinates of a region's border.
+  round-coordinates:
+    enabled: true
 
-  # when creating a region, the border will display temporarily,
+    # Decimal amount
+    amount: 0
+
+  # When creating a region, the border will display temporarily,
   # making it easier to find. Disabling it will make it not display
   # after a region is created or edited.
   display-border:

@@ -2,17 +2,23 @@ package net.zerotoil.dev.cybertravel.object.region;
 
 import net.zerotoil.dev.cybertravel.CyberTravel;
 import net.zerotoil.dev.cybertravel.object.region.settings.RegionLocation;
+import net.zerotoil.dev.cybertravel.utility.WorldUtils;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class RegionFactory {
 
     private final CyberTravel main;
     private final HashMap<Player, RegionLocation> playerSetPositions = new HashMap<>();
+
+    private DecimalFormat decimalFormat;
 
     /**
      * Allows for the creation of new regions.
@@ -21,6 +27,16 @@ public class RegionFactory {
      */
     public RegionFactory(CyberTravel main) {
         this.main = main;
+        decimalFormat();
+    }
+
+    private void decimalFormat() {
+        ConfigurationSection section = main.core().files().getConfig("config").getConfigurationSection("config");
+        if (section == null) return;
+        if (section.getBoolean("round-coordinates.enabled", true)) {
+            decimalFormat = WorldUtils.formatDecimals((short) section.getInt("round-coordinates.amount", 0));
+            decimalFormat.setRoundingMode(RoundingMode.FLOOR);
+        }
     }
 
     /**
@@ -93,6 +109,12 @@ public class RegionFactory {
 
     }
 
+    public void roundCoordinates(double[] coordinates) {
 
+        if (decimalFormat == null) return;
+        for (int i = 0; i < coordinates.length; i++)
+            coordinates[i] = Long.parseLong(decimalFormat.format(coordinates[i]));
+
+    }
 
 }

@@ -22,6 +22,9 @@ public class Config {
     @Getter private boolean globalCooldownEnabled;
     @Getter private long globalCooldownSeconds;
 
+    @Getter private boolean roundDecimalsEnabled;
+    @Getter private short roundDecimalsAmount;
+
     @Getter private boolean displayBorderEnabled;
     @Getter private List<Short> displayBorderRGB;
     @Getter private long displayBorderSeconds;
@@ -52,6 +55,9 @@ public class Config {
 
         globalCooldownEnabled = section.getBoolean("global-cooldown.enabled", false);
         globalCooldownSeconds = section.getLong("global-cooldown.seconds", 150L);
+
+        roundDecimalsEnabled = section.getBoolean("round-coordinates.enabled", true);
+        roundDecimalsAmount = (short) section.getInt("round-coordinates.amount", 0);
 
         displayBorderEnabled = section.getBoolean("display-border.enabled", true);
         displayBorderRGB = section.getShortList("display-border.rgb");

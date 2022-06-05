@@ -67,5 +67,15 @@ public class WorldUtils {
         return true;
     }
 
+    public static DecimalFormat formatDecimals(short amount) {
+
+        String s = "#";
+        if (amount > 0) s = s + ".";
+        for (short i = 0; i < amount; i++) s = s + "#";
+
+        return new DecimalFormat(s);
+
+    }
+
 
 }
