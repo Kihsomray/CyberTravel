@@ -64,7 +64,7 @@ public class Region {
         this.main = main;
         this.id = id;
 
-        if (main.cache().isRegion(id)) throw new IllegalArgumentException();
+        if (main.cache().regions().isRegion(id)) throw new IllegalArgumentException();
 
         Configuration config = main.core().files().getConfig("regions");
 

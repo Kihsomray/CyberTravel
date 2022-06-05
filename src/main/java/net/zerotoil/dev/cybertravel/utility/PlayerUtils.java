@@ -22,8 +22,8 @@ public class PlayerUtils {
         // remove the surrounding brackets.
         string = string.substring(1, string.length() - 1);
         for(String s : string.split(", ")) {
-            if (!main.cache().isRegion(s)) continue;
-            list.put(s, main.cache().getRegion(s));
+            if (!main.cache().regions().isRegion(s)) continue;
+            list.put(s, main.cache().regions().getRegion(s));
         }
 
         return list;

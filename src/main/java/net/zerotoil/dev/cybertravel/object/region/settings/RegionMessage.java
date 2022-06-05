@@ -37,7 +37,7 @@ public class RegionMessage {
     public void sendMessage(Player player) {
         if (header) main.sendMessage(player, "discovery-header", region.getPlaceholders(), region.getReplacements());
 
-        PlayerData playerData = main.cache().getPlayer(player);
+        PlayerData playerData = main.cache().players().getPlayer(player);
         main.core().getTextUtilities().sendMessageList(player, content, playerData.getPlaceholders(), playerData.getReplacements());
 
         if (footer) main.sendMessage(player, "discovery-footer", region.getPlaceholders(), region.getReplacements());

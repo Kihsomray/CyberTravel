@@ -57,23 +57,23 @@ public class CTRCommand implements CommandExecutor {
                 return main.sendMessage(player, "reloaded");
 
             case "pos1":
-                main.cache().regionFactory().setPos1(player, player.getLocation());
+                main.cache().regions().regionFactory().setPos1(player, player.getLocation());
                 return true;
 
             case "pos2":
-                main.cache().regionFactory().setPos2(player, player.getLocation());
+                main.cache().regions().regionFactory().setPos2(player, player.getLocation());
                 return true;
 
             case "create":
                 if (len == 2) {
-                    main.cache().regionFactory().createRegion(player, args[1]);
+                    main.cache().regions().regionFactory().createRegion(player, args[1]);
                     return true;
                 }
 
             case "teleport":
             case "tp":
                 if (len == 2) {
-                    return main.cache().teleportToRegion(player, args[1]);
+                    return main.cache().regions().teleportToRegion(player, args[1]);
                 }
 
             default:

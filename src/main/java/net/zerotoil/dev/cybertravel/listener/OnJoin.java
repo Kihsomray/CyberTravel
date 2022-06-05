@@ -35,14 +35,14 @@ public class OnJoin implements Listener {
 
     // loads player into cache
     private void loadPlayer(Player player) {
-        boolean bool = main.cache().loadPlayer(player);
+        boolean bool = main.cache().players().loadPlayer(player);
         if (main.cache().config().isDebugPlayerJoinLeave())
             main.logger("&aPlayer " + player.getName() + " was loaded into cache (&7" + bool + "&a).");
     }
 
     // unloads player from cache
     private void unloadPlayer(Player player) {
-        boolean bool = main.cache().unloadPlayer(player);
+        boolean bool = main.cache().players().unloadPlayer(player);
         if (main.cache().config().isDebugPlayerJoinLeave())
             main.logger("&cPlayer " + player.getName() + " was unloaded from cache (&7" + bool + "&c).");
     }

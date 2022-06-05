@@ -18,7 +18,7 @@ public class OnMovement implements Listener {
     @EventHandler
     private void onMove(PlayerMoveEvent event) {
 
-        main.cache().checkRegionDiscovery(event.getPlayer());
+        main.cache().regions().checkRegionDiscovery(event.getPlayer());
 
 
     }

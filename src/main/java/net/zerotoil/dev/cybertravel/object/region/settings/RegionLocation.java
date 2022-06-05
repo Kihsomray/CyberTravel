@@ -34,8 +34,7 @@ public class RegionLocation {
 
     public boolean setPos(@NotNull Location location, boolean pos1) {
 
-        double[] pos = new double[]{location.getX(), location.getY(), location.getZ()};
-        main.cache().regionFactory().roundCoordinates(pos);
+        double[] pos = main.cache().regions().regionFactory().roundCoordinates(new double[]{location.getX(), location.getY(), location.getZ()});
         World world = location.getWorld();
         assert world != null;
 
@@ -109,13 +108,9 @@ public class RegionLocation {
             lowerCorner[i] = Math.min(pos1[i], pos2[i]);
         }
 
-        // round coordinates as needed
-        main.cache().regionFactory().roundCoordinates(upperCorner);
-        main.cache().regionFactory().roundCoordinates(lowerCorner);
-
         // set the values
-        this.upperCorner = upperCorner;
-        this.lowerCorner = lowerCorner;
+        this.upperCorner = main.cache().regions().regionFactory().roundCoordinates(upperCorner);
+        this.lowerCorner = main.cache().regions().regionFactory().roundCoordinates(lowerCorner);
 
     }
 

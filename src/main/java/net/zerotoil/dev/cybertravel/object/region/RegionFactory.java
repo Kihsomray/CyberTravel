@@ -99,21 +99,24 @@ public class RegionFactory {
             return;
         }
 
-        if (main.cache().isRegion(id)) {
+        if (main.cache().regions().isRegion(id)) {
             main.sendMessage(player, "region-exists", new String[]{"regionID"}, id);
             return;
         }
 
         main.sendMessage(player, "region-created", new String[]{"regionID"}, id);
-        main.cache().createRegion(id, playerSetPositions.get(player));
+        main.cache().regions().createRegion(id, playerSetPositions.get(player));
 
     }
 
-    public void roundCoordinates(double[] coordinates) {
+    public double[] roundCoordinates(double[] coordinates) {
 
-        if (decimalFormat == null) return;
-        for (int i = 0; i < coordinates.length; i++)
-            coordinates[i] = Long.parseLong(decimalFormat.format(coordinates[i]));
+        if (decimalFormat != null) {
+            for (int i = 0; i < coordinates.length; i++)
+                coordinates[i] = Long.parseLong(decimalFormat.format(coordinates[i]));
+        }
+
+        return coordinates;
 
     }
 

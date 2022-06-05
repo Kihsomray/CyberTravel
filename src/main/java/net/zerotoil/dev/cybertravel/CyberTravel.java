@@ -78,7 +78,7 @@ public final class CyberTravel extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        cache.unloadPlayers();
+        cache.players().unloadPlayers();
     }
 
     public CyberCore core() {
@@ -145,7 +145,7 @@ public final class CyberTravel extends JavaPlugin {
     public boolean sendMessage(Player player, String messageKey, String[] placeholders, String... replacements) {
         if (placeholders != null) placeholders = Arrays.copyOf(placeholders, placeholders.length);
         if (replacements != null) replacements = Arrays.copyOf(replacements, replacements.length);
-        PlayerData playerData = cache().getPlayer(player);
+        PlayerData playerData = cache().players().getPlayer(player);
         core.sendMessage(
                 player,
                 messageKey,

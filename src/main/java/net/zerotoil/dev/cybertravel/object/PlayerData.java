@@ -61,8 +61,8 @@ public class PlayerData {
      */
     public boolean addRegion(String region) {
         if (isDiscovered(region)) return false;
-        if (!main.cache().isRegion(region)) return false;
-        regions.put(region, main.cache().getRegion(region));
+        if (!main.cache().regions().isRegion(region)) return false;
+        regions.put(region, main.cache().regions().getRegion(region));
 
         regions.get(region).getMessage().sendMessage(player);
         return true;
@@ -179,7 +179,7 @@ public class PlayerData {
      * @return Region the location is in
      */
     public Region getCurrentRegion() {
-        return main.cache().getRegionAt(player.getLocation());
+        return main.cache().regions().getRegionAt(player.getLocation());
     }
 
     /**
