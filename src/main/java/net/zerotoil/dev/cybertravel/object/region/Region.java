@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 public class Region {
 
-    private final CyberTravel main;
+    @Getter private final CyberTravel main;
     @Getter private final String id;
 
     @Getter private boolean enabled = false;
@@ -166,6 +166,13 @@ public class Region {
         this.location = location;
         return location.bind(this);
 
+    }
+
+    /**
+     * Displays the outline of this region.
+     */
+    public void displayOutline() {
+        WorldUtils.generateCube(this);
     }
 
     /**

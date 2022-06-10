@@ -76,6 +76,14 @@ public class CTRCommand implements CommandExecutor {
                     return main.cache().regions().teleportToRegion(player, args[1]);
                 }
 
+            case "border":
+            case "outline":
+                if (len == 2) {
+                    if (notRegion(player, args[1])) return true;
+                    main.cache().regions().getRegion(args[1]).displayOutline();
+                    return true;
+                }
+
             default:
                 return sendHelp(sender);
 
@@ -100,6 +108,12 @@ public class CTRCommand implements CommandExecutor {
 
     Player toPlayer(CommandSender sender) {
         return (sender instanceof Player) ? (Player) sender : null;
+    }
+
+    boolean notRegion(Player player, String region) {
+        boolean bool = !main.cache().regions().isRegion(region);
+        if (bool) main.sendMessage(player, "invalid-region", new String[]{"regionID"}, region);
+        return bool;
     }
 
 }

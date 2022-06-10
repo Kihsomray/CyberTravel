@@ -18,8 +18,8 @@ public class RegionLocation {
     private boolean binded = false;
 
     private String world;
-    @Getter private double[] upperCorner;
-    @Getter private double[] lowerCorner;
+    private double[] upperCorner;
+    private double[] lowerCorner;
 
     public RegionLocation(CyberTravel main) {
         this.main = main;
@@ -132,6 +132,13 @@ public class RegionLocation {
     }
     public double getLowerZ() {
         return lowerCorner[2];
+    }
+
+    public double[] getUpperCorner() {
+        return Arrays.copyOf(upperCorner, upperCorner.length);
+    }
+    public double[] getLowerCorner() {
+        return Arrays.copyOf(lowerCorner, lowerCorner.length);
     }
 
     public Location getUpperLocation() {
